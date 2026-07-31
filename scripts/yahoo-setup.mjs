@@ -13,6 +13,24 @@ import { createInterface } from 'node:readline/promises'
 import { stdin, stdout } from 'node:process'
 
 const DEFAULT_REDIRECT = 'https://tajarvarghese-arch.github.io/WhartonFantasyFootball/'
+
+/*
+ * Yahoo rejects an explicit scope unless it exactly matches what the app was
+ * provisioned with, and the console does not show the scope string anywhere.
+ * Omitting the parameter makes Yahoo fall back to the app's own configured
+ * permissions, which is what we want and what actually works. YAHOO_SCOPE can
+ * still force one if a future app needs it.
+ */
+function buildAuthorizeUrl(clientId, redirectUri) {
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    response_type: 'code',
+  })
+  if (process.env.YAHOO_SCOPE) params.set('scope', process.env.YAHOO_SCOPE)
+  return `https://api.login.yahoo.com/oauth2/request_auth?${params}`
+}
+
 const rl = createInterface({ input: stdin, output: stdout })
 
 const rule = (char = '─') => console.log(char.repeat(66))
@@ -52,17 +70,14 @@ const redirectUri = redirectAnswer || DEFAULT_REDIRECT
 
 step(2, 'Approve access in your browser')
 
-const authorizeUrl = `https://api.login.yahoo.com/oauth2/request_auth?${new URLSearchParams({
-  client_id: clientId,
-  redirect_uri: redirectUri,
-  response_type: 'code',
-  scope: 'fspt-r',
-})}`
+const authorizeUrl = buildAuthorizeUrl(clientId, redirectUri)
 
 console.log('Open this link, sign in as the Yahoo account that runs the league,')
 console.log('and click Agree:\n')
 console.log(authorizeUrl)
 console.log('')
+console.log('If the address comes back with ?error=invalid_scope, your Yahoo app')
+console.log('is missing the Fantasy Sports permission — re-check the app.\n')
 console.log('Yahoo then sends you to your own site with ?code=... on the end of')
 console.log('the address. Copy just the code — the part after "code=" and before')
 console.log('any "&". It looks like: abc123def456\n')

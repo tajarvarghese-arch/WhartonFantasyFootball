@@ -23,12 +23,24 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
   process.exit(1)
 }
 
-const authorizeUrl = `https://api.login.yahoo.com/oauth2/request_auth?${new URLSearchParams({
-  client_id: CLIENT_ID,
-  redirect_uri: REDIRECT_URI,
-  response_type: 'code',
-  scope: 'fspt-r',
-})}`
+/*
+ * Yahoo rejects an explicit scope unless it exactly matches what the app was
+ * provisioned with, and the console does not show the scope string anywhere.
+ * Omitting the parameter makes Yahoo fall back to the app's own configured
+ * permissions, which is what we want and what actually works. YAHOO_SCOPE can
+ * still force one if a future app needs it.
+ */
+function buildAuthorizeUrl(clientId, redirectUri) {
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    response_type: 'code',
+  })
+  if (process.env.YAHOO_SCOPE) params.set('scope', process.env.YAHOO_SCOPE)
+  return `https://api.login.yahoo.com/oauth2/request_auth?${params}`
+}
+
+const authorizeUrl = buildAuthorizeUrl(CLIENT_ID, REDIRECT_URI)
 
 console.log('\n1. Open this URL and approve access:\n')
 console.log(`   ${authorizeUrl}\n`)
