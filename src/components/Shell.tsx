@@ -172,8 +172,16 @@ export default function Shell({ children }: { children: ReactNode }) {
       {/* Desktop sidebar */}
       <aside className="hidden border-r-[3px] border-arc-line bg-arc-bg-deep lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col">
         <div className="border-b-[3px] border-arc-line bg-arc-bg-deep px-4 py-5 text-center">
-          <div className="relative inline-block">
-            <span className="arcade neon-3d text-[26px] leading-tight">WACL</span>
+          <div className="retro relative inline-block">
+            <span className="retro-word retro-pink block text-[32px]" data-text="WACL">
+              WACL
+            </span>
+            <span
+              className="retro-word retro-gold mt-0.5 block text-[13px] tracking-[0.2em]"
+              data-text="ARCADE"
+            >
+              ARCADE
+            </span>
             <Sparkles count={5} />
           </div>
           <div className="arcade mt-3 text-[11px] leading-relaxed text-arc-ink-soft">

@@ -136,6 +136,78 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /*
+   * Retro-neon wordmark, built like the reference: a chunky rounded face
+   * with a hard-banded gradient fill, a white neon tube traced around the
+   * glyphs (text-stroke + drop-shadow halo), and a thick blue 3D extrusion
+   * behind it (a ::before copy of the text, stepped down-right). The whole
+   * lockup leans a few degrees. Everything is em-based so one class serves
+   * the 60px title screen and the 17px top bar alike.
+   */
+  .retro {
+    transform: rotate(-3deg);
+  }
+  .retro-word {
+    position: relative;
+    display: inline-block;
+    font-family: 'Titan One', var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    -webkit-text-stroke: 0.032em rgba(255, 255, 255, 0.92);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 0.08em #ff5da2)
+      drop-shadow(0 0 0.28em rgba(176, 124, 255, 0.75));
+  }
+  /* the blue block depth, offset down-right like the reference */
+  .retro-word::before {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    -webkit-text-stroke: 0;
+    background: none;
+    color: #2e9de8;
+    text-shadow:
+      0.02em 0.03em 0 #2e9de8,
+      0.045em 0.065em 0 #2790da,
+      0.07em 0.1em 0 #1f7cc6,
+      0.095em 0.135em 0 #1a6ab0,
+      0.12em 0.17em 0 #155a98,
+      0.2em 0.3em 0.35em rgba(4, 3, 10, 0.6);
+    transform: translate(0.02em, 0.03em);
+  }
+  .retro-pink {
+    background-image: linear-gradient(
+      180deg,
+      #ffeaf4 0%,
+      #ffc9de 26%,
+      #ffc9de 26%,
+      #ff8fb3 27%,
+      #ff8fb3 52%,
+      #ff5f7e 53%,
+      #ff5f7e 78%,
+      #f43d6b 79%,
+      #f43d6b 100%
+    );
+  }
+  .retro-gold {
+    background-image: linear-gradient(
+      180deg,
+      #fff6cf 0%,
+      #ffe98f 26%,
+      #ffe98f 26%,
+      #ffd84d 27%,
+      #ffd84d 52%,
+      #ffa92e 53%,
+      #ffa92e 78%,
+      #ff7a3c 79%,
+      #ff7a3c 100%
+    );
+  }
+
   /* 3D neon sign: stacked em-based extrusion so it scales with font size,
      under a two-tone cyan/pink glow that slowly breathes. */
   .neon-3d {

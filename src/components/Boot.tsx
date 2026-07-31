@@ -38,12 +38,20 @@ export default function Boot({
       aria-label="Loading — tap to skip"
     >
       <div className="w-full max-w-md text-center">
-        <div className="pop-in relative inline-block">
-          <span className="arcade neon-3d text-[46px] leading-tight tracking-wider">WACL</span>
-          <Sparkles count={9} />
+        <div className="pop-in retro relative inline-block">
+          <span className="retro-word retro-pink block text-[64px]" data-text="WACL">
+            WACL
+          </span>
+          <span
+            className="retro-word retro-gold mt-1 block text-[30px] tracking-[0.18em]"
+            data-text="ARCADE"
+          >
+            ARCADE
+          </span>
+          <Sparkles count={10} />
         </div>
         <div
-          className="arcade pop-in mt-2 text-[12px] leading-relaxed text-arc-ink-soft"
+          className="arcade pop-in mt-3 text-[12px] leading-relaxed text-arc-ink-soft"
           style={{ animationDelay: '120ms' }}
         >
           WHARTON ALUM CHAMPIONS LEAGUE
