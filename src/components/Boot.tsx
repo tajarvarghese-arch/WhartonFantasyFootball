@@ -39,15 +39,19 @@ export default function Boot({
       aria-label="Loading — tap to skip"
     >
       <div className="w-full max-w-md text-center">
-        <div className="pop-in retro relative inline-block">
-          <PixelSign
-            words={[
-              { text: 'WACL', palette: 'pink', size: 64 },
-              { text: 'ARCADE', palette: 'gold', size: 30, tracking: 0.18, pixel: 2 },
-            ]}
-            pixel={4}
-          />
-          <Sparkles count={10} />
+        {/* pop-in and the tilt must live on different elements: the entrance
+            animation's fill retains transform:none and would erase the lean */}
+        <div className="pop-in inline-block">
+          <div className="retro relative">
+            <PixelSign
+              words={[
+                { text: 'WACL', palette: 'pink', size: 64 },
+                { text: 'ARCADE', palette: 'gold', size: 30, tracking: 0.18, pixel: 2 },
+              ]}
+              pixel={4}
+            />
+            <Sparkles count={10} />
+          </div>
         </div>
         <div
           className="arcade pop-in mt-3 text-[12px] leading-relaxed text-arc-ink-soft"
