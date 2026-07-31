@@ -35,8 +35,29 @@ function vertex(theta: number, phi: number): Vec3 {
   }
 }
 
-function buildShell(): Quad[] {
-  const quads: Quad[] = []
+/**
+ * A helmet is not a sphere: narrower side to side, slightly taller, and
+ * elongated front to back. Applied to every model point, so the silhouette
+ * reads as a helmet before shading does any work.
+ */
+const SHAPE = { x: 0.9, y: 1.04, z: 1.16 }
+
+function shaped(v: Vec3): Vec3 {
+  return { x: v.x * SHAPE.x, y: v.y * SHAPE.y, z: v.z * SHAPE.z }
+}
+
+/** Normals under non-uniform scale transform by the inverse scale. */
+function shapedNormal(n: Vec3): Vec3 {
+  return normalize({ x: n.x / SHAPE.x, y: n.y / SHAPE.y, z: n.z / SHAPE.z })
+}
+
+function scaleVec3(v: Vec3, r: number): Vec3 {
+  return { x: v.x * r, y: v.y * r, z: v.z * r }
+}
+
+function buildShellAndCavity(): { shell: Quad[]; cavity: Quad[] } {
+  const shell: Quad[] = []
+  const cavity: Quad[] = []
   const thetaTop = 0.3
   const thetaBottom = 2.05
   for (let i = 0; i < NB; i++) {
@@ -48,29 +69,49 @@ function buildShell(): Quad[] {
       const midT = (t0 + t1) / 2
       let midP = (p0 + p1) / 2
       if (midP > Math.PI) midP -= Math.PI * 2
-      // face opening: the lower-front region is cut away
-      if (midT > 1.02 && Math.abs(midP) < 0.95) continue
-      quads.push({
-        corners: [vertex(t0, p0), vertex(t0, p1), vertex(t1, p1), vertex(t1, p0)],
-        normal: vertex(midT, midP),
-      })
+      const corners: [Vec3, Vec3, Vec3, Vec3] = [
+        shaped(vertex(t0, p0)),
+        shaped(vertex(t0, p1)),
+        shaped(vertex(t1, p1)),
+        shaped(vertex(t1, p0)),
+      ]
+      const normal = shapedNormal(vertex(midT, midP))
+      // the lower-front region is the face opening: shell is cut away and a
+      // recessed dark cavity sits behind it, so the opening reads as a hole
+      if (midT > 1.02 && Math.abs(midP) < 0.95) {
+        cavity.push({
+          corners: corners.map((v) => scaleVec3(v, 0.72)) as [Vec3, Vec3, Vec3, Vec3],
+          normal,
+        })
+        continue
+      }
+      shell.push({ corners, normal })
     }
   }
-  return quads
+  return { shell, cavity }
 }
 
-/** Facemask polylines in model space, sitting just off the shell. */
+/**
+ * Facemask cage. It does not hug the shell — the bars sweep from the cheeks
+ * and jut well proud of the front, the way a real cage stands off the face.
+ */
 function buildMask(): Vec3[][] {
   const lines: Vec3[][] = []
-  const radius = 1.1
-  const scaleVec = (v: Vec3) => ({ x: v.x * radius, y: v.y * radius, z: v.z * radius })
-  for (const theta of [1.28, 1.62]) {
+  // radial reach grows toward the front: 1.04 at the cheeks, ~1.45 dead ahead
+  const jut = (phi: number) => 1.04 + 0.42 * Math.pow(Math.cos(phi * 1.1), 2)
+  for (const theta of [1.3, 1.62]) {
     const bar: Vec3[] = []
-    for (let k = -4; k <= 4; k++) bar.push(scaleVec(vertex(theta, (k / 4) * 0.85)))
+    for (let k = -5; k <= 5; k++) {
+      const phi = (k / 5) * 0.95
+      bar.push(shaped(scaleVec3(vertex(theta, phi), jut(phi))))
+    }
     lines.push(bar)
   }
-  for (const phi of [-0.5, 0.5]) {
-    lines.push([scaleVec(vertex(1.28, phi)), scaleVec(vertex(1.62, phi))])
+  for (const phi of [-0.45, 0, 0.45]) {
+    lines.push([
+      shaped(scaleVec3(vertex(1.3, phi), jut(phi))),
+      shaped(scaleVec3(vertex(1.62, phi), jut(phi))),
+    ])
   }
   return lines
 }
@@ -80,7 +121,7 @@ function normalize(v: Vec3): Vec3 {
   return { x: v.x / len, y: v.y / len, z: v.z / len }
 }
 
-const SHELL = buildShell()
+const { shell: SHELL, cavity: CAVITY } = buildShellAndCavity()
 const MASK = buildMask()
 const LIGHT: Vec3 = normalize({ x: -0.35, y: -0.75, z: 0.55 })
 
@@ -245,6 +286,21 @@ export default function HelmetField({ enabled }: { enabled: boolean }) {
         sctx.clearRect(0, 0, SCRATCH, SCRATCH)
         const mid = SCRATCH / 2
 
+        // the face opening is a hole: paint the recessed dark cavity first
+        sctx.fillStyle = 'rgb(9,7,16)'
+        for (const quad of CAVITY) {
+          const n = rotate(quad.normal)
+          if (n.z < 0.05) continue
+          sctx.beginPath()
+          quad.corners.forEach((v, k) => {
+            const r = rotate(v)
+            if (k === 0) sctx.moveTo(mid + r.x * radius, mid + r.y * radius)
+            else sctx.lineTo(mid + r.x * radius, mid + r.y * radius)
+          })
+          sctx.closePath()
+          sctx.fill()
+        }
+
         // shell, far quads first
         const visible: { depth: number; path: Vec3[]; fill: string }[] = []
         for (const quad of SHELL) {
@@ -285,8 +341,8 @@ export default function HelmetField({ enabled }: { enabled: boolean }) {
         // facemask: drawn only while the face points anywhere near the viewer
         const facing = rotate({ x: 0, y: 0, z: 1 }).z
         if (facing > -0.2) {
-          sctx.strokeStyle = 'rgb(174,182,194)'
-          sctx.lineWidth = Math.max(1.2, 2.6 * scale)
+          sctx.strokeStyle = 'rgb(198,205,216)'
+          sctx.lineWidth = Math.max(1.6, 3.4 * scale)
           sctx.lineCap = 'round'
           for (const line of MASK) {
             sctx.beginPath()
