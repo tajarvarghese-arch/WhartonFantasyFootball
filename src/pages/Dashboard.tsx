@@ -182,7 +182,7 @@ export default function Dashboard() {
                           <span className="redzone tag ml-2 align-middle">Red zone</span>
                         )}
                       </div>
-                      <div className="mt-1.5 w-24">
+                      <div className="mt-1.5 ml-auto w-24">
                         <Bar
                           value={Math.max(budget.available, 0)}
                           max={maxBudget}

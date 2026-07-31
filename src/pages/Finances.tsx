@@ -213,7 +213,7 @@ function FaabBook({ season }: { season: number }) {
               <th className="n">Claims</th>
               <th className="n">Spent</th>
               <th className="n">Remaining</th>
-              <th className="w-40">Used</th>
+              <th className="w-40 text-left">Used</th>
             </tr>
           </thead>
           <tbody>

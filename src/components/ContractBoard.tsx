@@ -64,13 +64,13 @@ export default function ContractBoard({ year }: { year: number }) {
         <div className="min-w-0 sm:min-w-[540px]">
           {/* year ruler */}
           <div className="sticky top-0 z-10 flex border-b border-arc-line bg-arc-panel pb-1.5">
-            <div className="w-[100px] shrink-0 sm:w-[168px]" />
+            <div className="label w-[100px] shrink-0 sm:w-[168px]">Player</div>
             {horizon.map((target) => (
               <div key={target} className="label flex-1 text-center">
                 {target}
               </div>
             ))}
-            <div className="w-14 shrink-0" />
+            <div className="label w-14 shrink-0 text-right">Left</div>
           </div>
 
           {blocks.map((block: KeeperBlock) => (
