@@ -33,7 +33,9 @@ export function Panel({
           {action && <div className="shrink-0">{action}</div>}
         </header>
       )}
-      {children}
+      {/* Tables inside panels scroll here rather than splitting thead/tbody
+          into separate layout contexts, which desynced header columns. */}
+      <div className="min-w-0 overflow-x-auto">{children}</div>
     </section>
   )
 }

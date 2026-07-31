@@ -184,20 +184,13 @@
 
   /* ---- tables ---------------------------------------------------------- */
 
+  /* A real table: thead and tbody must share one column grid or headers
+     drift off their columns. Horizontal scrolling belongs to the panel
+     wrapper, not the table. */
   .out {
-    display: block;
     width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     border-collapse: collapse;
     font-variant-numeric: tabular-nums;
-  }
-  .out > thead,
-  .out > tbody {
-    display: table;
-    width: 100%;
-    min-width: max-content;
-    border-collapse: collapse;
   }
   .out thead th {
     padding: 9px 12px;
