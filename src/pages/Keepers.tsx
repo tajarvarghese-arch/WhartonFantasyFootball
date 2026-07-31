@@ -61,7 +61,7 @@ export default function Keepers() {
           title="contract board"
           subtitle="Every keeper contract from this season to its expiry. Read down a column to see how much of the league is already committed in that year."
         >
-          <div className="px-4 py-4">
+          <div className="px-2 py-4 sm:px-4">
             <ContractBoard year={year} />
           </div>
         </Panel>

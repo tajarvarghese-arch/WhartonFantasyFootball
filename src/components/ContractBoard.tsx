@@ -53,10 +53,10 @@ export default function ContractBoard({ year }: { year: number }) {
   return (
     <div>
       <div className="scroll-x">
-        <div className="min-w-[540px]">
+        <div className="min-w-0 sm:min-w-[540px]">
           {/* year ruler */}
           <div className="sticky top-0 z-10 flex border-b border-arc-ink bg-arc-panel pb-1.5">
-            <div className="w-[168px] shrink-0" />
+            <div className="w-[100px] shrink-0 sm:w-[168px]" />
             {horizon.map((target) => (
               <div key={target} className="label flex-1 text-center">
                 {target}
@@ -95,15 +95,15 @@ export default function ContractBoard({ year }: { year: number }) {
                     onMouseEnter={() => setHovered(key)}
                     onMouseLeave={() => setHovered(null)}
                   >
-                    <div className="flex w-[168px] shrink-0 items-baseline justify-between gap-1.5 pr-2.5">
+                    <div className="flex w-[100px] shrink-0 items-baseline justify-between gap-1 pr-1.5 sm:w-[168px] sm:gap-1.5 sm:pr-2.5">
                       <Link
                         to={`/players/${playerSlug(pick.player)}`}
-                        className="truncate text-[11.5px] text-arc-ink-soft transition-colors hover:text-arc-green"
+                        className="truncate text-[11px] text-arc-ink-soft transition-colors hover:text-arc-blue sm:text-[13px]"
                         title={pick.player}
                       >
                         {pick.player}
                       </Link>
-                      <span className="tnum shrink-0 text-[11px] text-arc-ink-faint">
+                      <span className="tnum shrink-0 text-[11px] text-arc-ink sm:text-[12px]">
                         {money(pick.salary)}
                       </span>
                     </div>
@@ -135,7 +135,7 @@ export default function ContractBoard({ year }: { year: number }) {
 
           {/* committed salary per season */}
           <div className="flex border-t border-arc-ink pt-2">
-            <div className="label w-[168px] shrink-0 pr-2.5 text-right">Committed</div>
+            <div className="label w-[100px] shrink-0 pr-1.5 text-right sm:w-[168px] sm:pr-2.5">Committed</div>
             {committed.map((total, index) => (
               <div key={horizon[index]} className="flex-1 text-center">
                 <span className="tnum text-[12px] text-arc-ink">{money(total)}</span>
