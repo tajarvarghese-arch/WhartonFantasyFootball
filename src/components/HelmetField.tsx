@@ -2,82 +2,130 @@ import { useEffect, useRef } from 'react'
 import { MANAGER_COLOR } from '../lib/identity'
 
 /**
- * Twelve helmets — one per franchise colour — drifting in 3D space behind the
- * page, spinning on their Y axis and ricocheting off each other elastically.
+ * Ten helmets in franchise colours drifting behind the page, spinning in real
+ * 3D and ricocheting off each other.
  *
- * No 3D library: positions live in (x, y, z), scale is 1/z perspective, and
- * the Y-spin is faked by scaling the sprite's width through cos(angle) and
- * mirroring on the back half — the classic sprite trick, which suits the
- * cabinet better than a real mesh would. Real NFL helmets are trademarked;
- * these are the league's own.
+ * The earlier version scaled a flat sprite by cos(angle), which read as a
+ * card being squished. This one software-renders an actual low-poly helmet:
+ * a lat-long sphere shell with a face opening cut out, flat-shaded per quad
+ * with a fixed light, a two-bar facemask with real parallax, painter-sorted
+ * and drawn back to front. No 3D library — rotation matrices and a canvas.
  */
 
-// 14x12 pixel map: S shell, H highlight, D shade, F facemask, E earhole
-const HELMET_MAP = [
-  '....SSSSSS....',
-  '..SSHHHHSSS...',
-  '.SSHHSSSSSSS..',
-  '.SSSSSSSSSSSS.',
-  'SSSSSSSSSSSSS.',
-  'SSSSSSSSSSSSF.',
-  'SSESSSSSSSSFF.',
-  'SSEESSSSSSSF..',
-  'SSSSSSSSSSSFF.',
-  '.SSSSSSSSSSF..',
-  '..DDDDDDDDF...',
-  '......FFFF....',
-]
-const CELL = 3
-const SPRITE_W = HELMET_MAP[0].length * CELL
-const SPRITE_H = HELMET_MAP.length * CELL
+const NB = 6 // latitude bands
+const NL = 14 // longitude segments
 
-function mix(hex: string, target: number, amount: number): string {
+interface Vec3 {
+  x: number
+  y: number
+  z: number
+}
+
+interface Quad {
+  corners: [Vec3, Vec3, Vec3, Vec3]
+  normal: Vec3 // unit, points outward (mid-vertex direction on a sphere)
+}
+
+function vertex(theta: number, phi: number): Vec3 {
+  // y grows downward to match canvas space; phi = 0 faces the viewer
+  return {
+    x: Math.sin(theta) * Math.sin(phi),
+    y: -Math.cos(theta),
+    z: Math.sin(theta) * Math.cos(phi),
+  }
+}
+
+function buildShell(): Quad[] {
+  const quads: Quad[] = []
+  const thetaTop = 0.3
+  const thetaBottom = 2.05
+  for (let i = 0; i < NB; i++) {
+    const t0 = thetaTop + ((thetaBottom - thetaTop) * i) / NB
+    const t1 = thetaTop + ((thetaBottom - thetaTop) * (i + 1)) / NB
+    for (let j = 0; j < NL; j++) {
+      const p0 = (j / NL) * Math.PI * 2
+      const p1 = ((j + 1) / NL) * Math.PI * 2
+      const midT = (t0 + t1) / 2
+      let midP = (p0 + p1) / 2
+      if (midP > Math.PI) midP -= Math.PI * 2
+      // face opening: the lower-front region is cut away
+      if (midT > 1.02 && Math.abs(midP) < 0.95) continue
+      quads.push({
+        corners: [vertex(t0, p0), vertex(t0, p1), vertex(t1, p1), vertex(t1, p0)],
+        normal: vertex(midT, midP),
+      })
+    }
+  }
+  return quads
+}
+
+/** Facemask polylines in model space, sitting just off the shell. */
+function buildMask(): Vec3[][] {
+  const lines: Vec3[][] = []
+  const radius = 1.1
+  const scaleVec = (v: Vec3) => ({ x: v.x * radius, y: v.y * radius, z: v.z * radius })
+  for (const theta of [1.28, 1.62]) {
+    const bar: Vec3[] = []
+    for (let k = -4; k <= 4; k++) bar.push(scaleVec(vertex(theta, (k / 4) * 0.85)))
+    lines.push(bar)
+  }
+  for (const phi of [-0.5, 0.5]) {
+    lines.push([scaleVec(vertex(1.28, phi)), scaleVec(vertex(1.62, phi))])
+  }
+  return lines
+}
+
+function normalize(v: Vec3): Vec3 {
+  const len = Math.hypot(v.x, v.y, v.z) || 1
+  return { x: v.x / len, y: v.y / len, z: v.z / len }
+}
+
+const SHELL = buildShell()
+const MASK = buildMask()
+const LIGHT: Vec3 = normalize({ x: -0.35, y: -0.75, z: 0.55 })
+
+function mix(hex: string, target: number, amount: number): [number, number, number] {
   const value = parseInt(hex.slice(1), 16)
   const channel = (shift: number) => {
     const base = (value >> shift) & 0xff
     return Math.round(base + (target - base) * amount)
   }
-  return `rgb(${channel(16)},${channel(8)},${channel(0)})`
+  return [channel(16), channel(8), channel(0)]
 }
 
-function paintSprite(color: string): HTMLCanvasElement {
-  const canvas = document.createElement('canvas')
-  canvas.width = SPRITE_W
-  canvas.height = SPRITE_H
-  const ctx = canvas.getContext('2d')!
-  const fills: Record<string, string> = {
-    S: color,
-    H: mix(color, 255, 0.4),
-    D: mix(color, 0, 0.4),
-    F: '#c9d4ce',
-    E: '#0d0a17',
+const SHADE_STEPS = 8
+
+/** Pre-mixed fill strings from deep shade to highlight, per franchise colour. */
+function shadeRamp(color: string): string[] {
+  const dark = mix(color, 0, 0.3)
+  const light = mix(color, 255, 0.45)
+  const ramp: string[] = []
+  for (let i = 0; i < SHADE_STEPS; i++) {
+    const t = i / (SHADE_STEPS - 1)
+    const r = Math.round(dark[0] + (light[0] - dark[0]) * t)
+    const g = Math.round(dark[1] + (light[1] - dark[1]) * t)
+    const b = Math.round(dark[2] + (light[2] - dark[2]) * t)
+    ramp.push(`rgb(${r},${g},${b})`)
   }
-  HELMET_MAP.forEach((row, y) => {
-    for (let x = 0; x < row.length; x++) {
-      const key = row[x]
-      if (key === '.') continue
-      ctx.fillStyle = fills[key]
-      ctx.fillRect(x * CELL, y * CELL, CELL, CELL)
-    }
-  })
-  return canvas
+  return ramp
 }
 
 interface Helmet {
   x: number
   y: number
-  z: number // 0.6 (near) .. 2.2 (far); scale is 1/z
+  z: number // 0.7 (near) .. 2.2 (far); scale is 1/z
   vx: number
   vy: number
   vz: number
   spin: number
   spinRate: number
-  sprite: HTMLCanvasElement
+  tilt: number
+  ramp: string[]
 }
 
 const Z_NEAR = 0.7
 const Z_FAR = 2.2
-const BASE_R = 25
+const BASE_R = 26
 
 export default function HelmetField({ enabled }: { enabled: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -102,19 +150,29 @@ export default function HelmetField({ enabled }: { enabled: boolean }) {
     resize()
     window.addEventListener('resize', resize)
 
+    // Each helmet is rendered opaque here first, then blitted to the page at
+    // whisper alpha. Drawing translucent quads directly compounds alpha where
+    // neighbours overlap and the seams glow as a wireframe lattice.
+    const SCRATCH = 176
+    const scratch = document.createElement('canvas')
+    scratch.width = SCRATCH
+    scratch.height = SCRATCH
+    const sctx = scratch.getContext('2d')!
+
     // Ten is atmosphere; twelve was traffic.
     const colors = Object.values(MANAGER_COLOR).slice(0, 10)
     const helmets: Helmet[] = colors.map((color, index) => ({
-      // Deterministic spread — no Math.random, so every boot looks composed.
-      x: ((index * 61.8) % 100) / 100 * width,
-      y: ((index * 38.2 + 15) % 100) / 100 * height,
-      z: Z_NEAR + ((index * 17) % 12) / 12 * (Z_FAR - Z_NEAR),
+      // Deterministic spread — no Math.random, so every load looks composed.
+      x: (((index * 61.8) % 100) / 100) * width,
+      y: (((index * 38.2 + 15) % 100) / 100) * height,
+      z: Z_NEAR + (((index * 17) % 12) / 12) * (Z_FAR - Z_NEAR),
       vx: (index % 2 ? 1 : -1) * (8 + (index % 5) * 3),
       vy: (index % 3 ? 1 : -1) * (6 + (index % 4) * 3),
       vz: (index % 2 ? 1 : -1) * 0.05,
       spin: index * 0.7,
-      spinRate: (index % 2 ? 1 : -1) * (0.35 + (index % 4) * 0.15),
-      sprite: paintSprite(color),
+      spinRate: (index % 2 ? 1 : -1) * (0.3 + (index % 4) * 0.12),
+      tilt: 0.12 + (index % 3) * 0.08,
+      ramp: shadeRamp(color),
     }))
 
     let last = performance.now()
@@ -129,7 +187,7 @@ export default function HelmetField({ enabled }: { enabled: boolean }) {
         h.y += h.vy * dt
         h.z += h.vz * dt
         h.spin += h.spinRate * dt
-        const r = (BASE_R / h.z)
+        const r = BASE_R / h.z
         if ((h.x < r && h.vx < 0) || (h.x > width - r && h.vx > 0)) h.vx *= -1
         if ((h.y < r && h.vy < 0) || (h.y > height - r && h.vy > 0)) h.vy *= -1
         if ((h.z < Z_NEAR && h.vz < 0) || (h.z > Z_FAR && h.vz > 0)) h.vz *= -1
@@ -149,15 +207,13 @@ export default function HelmetField({ enabled }: { enabled: boolean }) {
           const nx = dx / dist
           const ny = dy / dist
           const rel = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny
-          if (rel <= 0) continue // already separating
+          if (rel <= 0) continue
           a.vx -= rel * nx
           a.vy -= rel * ny
           b.vx += rel * nx
           b.vy += rel * ny
-          // a hit knocks the spin around a little
           a.spinRate *= -1
           b.spinRate *= -1
-          // push apart so they don't stick
           const overlap = (minDist - dist) / 2
           a.x -= nx * overlap
           a.y -= ny * overlap
@@ -167,25 +223,87 @@ export default function HelmetField({ enabled }: { enabled: boolean }) {
       }
 
       ctx.clearRect(0, 0, width, height)
-      // far helmets first, so near ones pass in front
       const ordered = [...helmets].sort((p, q) => q.z - p.z)
+
       for (const h of ordered) {
         const scale = 1 / h.z
-        const w = SPRITE_W * scale * 2
-        const hgt = SPRITE_H * scale * 2
-        // Y-axis spin: width narrows through cos, mirrors on the back half.
-        const cos = Math.cos(h.spin)
-        // Clamp so an edge-on helmet stays an object, not a needle-thin smear.
-        const spriteW = Math.max(Math.abs(cos), 0.22) * w
-        ctx.save()
-        // Whisper level: present in the gutters, invisible behind text.
-        ctx.globalAlpha = 0.05 + 0.08 * scale
-        ctx.imageSmoothingEnabled = false
-        ctx.translate(h.x, h.y)
-        ctx.scale(cos < 0 ? -1 : 1, 1)
-        ctx.drawImage(h.sprite, -spriteW / 2, -hgt / 2, spriteW, hgt)
-        ctx.restore()
+        const radius = BASE_R * scale * 1.3
+        const sinS = Math.sin(h.spin)
+        const cosS = Math.cos(h.spin)
+        const sinT = Math.sin(h.tilt)
+        const cosT = Math.cos(h.tilt)
+
+        // spin about Y, then a fixed forward tilt about X
+        const rotate = (v: Vec3): Vec3 => {
+          const x = v.x * cosS + v.z * sinS
+          const z0 = -v.x * sinS + v.z * cosS
+          const y = v.y * cosT - z0 * sinT
+          const z = v.y * sinT + z0 * cosT
+          return { x, y, z }
+        }
+
+        sctx.clearRect(0, 0, SCRATCH, SCRATCH)
+        const mid = SCRATCH / 2
+
+        // shell, far quads first
+        const visible: { depth: number; path: Vec3[]; fill: string }[] = []
+        for (const quad of SHELL) {
+          const n = rotate(quad.normal)
+          if (n.z < -0.05) continue // backface
+          const lit = Math.max(0, -n.x * LIGHT.x + -n.y * LIGHT.y + n.z * LIGHT.z)
+          const bucket = Math.min(SHADE_STEPS - 1, Math.round(lit * (SHADE_STEPS - 1)))
+          visible.push({
+            depth: n.z,
+            path: quad.corners.map(rotate),
+            fill: h.ramp[bucket],
+          })
+        }
+        visible.sort((a, b) => a.depth - b.depth)
+        for (const { path, fill } of visible) {
+          // Slight inflation seals hairline gaps; overlaps are invisible now
+          // that the surface is drawn opaque.
+          let cx = 0
+          let cy = 0
+          for (const v of path) {
+            cx += v.x
+            cy += v.y
+          }
+          cx /= path.length
+          cy /= path.length
+          sctx.fillStyle = fill
+          sctx.beginPath()
+          path.forEach((v, k) => {
+            const px = mid + (cx + (v.x - cx) * 1.05) * radius
+            const py = mid + (cy + (v.y - cy) * 1.05) * radius
+            if (k === 0) sctx.moveTo(px, py)
+            else sctx.lineTo(px, py)
+          })
+          sctx.closePath()
+          sctx.fill()
+        }
+
+        // facemask: drawn only while the face points anywhere near the viewer
+        const facing = rotate({ x: 0, y: 0, z: 1 }).z
+        if (facing > -0.2) {
+          sctx.strokeStyle = 'rgb(174,182,194)'
+          sctx.lineWidth = Math.max(1.2, 2.6 * scale)
+          sctx.lineCap = 'round'
+          for (const line of MASK) {
+            sctx.beginPath()
+            line.forEach((v, k) => {
+              const r = rotate(v)
+              if (k === 0) sctx.moveTo(mid + r.x * radius, mid + r.y * radius)
+              else sctx.lineTo(mid + r.x * radius, mid + r.y * radius)
+            })
+            sctx.stroke()
+          }
+        }
+
+        // Whisper level: present in the gutters, never fighting the text.
+        ctx.globalAlpha = 0.14 + 0.12 * scale
+        ctx.drawImage(scratch, h.x - mid, h.y - mid)
       }
+      ctx.globalAlpha = 1
 
       frame = requestAnimationFrame(step)
     }
