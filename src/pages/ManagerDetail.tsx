@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
+import RoastPanel from '../components/RoastPanel'
 import TradingCard from '../components/TradingCard'
+import { achievements } from '../lib/achievements'
 import { Link, useParams } from 'react-router-dom'
 import { ForAgainstChart, WinPctChart } from '../components/charts'
 import { Chip, Empty, Panel, PageHeader, Stat } from '../components/ui'
@@ -16,6 +18,7 @@ export default function ManagerDetail() {
   const allTrades = useTrades()
 
   const manager = managers.find((candidate) => candidate.id === id)
+  const badges = useMemo(() => achievements(data).get(id) ?? [], [data, id])
   const eras = eraOptions(seasons)
   const career = careerTable(seasons, eras[0]).find((line) => line.manager === id)
   const rows = managerSeasons(seasons, id)
@@ -66,6 +69,25 @@ export default function ManagerDetail() {
         }`}
         action={<TradingCard id={id} />}
       />
+
+      <div className="mb-6">
+        <RoastPanel id={id} />
+      </div>
+
+      {badges.length > 0 && (
+        <div className="mb-6 flex flex-wrap gap-2.5">
+          {badges.map((badge) => (
+            <span
+              key={badge.id}
+              className="tag !text-[11px]"
+              style={{ background: 'var(--color-arc-raised)', color: 'var(--color-arc-ink)' }}
+              title={badge.reason}
+            >
+              {badge.emoji} {badge.name}
+            </span>
+          ))}
+        </div>
+      )}
 
       <div className="line-in mb-8 grid grid-cols-2 gap-6 lg:grid-cols-4">
         <Stat

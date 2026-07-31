@@ -3,6 +3,7 @@ import HeapScene, { HEAP_BOOT_SECONDS } from './HeapScene'
 import PixelSign from './PixelSign'
 import { Sparkles } from './effects'
 import { animationsDisabled } from '../lib/motion'
+import { play } from '../lib/sfx'
 
 /**
  * Title screen: King of the Heap. Eleven players brawl onto a dogpile and the
@@ -20,7 +21,13 @@ export default function Boot({
 
   useEffect(() => {
     const timer = setTimeout(() => setClosing(true), HEAP_BOOT_SECONDS * 1000)
-    return () => clearTimeout(timer)
+    // fanfare as the trophy goes up (only audible after a prior user gesture,
+    // per browser autoplay rules — reloads and SPA navs qualify)
+    const horn = setTimeout(() => play('fanfare'), 3600)
+    return () => {
+      clearTimeout(timer)
+      clearTimeout(horn)
+    }
   }, [])
 
   useEffect(() => {

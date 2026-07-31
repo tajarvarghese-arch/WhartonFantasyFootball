@@ -3,12 +3,14 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { useLeague } from '../lib/data'
 import { usePendingTrades } from '../lib/derive'
 import CommandPalette from './CommandPalette'
+import GodMode from './GodMode'
 import PixelSign from './PixelSign'
 import { Sparkles } from './effects'
 import HelmetField from './HelmetField'
 import CommissionerPanel from './CommissionerPanel'
 import { ReplayWipe } from './effects'
 import { animationsDisabled, motionForcedOn, setMotionForcedOn, systemPrefersReduced } from '../lib/motion'
+import { play, setSfxOn, sfxOn } from '../lib/sfx'
 
 // Each destination owns a colour, so the nav reads as a row of cabinet buttons.
 const NAV = [
@@ -42,6 +44,8 @@ export default function Shell({ children }: { children: ReactNode }) {
   // The OS is requesting reduced motion; offer an in-app override so the
   // animations the commissioner asked for are one tap away.
   const [fxOn, setFxOn] = useState(motionForcedOn)
+  const [sfx, setSfx] = useState(sfxOn)
+  const [godMode, setGodMode] = useState(false)
   const reducedByOS = systemPrefersReduced()
   const location = useLocation()
 
@@ -63,6 +67,32 @@ export default function Shell({ children }: { children: ReactNode }) {
       document.body.style.overflow = ''
     }
   }, [menuOpen])
+
+  // The Konami code summons god mode; five quick logo taps do too.
+  useEffect(() => {
+    const code = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
+    let progress = 0
+    function onKonami(event: KeyboardEvent) {
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key
+      progress = key === code[progress] ? progress + 1 : key === code[0] ? 1 : 0
+      if (progress === code.length) {
+        progress = 0
+        setGodMode(true)
+      }
+    }
+    window.addEventListener('keydown', onKonami)
+    return () => window.removeEventListener('keydown', onKonami)
+  }, [])
+
+  const logoTaps = useRef<number[]>([])
+  const onLogoTap = () => {
+    const now = Date.now()
+    logoTaps.current = [...logoTaps.current.filter((t) => now - t < 2600), now]
+    if (logoTaps.current.length >= 5) {
+      logoTaps.current = []
+      setGodMode(true)
+    }
+  }
 
   // Cmd/Ctrl-K anywhere, and "/" when not already typing in a field.
   useEffect(() => {
@@ -89,7 +119,13 @@ export default function Shell({ children }: { children: ReactNode }) {
   const navList = (
     <nav className="flex flex-col gap-2">
       {NAV.map((item) => (
-        <NavLink key={item.to} to={item.to} end={item.end} className="block no-underline">
+        <NavLink
+          key={item.to}
+          to={item.to}
+          end={item.end}
+          className="block no-underline"
+          onClick={() => play('blip')}
+        >
           {({ isActive }) => (
             <span
               className="arcade flex min-h-[44px] items-center justify-between gap-2 border-[3px] border-arc-line px-3 py-2 text-[13px]"
@@ -122,7 +158,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       <HelmetField enabled={!animationsDisabled()} />
       {/* Mobile top bar */}
       <div className="sticky top-0 z-40 flex items-center justify-between gap-2 border-b-[3px] border-arc-line bg-arc-panel px-3 py-2 lg:hidden">
-        <div className="flex min-w-0 items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3" onClick={onLogoTap}>
           <div className="relative -my-1 shrink-0">
             <PixelSign
               words={[
@@ -183,7 +219,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       {/* Desktop sidebar */}
       <aside className="hidden border-r-[3px] border-arc-line bg-arc-bg-deep lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col">
         <div className="border-b-[3px] border-arc-line bg-arc-bg-deep px-4 py-5 text-center">
-          <div className="relative inline-block">
+          <div className="relative inline-block" onClick={onLogoTap}>
             <PixelSign
               words={[
                 { text: 'WACL', palette: 'pink', size: 34 },
@@ -246,6 +282,23 @@ export default function Shell({ children }: { children: ReactNode }) {
           )}
         </span>
         <span className="flex shrink-0 items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => {
+              const next = !sfx
+              setSfxOn(next)
+              setSfx(next)
+              if (next) play('coin')
+            }}
+            className="border-2 border-arc-line px-1.5 py-0.5 transition-colors"
+            style={{
+              background: sfx ? 'var(--color-arc-cyan)' : 'transparent',
+              color: sfx ? '#04120b' : 'var(--color-arc-ink-faint)',
+            }}
+            title="8-bit sound effects"
+          >
+            SFX {sfx ? 'ON' : 'OFF'}
+          </button>
           {reducedByOS && (
             <button
               type="button"
@@ -270,6 +323,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       </footer>
 
       {wipe > 0 && <ReplayWipe key={wipe} />}
+      {godMode && <GodMode onDone={() => setGodMode(false)} />}
       {paletteOpen && <CommandPalette onClose={() => setPaletteOpen(false)} />}
       {panelOpen && <CommissionerPanel onClose={() => setPanelOpen(false)} />}
     </div>

@@ -3,6 +3,7 @@ import { Chip, Empty, Panel, PageHeader, SegmentedControl } from '../components/
 import TradeForm from '../components/TradeForm'
 import { PlayMoment, type MomentKind } from '../components/effects'
 import { animationsDisabled } from '../lib/motion'
+import { play } from '../lib/sfx'
 import { managerName, useLeague, useLeagueData } from '../lib/data'
 import { useTrades } from '../lib/derive'
 import { countdown, money, shortDate } from '../lib/format'
@@ -58,6 +59,7 @@ export default function Trades() {
         },
         `Trade ${trade.id}: ${status} (${managerName(managers, trade.seller)} → ${managerName(managers, trade.buyer)})`,
       )
+      play(status === 'approved' ? 'roar' : status === 'rejected' ? 'trombone' : 'whistle')
       if (!animationsDisabled()) {
         setMoment(status === 'approved' ? 'td' : status === 'rejected' ? 'flag' : 'review')
       }

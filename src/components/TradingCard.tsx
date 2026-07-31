@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLeagueData } from '../lib/data'
 import { managerColor, managerInitials } from '../lib/identity'
+import { achievements } from '../lib/achievements'
 import { careerTable, eraOptions, managerSeasons } from '../lib/stats'
 import type { ManagerId } from '../lib/types'
 
@@ -125,6 +126,19 @@ export default function TradingCard({ id }: { id: ManagerId }) {
         else ctx.lineTo(px, py)
       })
       ctx.stroke()
+
+      // badges
+      const myBadges = (achievements(data).get(id) ?? []).slice(0, 4)
+      if (myBadges.length) {
+        ctx.font = '30px serif'
+        ctx.textAlign = 'center'
+        const spread = 56
+        myBadges.forEach((badge, i) => {
+          const bx = W / 2 + (i - (myBadges.length - 1) / 2) * spread
+          ctx.fillText(badge.emoji, bx, H - 84)
+        })
+        ctx.textAlign = 'left'
+      }
 
       // footer
       ctx.fillStyle = '#6b6089'

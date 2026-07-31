@@ -843,6 +843,25 @@
     border-top: 2px solid rgba(42, 214, 138, 0.4);
   }
 
+  /* God-mode rain: things fall from the sky, tumbling. */
+  @keyframes god-fall {
+    0% {
+      transform: translateY(-12vh) rotate(0deg);
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(112vh) rotate(340deg);
+      opacity: 1;
+    }
+  }
+  .god-drop {
+    top: 0;
+    animation: god-fall 3s linear both;
+  }
+
   /* Underwater budgets flash like a red-zone warning light. */
   @keyframes redzone {
     0%,
@@ -886,6 +905,7 @@
     :root:not([data-motion='on']) .sprite-a,
     :root:not([data-motion='on']) .sprite-b,
     :root:not([data-motion='on']) .kickball,
+    :root:not([data-motion='on']) .god-drop,
     :root:not([data-motion='on']) .neon-3d,
     :root:not([data-motion='on']) .sparkle,
     :root:not([data-motion='on']) .boot-good {
