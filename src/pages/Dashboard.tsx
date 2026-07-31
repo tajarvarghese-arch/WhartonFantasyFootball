@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import ManagerTag from '../components/ManagerTag'
 import Ticker from '../components/Ticker'
-import { Confetti, FieldGoalStrip, FieldStripes } from '../components/effects'
+import PixelSign from '../components/PixelSign'
+import { Confetti, FieldGoalStrip, FieldStripes, Sparkles } from '../components/effects'
 import { managerColor } from '../lib/identity'
 import { Bar, Chip, Empty, Hero, Panel, PageHeader, Stat } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
@@ -28,6 +29,21 @@ export default function Dashboard() {
 
   return (
     <>
+      {/* The big sign — desktop gets it in the sidebar, phones get it here.
+          Pure CSS, so it shows even when animations are switched off. */}
+      <div className="mb-6 flex justify-center lg:hidden">
+        <div className="retro relative inline-block text-center">
+          <PixelSign
+            words={[
+              { text: 'WACL', palette: 'pink', size: 52 },
+              { text: 'ARCADE', palette: 'gold', size: 24, tracking: 0.18, pixel: 2 },
+            ]}
+            pixel={4}
+          />
+          <Sparkles count={8} />
+        </div>
+      </div>
+
       <PageHeader
         path="~"
         eyebrow={`${season} Pre-Season · Commissioner's Desk`}

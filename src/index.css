@@ -145,7 +145,7 @@
    * the 60px title screen and the 17px top bar alike.
    */
   .retro {
-    transform: rotate(-3deg);
+    transform: rotate(-5deg);
   }
   .retro-word {
     position: relative;

@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { useLeague } from '../lib/data'
 import { usePendingTrades } from '../lib/derive'
 import CommandPalette from './CommandPalette'
+import PixelSign from './PixelSign'
 import { Sparkles } from './effects'
 import HelmetField from './HelmetField'
 import CommissionerPanel from './CommissionerPanel'
@@ -121,9 +122,19 @@ export default function Shell({ children }: { children: ReactNode }) {
       <HelmetField enabled={!animationsDisabled()} />
       {/* Mobile top bar */}
       <div className="sticky top-0 z-40 flex items-center justify-between gap-2 border-b-[3px] border-arc-line bg-arc-panel px-3 py-2 lg:hidden">
-        <div className="arcade min-w-0 truncate text-[15px] text-arc-cyan">
-          WACL
-          <span className="ml-2 text-[12px] text-arc-ink-soft">{current?.label ?? 'Ledger'}</span>
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="retro relative -my-1 shrink-0">
+            <PixelSign
+              words={[
+                { text: 'WACL', palette: 'pink', size: 21 },
+                { text: 'ARCADE', palette: 'gold', size: 8, tracking: 0.24, pixel: 2 },
+              ]}
+              pixel={2}
+            />
+          </div>
+          <span className="arcade truncate text-[12px] text-arc-ink-soft">
+            {current?.label ?? 'Ledger'}
+          </span>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <button
@@ -173,15 +184,13 @@ export default function Shell({ children }: { children: ReactNode }) {
       <aside className="hidden border-r-[3px] border-arc-line bg-arc-bg-deep lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col">
         <div className="border-b-[3px] border-arc-line bg-arc-bg-deep px-4 py-5 text-center">
           <div className="retro relative inline-block">
-            <span className="retro-word retro-pink block text-[32px]" data-text="WACL">
-              WACL
-            </span>
-            <span
-              className="retro-word retro-gold mt-0.5 block text-[13px] tracking-[0.2em]"
-              data-text="ARCADE"
-            >
-              ARCADE
-            </span>
+            <PixelSign
+              words={[
+                { text: 'WACL', palette: 'pink', size: 34 },
+                { text: 'ARCADE', palette: 'gold', size: 14, tracking: 0.2, pixel: 2 },
+              ]}
+              pixel={3}
+            />
             <Sparkles count={5} />
           </div>
           <div className="arcade mt-3 text-[11px] leading-relaxed text-arc-ink-soft">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import HeapScene, { HEAP_BOOT_SECONDS } from './HeapScene'
+import PixelSign from './PixelSign'
 import { Sparkles } from './effects'
 import { animationsDisabled } from '../lib/motion'
 
@@ -39,15 +40,13 @@ export default function Boot({
     >
       <div className="w-full max-w-md text-center">
         <div className="pop-in retro relative inline-block">
-          <span className="retro-word retro-pink block text-[64px]" data-text="WACL">
-            WACL
-          </span>
-          <span
-            className="retro-word retro-gold mt-1 block text-[30px] tracking-[0.18em]"
-            data-text="ARCADE"
-          >
-            ARCADE
-          </span>
+          <PixelSign
+            words={[
+              { text: 'WACL', palette: 'pink', size: 64 },
+              { text: 'ARCADE', palette: 'gold', size: 30, tracking: 0.18, pixel: 2 },
+            ]}
+            pixel={4}
+          />
           <Sparkles count={10} />
         </div>
         <div
