@@ -399,6 +399,12 @@ export function vegasBoard(
  * The Almanac
  * ------------------------------------------------------------------ */
 
+export interface StarLine {
+  player: string
+  points: number
+  position: string
+}
+
 export interface AlmanacEntry {
   year: number
   keeperEra: boolean
@@ -412,9 +418,39 @@ export interface AlmanacEntry {
   topScorer: { manager: ManagerId; avg: number } | null
   luckiest: { manager: ManagerId; luck: number } | null
   unluckiest: { manager: ManagerId; luck: number } | null
+  /** The champion's actual engine: top scorers on their end-of-season roster. */
+  champStars: StarLine[]
+  /** The best player the runner-up brought to the final. */
+  runnerUpStar: StarLine | null
+  /** That season's biggest structured trade, if any. */
+  bigTrade: { seller: ManagerId; buyer: ManagerId; players: string; total: number } | null
+  /** A line from the old free-text trade wire, verbatim. */
+  wireLine: string | null
 }
 
-export function almanac(seasons: Season[]): AlmanacEntry[] {
+/** Top scorers from a manager's end-of-season roster (kept in keepers[year+1]). */
+function rosterStars(
+  data: LeagueData,
+  year: number,
+  manager: ManagerId | null,
+  count: number,
+): StarLine[] {
+  if (!manager) return []
+  const seasonPoints = data.playerPoints?.[String(year)]
+  if (!seasonPoints) return []
+  const block = data.keepers[String(year + 1)]?.find((b) => b.manager === manager)
+  if (!block) return []
+  const stars: StarLine[] = []
+  for (const spot of block.endingRoster) {
+    const entry = seasonPoints[normalizePlayer(spot.player)]
+    if (!entry) continue
+    stars.push({ player: spot.player, points: entry[0], position: entry[1] })
+  }
+  return stars.sort((a, b) => b.points - a.points).slice(0, count)
+}
+
+export function almanac(data: LeagueData): AlmanacEntry[] {
+  const seasons = data.seasons
   const luck = luckRows(seasons)
   return [...seasons]
     .sort((a, b) => b.year - a.year)
@@ -433,6 +469,22 @@ export function almanac(seasons: Season[]): AlmanacEntry[] {
       const unluckiest = seasonLuck.length
         ? seasonLuck.reduce((worst, row) => (row.luck < worst.luck ? row : worst))
         : null
+
+      const seasonTrades = data.trades.filter(
+        (trade) => trade.season === season.year && trade.status === 'approved' && trade.totalDollars > 0,
+      )
+      const bigTrade = seasonTrades.length
+        ? seasonTrades.reduce((best, trade) => (trade.totalDollars > best.totalDollars ? trade : best))
+        : null
+
+      // The old wire: free-text trade log grouped under "<year> Trades ..."
+      const wireGroups = data.legacyTrades.filter((group) =>
+        group.heading.startsWith(`${season.year} Trades`),
+      )
+      const wireGroup =
+        wireGroups.find((group) => !group.heading.includes('Preseason')) ?? wireGroups[0]
+      const wireLine = wireGroup?.entries.find((line) => line.length > 25) ?? null
+
       return {
         year: season.year,
         keeperEra: season.keeperEra,
@@ -448,6 +500,17 @@ export function almanac(seasons: Season[]): AlmanacEntry[] {
         topScorer: top ? { manager: top.manager, avg: top.avgPointsFor } : null,
         luckiest: luckiest ? { manager: luckiest.manager, luck: luckiest.luck } : null,
         unluckiest: unluckiest ? { manager: unluckiest.manager, luck: unluckiest.luck } : null,
+        champStars: rosterStars(data, season.year, season.champion, 3),
+        runnerUpStar: rosterStars(data, season.year, season.runnerUp, 1)[0] ?? null,
+        bigTrade: bigTrade
+          ? {
+              seller: bigTrade.seller,
+              buyer: bigTrade.buyer,
+              players: bigTrade.players,
+              total: bigTrade.totalDollars,
+            }
+          : null,
+        wireLine,
       }
     })
 }
