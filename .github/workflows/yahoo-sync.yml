@@ -1,9 +1,14 @@
 name: Yahoo standings sync
 
+# Manual-only until Yahoo credentials exist. Yahoo's developer console returns
+# invalid_scope for this account across multiple apps and every scope variant
+# (fspt-r, fspt-w, openid fspt-r, and none at all), so the job has never been
+# able to authenticate. Re-enable the schedule by uncommenting the cron below
+# once the four YAHOO_* secrets are set and a manual run succeeds.
 on:
-  schedule:
-    # Tuesdays 09:00 UTC (Monday night football is final) during the NFL season.
-    - cron: '0 9 * * 2'
+  # schedule:
+  #   # Tuesdays 09:00 UTC, after Monday night football is final.
+  #   - cron: '0 9 * * 2'
   workflow_dispatch:
 
 permissions:

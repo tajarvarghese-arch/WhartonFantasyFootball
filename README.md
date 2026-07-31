@@ -60,9 +60,23 @@ The token stays in that browser. To revoke access, delete the token on GitHub �
 redeploy needed. Because writes are commits, GitHub Pages republishes a minute or
 two later; until it does, the app holds your edits locally so the numbers stay right.
 
-## Yahoo sync
+## Yahoo sync — not currently active
 
-The scheduled action pulls standings **and waiver transactions** into
+**Status: blocked on Yahoo, not on this repo.** Yahoo's developer console returns
+`invalid_scope` at the authorisation step for this account across two separate
+apps and every scope variant tried (`fspt-r`, `fspt-w`, `openid fspt-r`, and
+omitting the parameter entirely), with Fantasy Sports → Read enabled on the app.
+The workflow is therefore set to manual-trigger only so it does not fail on a
+schedule; the cron line is commented out in `.github/workflows/yahoo-sync.yml`.
+
+Everything on this side is written and tested against a fixture. To resume, get
+past the authorisation step, set the four secrets, run the workflow by hand, then
+uncomment the cron.
+
+Until then, waiver claims are logged on the Finances page, which applies the same
+keeper-cost sliding scale automatically.
+
+The action pulls standings **and waiver transactions** into
 `public/data/live.json`. Until the first successful run the app simply omits the
 live panels. FAAB bids that arrive this way are shown read-only on Finances, with
 keeper cost already computed from the sliding scale.
