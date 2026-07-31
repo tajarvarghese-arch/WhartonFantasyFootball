@@ -99,7 +99,7 @@ export default function WarRoom({ year }: { year: number }) {
         <div className="border-t-[3px] border-arc-line p-4 lg:border-t-0 lg:border-l-[3px]">
           <div className="label">Keepers picked</div>
           <div
-            className="arcade mt-1 text-[20px]"
+            className="tnum mt-1 text-[20px] font-bold"
             style={{ color: overSlots ? 'var(--color-arc-red)' : 'var(--color-arc-ink)' }}
           >
             {chosen.length}/{league.keeperSlots}
@@ -109,11 +109,11 @@ export default function WarRoom({ year }: { year: number }) {
           )}
 
           <div className="label mt-4">Keeper salary</div>
-          <div className="arcade mt-1 text-[20px] text-arc-ink">{money(-salary)}</div>
+          <div className="tnum mt-1 text-[20px] font-bold text-arc-ink">{money(-salary)}</div>
 
           <div className="label mt-4">Traded cash ({year})</div>
           <div
-            className="arcade mt-1 text-[20px]"
+            className="tnum mt-1 text-[20px] font-bold"
             style={{
               color:
                 cashNet > 0
@@ -128,7 +128,7 @@ export default function WarRoom({ year }: { year: number }) {
 
           <div className="label mt-4">Draft budget</div>
           <div
-            className="arcade mt-1 text-[30px]"
+            className="tnum mt-1 text-[30px] font-bold"
             style={{ color: budget < 0 ? 'var(--color-arc-red)' : 'var(--color-arc-green)' }}
           >
             {money(budget)}

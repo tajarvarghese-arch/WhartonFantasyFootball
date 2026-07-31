@@ -110,7 +110,7 @@ export function Stat({
   return (
     <div className="win px-3 py-3">
       <div className="label">{label}</div>
-      <div className={`arcade mt-2 text-[17px] leading-none ${toneClass}`}>
+      <div className={`tnum mt-2 text-[21px] leading-none font-bold ${toneClass}`}>
         {countTo !== undefined ? (format ? format(counted) : Math.round(counted)) : value}
       </div>
       {hint && <div className="mt-2 text-[13px] leading-snug text-arc-ink-soft">{hint}</div>}

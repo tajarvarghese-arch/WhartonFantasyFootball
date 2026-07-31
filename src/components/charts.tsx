@@ -31,7 +31,7 @@ const axisProps = {
   stroke: AXIS,
   tickLine: false,
   axisLine: { stroke: GRID },
-  tick: { fill: AXIS, fontSize: 10, fontFamily: 'Pixelify Sans, monospace' },
+  tick: { fill: AXIS, fontSize: 10, fontFamily: 'IBM Plex Mono, monospace' },
 } as const
 
 /** Snap the axis to round numbers so ticks read 80/100/120, not 74.94/136.67. */

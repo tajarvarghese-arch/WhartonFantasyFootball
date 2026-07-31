@@ -31,7 +31,7 @@ export default function TradingCard({ id }: { id: ManagerId }) {
       // Make sure the pixel faces are actually loaded before drawing with them.
       await Promise.all([
         document.fonts.load('26px "DotGothic16"'),
-        document.fonts.load('600 20px "Pixelify Sans"'),
+        document.fonts.load('600 20px "IBM Plex Mono"'),
       ]).catch(() => undefined)
 
       const W = 640
@@ -74,7 +74,7 @@ export default function TradingCard({ id }: { id: ManagerId }) {
 
       // team name
       ctx.fillStyle = '#a79cc4'
-      ctx.font = '600 22px "Pixelify Sans", monospace'
+      ctx.font = '600 22px "IBM Plex Mono", monospace'
       ctx.textAlign = 'center'
       ctx.fillText(manager.team ?? 'Former manager', W / 2, 390)
       ctx.textAlign = 'left'
@@ -94,7 +94,7 @@ export default function TradingCard({ id }: { id: ManagerId }) {
         ctx.font = '15px "DotGothic16", monospace'
         ctx.fillText(label, 60, y)
         ctx.fillStyle = label === 'TITLES' && line.titles ? '#ffd84d' : '#efeafb'
-        ctx.font = '600 24px "Pixelify Sans", monospace'
+        ctx.font = '600 24px "IBM Plex Mono", monospace'
         ctx.textAlign = 'right'
         ctx.fillText(value, W - 60, y)
         ctx.textAlign = 'left'

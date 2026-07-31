@@ -78,7 +78,7 @@ export default function Lab() {
               <ManagerTag id={row.manager} size={22} />
               <span className="text-right">
                 <span
-                  className="arcade block text-[15px]"
+                  className="tnum block text-[16px] font-bold"
                   style={{ color: index === 0 ? 'var(--color-arc-yellow)' : 'var(--color-arc-ink)' }}
                 >
                   {row.american}

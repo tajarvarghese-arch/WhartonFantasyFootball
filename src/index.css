@@ -5,8 +5,9 @@
 
   Deep violet-black cabinet interior, saturated LED accents, chunky outlines
   and hard offset shadows. Type sits on a finer pixel grid than before:
-  DotGothic16 (16px matrix) for display instead of Press Start 2P's 8px blocks,
-  so headings read as a dot-matrix scoreboard rather than a Game Boy.
+  DotGothic16 (16px matrix) carries the arcade voice on headings and labels;
+  body and every number sit in IBM Plex Mono, because Pixelify's digits were
+  ambiguous — a 5 read as an S — and this is a site made of numbers.
   Every manager owns a colour and keeps it everywhere.
 */
 
@@ -34,7 +35,7 @@
   --color-arc-navy: #6b7dff;
 
   --font-display: 'DotGothic16', ui-monospace, monospace;
-  --font-body: 'Pixelify Sans', ui-monospace, monospace;
+  --font-body: 'IBM Plex Mono', ui-monospace, monospace;
 
   --shadow-hard: 4px 4px 0 #04030a;
   --shadow-hard-sm: 2px 2px 0 #04030a;
@@ -56,9 +57,9 @@
     background-size: 6px 6px;
     color: var(--color-arc-ink);
     font-family: var(--font-body);
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.5;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
@@ -212,7 +213,7 @@
   }
   .out tbody td {
     padding: 8px 12px;
-    font-size: 15px;
+    font-size: 13.5px;
     font-weight: 500;
     color: var(--color-arc-ink);
     border-bottom: 2px solid rgba(58, 47, 92, 0.5);
@@ -297,7 +298,7 @@
     background: var(--color-arc-bg-deep);
     border: 3px solid var(--color-arc-line);
     color: var(--color-arc-ink);
-    font-size: 15px;
+    font-size: 14px;
     outline: none;
     transition: border-color 0.12s;
   }
