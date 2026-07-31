@@ -17,6 +17,10 @@ interface Link {
 export default function TradeFlow({ trades }: { trades: Trade[] }) {
   const { managers } = useLeagueData()
   const [focus, setFocus] = useState<ManagerId | null>(null)
+  // SMIL animation ignores the CSS reduced-motion rules, so gate it here.
+  const reduceMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   const { nodes, links, max } = useMemo(() => {
     const totals = new Map<string, Link>()
@@ -90,10 +94,11 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
             // Pull the curve toward the centre so heavy pairs read as chords.
             const mx = cx + (a.x + b.x - 2 * cx) * 0.12
             const my = cy + (a.y + b.y - 2 * cy) * 0.12
+            const d = `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`
             return (
               <path
                 key={`${link.from}-${link.to}`}
-                d={`M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`}
+                d={d}
                 fill="none"
                 stroke={dimmed ? 'var(--color-arc-ink)' : 'var(--color-arc-green)'}
                 strokeWidth={width}
@@ -109,6 +114,35 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
             )
           })}
         </g>
+
+        {/* A ball runs each of the focused manager's arcs, seller to buyer, so
+            the direction of the deal is visible rather than implied. */}
+        {focus && !reduceMotion && (
+          <g>
+            {links
+              .filter((link) => link.from === focus || link.to === focus)
+              .map((link) => {
+                const a = positions.get(link.from)
+                const b = positions.get(link.to)
+                if (!a || !b) return null
+                const mx = cx + (a.x + b.x - 2 * cx) * 0.12
+                const my = cy + (a.y + b.y - 2 * cy) * 0.12
+                const d = `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`
+                return (
+                  <g key={`ball-${link.from}-${link.to}`}>
+                    <ellipse rx="5.4" ry="3.4" fill="#c98d5f" stroke="#04030a" strokeWidth="1.2">
+                      <animateMotion
+                        dur="1.8s"
+                        repeatCount="indefinite"
+                        rotate="auto"
+                        path={d}
+                      />
+                    </ellipse>
+                  </g>
+                )
+              })}
+          </g>
+        )}
 
         <g>
           {nodes.map((id) => {
@@ -157,7 +191,9 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
           <>
             <span className="text-arc-ink">{managerName(managers, focus)}</span> —{' '}
             {links.filter((link) => link.from === focus || link.to === focus).length} trading
-            partners,{' '}
+            {links.filter((link) => link.from === focus || link.to === focus).length === 1
+              ? ' partner, '
+              : ' partners, '}
             {money(
               links
                 .filter((link) => link.from === focus || link.to === focus)
@@ -166,7 +202,7 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
             exchanged
           </>
         ) : (
-          'Hover a manager to isolate their trades'
+          'Hover a manager to follow the ball through their trades'
         )}
       </p>
     </div>

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import ManagerTag from '../components/ManagerTag'
 import Ticker from '../components/Ticker'
+import { FieldStripes } from '../components/effects'
 import { Bar, Chip, Empty, Hero, Panel, PageHeader, Stat } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
 import { useBudgets, useCash, useObligationHorizon, usePendingTrades, useTrades } from '../lib/derive'
@@ -38,14 +39,17 @@ export default function Dashboard() {
       </div>
 
       <div className="mb-10 grid min-w-0 items-end gap-8 lg:grid-cols-[1.05fr_1fr]">
-        <Hero
+        <div className="relative isolate">
+          <FieldStripes />
+          <Hero
           label={`Committed through ${horizon.at(-1)?.year ?? season}`}
           countTo={committed}
           format={(value) => money(value)}
           value={money(committed)}
           accent
-          caption={`Auction dollars already promised across future drafts by trades that are on the books. Every dollar here is one a manager cannot spend on draft day.`}
-        />
+            caption={`Auction dollars already promised across future drafts by trades that are on the books. Every dollar here is one a manager cannot spend on draft day.`}
+          />
+        </div>
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
           <Stat
             label="Awaiting ruling"
@@ -168,6 +172,9 @@ export default function Dashboard() {
                         }
                       >
                         {money(budget.available)}
+                        {budget.overCommitted && (
+                          <span className="redzone tag ml-2 align-middle">Red zone</span>
+                        )}
                       </div>
                       <div className="mt-1.5 w-24">
                         <Bar

@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { managerName, useLeagueData } from '../lib/data'
 import { managerColor, managerInitials } from '../lib/identity'
+import { Confetti } from './effects'
 
 /**
  * High-score table. Twenty-two title seasons, each tagged with which title it
@@ -31,9 +32,10 @@ export default function ChampionsWall() {
           <Link
             key={season.year}
             to={`/managers/${season.champion}`}
-            className="hover-wiggle mb-2 flex items-center gap-3 border-[3px] border-arc-line bg-arc-panel px-3 py-2 no-underline shadow-hard-sm last:mb-0"
+            className="hover-wiggle relative mb-2 flex items-center gap-3 overflow-hidden border-[3px] border-arc-line bg-arc-panel px-3 py-2 no-underline shadow-hard-sm last:mb-0"
           >
-            <span className="arcade w-11 shrink-0 text-[10px] text-arc-ink-soft">
+            {index === 0 && <Confetti />}
+            <span className="arcade w-11 shrink-0 text-[11px] text-arc-ink-soft">
               {season.year}
             </span>
             <span

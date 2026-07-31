@@ -468,6 +468,110 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  /* ---- football flourishes -------------------------------------------- */
+
+  /* Confetti for a title. Falls the height of its container, then stops. */
+  @keyframes confetti-fall {
+    0% {
+      opacity: 0;
+      transform: translateY(-120%) rotate(0deg);
+    }
+    12% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(340%) translateX(var(--drift, 0)) rotate(420deg);
+    }
+  }
+  .confetti {
+    position: absolute;
+    top: 0;
+    width: 5px;
+    height: 5px;
+    animation: confetti-fall 2.6s linear infinite;
+  }
+
+  /* Yard lines drifting behind a hero number. */
+  @keyframes yard-scroll {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 64px 0;
+    }
+  }
+  .field-stripes {
+    position: absolute;
+    inset: -8px -12px;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(176, 124, 255, 0.16) 0 2px,
+      transparent 2px 64px
+    );
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 85%);
+    mask-image: linear-gradient(90deg, #000 0%, transparent 85%);
+    animation: yard-scroll 6s linear infinite;
+  }
+
+  /* A ball punted across its container. */
+  @keyframes ball-arc {
+    0% {
+      opacity: 0;
+      transform: translate(-10%, 40%);
+    }
+    10% {
+      opacity: 1;
+    }
+    50% {
+      transform: translate(50%, -70%);
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(110%, 40%);
+    }
+  }
+  .ball-spiral {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    animation: ball-arc 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes ball-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(720deg);
+    }
+  }
+  .ball-spin {
+    animation: ball-spin 1.2s linear infinite;
+  }
+
+  /* Underwater budgets flash like a red-zone warning light. */
+  @keyframes redzone {
+    0%,
+    100% {
+      background: var(--color-arc-red);
+      color: #1a0605;
+    }
+    50% {
+      background: transparent;
+      color: var(--color-arc-red);
+    }
+  }
+  .redzone {
+    animation: redzone 1.4s steps(1) infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .pop-in,
     .line-in,
@@ -477,8 +581,17 @@
     .marquee,
     .grow-x,
     .hover-wiggle:hover,
+    .confetti,
+    .field-stripes,
+    .ball-spiral,
+    .ball-spin,
+    .redzone,
     .cursor::after {
       animation: none !important;
+    }
+    .confetti,
+    .ball-spiral {
+      display: none;
     }
     .type-in {
       max-width: 100%;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { SpiralingBall } from './effects'
 
 const SEEN_KEY = 'wacl.booted'
 
@@ -37,7 +38,8 @@ export default function Boot({ onDone }: { onDone: () => void }) {
       role="status"
       aria-label="Loading"
     >
-      <div className="w-full max-w-sm text-center">
+      <div className="relative w-full max-w-sm text-center">
+        <SpiralingBall size={26} />
         <div
           className="arcade pop-in text-[40px] leading-tight text-arc-cyan"
           style={{ textShadow: '3px 3px 0 #04030a, 0 0 30px rgba(63,224,245,0.55)' }}
