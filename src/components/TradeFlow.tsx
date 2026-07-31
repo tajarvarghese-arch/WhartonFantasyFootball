@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { managerName, useLeagueData } from '../lib/data'
+import { animationsDisabled } from '../lib/motion'
 import { money } from '../lib/format'
 import type { ManagerId, Trade } from '../lib/types'
 
@@ -18,9 +19,7 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
   const { managers } = useLeagueData()
   const [focus, setFocus] = useState<ManagerId | null>(null)
   // SMIL animation ignores the CSS reduced-motion rules, so gate it here.
-  const reduceMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reduceMotion = typeof window !== 'undefined' && animationsDisabled()
 
   const { nodes, links, max } = useMemo(() => {
     const totals = new Map<string, Link>()

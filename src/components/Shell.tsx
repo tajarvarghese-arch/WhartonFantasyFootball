@@ -4,6 +4,7 @@ import { useLeague } from '../lib/data'
 import { usePendingTrades } from '../lib/derive'
 import CommandPalette from './CommandPalette'
 import CommissionerPanel from './CommissionerPanel'
+import { motionForcedOn, setMotionForcedOn, systemPrefersReduced } from '../lib/motion'
 
 // Each destination owns a colour, so the nav reads as a row of cabinet buttons.
 const NAV = [
@@ -32,6 +33,10 @@ export default function Shell({ children }: { children: ReactNode }) {
   const [panelOpen, setPanelOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [paletteOpen, setPaletteOpen] = useState(false)
+  // The OS is requesting reduced motion; offer an in-app override so the
+  // animations the commissioner asked for are one tap away.
+  const [fxOn, setFxOn] = useState(motionForcedOn)
+  const reducedByOS = systemPrefersReduced()
   const location = useLocation()
 
   useEffect(() => {
@@ -212,6 +217,24 @@ export default function Shell({ children }: { children: ReactNode }) {
           )}
         </span>
         <span className="flex shrink-0 items-center gap-2.5">
+          {reducedByOS && (
+            <button
+              type="button"
+              onClick={() => {
+                const next = !fxOn
+                setMotionForcedOn(next)
+                setFxOn(next)
+              }}
+              className="border-2 border-arc-line px-1.5 py-0.5 transition-colors"
+              style={{
+                background: fxOn ? 'var(--color-arc-green)' : 'transparent',
+                color: fxOn ? '#04120b' : 'var(--color-arc-orange)',
+              }}
+              title="Your system requests reduced motion; this turns the site's animations on anyway"
+            >
+              FX {fxOn ? 'ON' : 'OFF'}
+            </button>
+          )}
           <span className="hidden sm:inline">{data?.league.currentSeason}</span>
           <Clock />
         </span>

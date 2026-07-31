@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { animationsDisabled } from '../lib/motion'
 
 /** Framed block of terminal output. */
 export function Panel({
@@ -50,7 +51,7 @@ function useCountUp(target: number, run: boolean): number {
       setValue(target)
       return
     }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (animationsDisabled()) {
       setValue(target)
       return
     }

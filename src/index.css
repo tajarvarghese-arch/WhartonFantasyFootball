@@ -572,28 +572,30 @@
     animation: redzone 1.4s steps(1) infinite;
   }
 
+  /* Reduced motion is honoured unless the user flips the in-app FX switch,
+     which stamps data-motion="on" on the root. */
   @media (prefers-reduced-motion: reduce) {
-    .pop-in,
-    .line-in,
-    .rise-in,
-    .type-in,
-    .pulse,
-    .marquee,
-    .grow-x,
-    .hover-wiggle:hover,
-    .confetti,
-    .field-stripes,
-    .ball-spiral,
-    .ball-spin,
-    .redzone,
-    .cursor::after {
+    :root:not([data-motion='on']) .pop-in,
+    :root:not([data-motion='on']) .line-in,
+    :root:not([data-motion='on']) .rise-in,
+    :root:not([data-motion='on']) .type-in,
+    :root:not([data-motion='on']) .pulse,
+    :root:not([data-motion='on']) .marquee,
+    :root:not([data-motion='on']) .grow-x,
+    :root:not([data-motion='on']) .hover-wiggle:hover,
+    :root:not([data-motion='on']) .confetti,
+    :root:not([data-motion='on']) .field-stripes,
+    :root:not([data-motion='on']) .ball-spiral,
+    :root:not([data-motion='on']) .ball-spin,
+    :root:not([data-motion='on']) .redzone,
+    :root:not([data-motion='on']) .cursor::after {
       animation: none !important;
     }
-    .confetti,
-    .ball-spiral {
+    :root:not([data-motion='on']) .confetti,
+    :root:not([data-motion='on']) .ball-spiral {
       display: none;
     }
-    .type-in {
+    :root:not([data-motion='on']) .type-in {
       max-width: 100%;
     }
   }

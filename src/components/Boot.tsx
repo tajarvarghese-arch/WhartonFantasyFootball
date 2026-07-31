@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { SpiralingBall } from './effects'
+import { animationsDisabled } from '../lib/motion'
 
 const SEEN_KEY = 'wacl.booted'
 
@@ -76,7 +77,7 @@ export default function Boot({ onDone }: { onDone: () => void }) {
 export function shouldBoot(): boolean {
   try {
     if (sessionStorage.getItem(SEEN_KEY)) return false
-    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    return !animationsDisabled()
   } catch {
     return false
   }
