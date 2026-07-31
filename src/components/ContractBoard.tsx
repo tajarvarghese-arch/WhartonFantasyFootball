@@ -28,6 +28,14 @@ export default function ContractBoard({ year }: { year: number }) {
   )
   const horizon = Array.from({ length: maxRemaining + 1 }, (_, offset) => year + offset)
 
+  // A/B/C/D advanced by n seasons; null once the contract has expired.
+  const ORDER: ContractYear[] = ['A', 'B', 'C', 'D']
+  const letterAt = (current: ContractYear | null, offset: number): ContractYear | null => {
+    if (!current) return null
+    const index = ORDER.indexOf(current) + offset
+    return index < ORDER.length ? ORDER[index] : null
+  }
+
   const toneFor = (remaining: number) =>
     remaining >= 3
       ? 'var(--color-arc-green)'
@@ -62,9 +70,10 @@ export default function ContractBoard({ year }: { year: number }) {
                 {target}
               </div>
             ))}
+            <div className="w-14 shrink-0" />
           </div>
 
-          {blocks.map((block: KeeperBlock, blockIndex) => (
+          {blocks.map((block: KeeperBlock) => (
             <div key={block.team} className="border-b border-arc-line/60 py-2.5 last:border-b-0">
               <div className="mb-1.5 flex items-baseline gap-2 pl-1">
                 <span className="text-[12px] text-arc-ink">
@@ -82,9 +91,8 @@ export default function ContractBoard({ year }: { year: number }) {
                 <span className="truncate text-[10px] text-arc-ink-faint">{block.team}</span>
               </div>
 
-              {block.keepers.map((pick, pickIndex) => {
+              {block.keepers.map((pick) => {
                 const remaining = contractYearsRemaining(pick.contractYear as ContractYear | null)
-                const span = remaining + 1
                 const key = `${block.team}-${pick.player}`
                 const dim = hovered !== null && hovered !== key
                 return (
@@ -107,25 +115,38 @@ export default function ContractBoard({ year }: { year: number }) {
                         {money(pick.salary)}
                       </span>
                     </div>
-                    <div className="relative flex h-6 flex-1 items-center">
-                      {/* faint year gridlines behind the bar */}
-                      <div className="absolute inset-0 flex">
-                        {horizon.map((target) => (
-                          <div
-                            key={target}
-                            className="flex-1 border-l border-arc-line/50 first:border-l-0"
-                          />
-                        ))}
-                      </div>
-                      <div
-                        className="grow-x relative h-[9px]"
-                        style={{
-                          width: `${(span / horizon.length) * 100}%`,
-                          background: toneFor(remaining),
-                          animationDelay: `${blockIndex * 40 + pickIndex * 30}ms`,
-                        }}
-                        title={`${pick.player} — year ${pick.contractYear}, through ${year + remaining}`}
-                      />
+                    <div className="flex flex-1 items-center">
+                      {horizon.map((target, offset) => {
+                        const letter = letterAt(pick.contractYear as ContractYear | null, offset)
+                        const remainingThen = remaining - offset
+                        return (
+                          <div key={target} className="flex flex-1 justify-center">
+                            {letter ? (
+                              <span
+                                className="arcade flex h-6 w-7 items-center justify-center border-2 text-[11px]"
+                                style={{
+                                  borderColor: toneFor(remainingThen),
+                                  color: offset === 0 ? '#06040d' : toneFor(remainingThen),
+                                  background: offset === 0 ? toneFor(remainingThen) : 'transparent',
+                                }}
+                                title={`${pick.player}: year ${letter} in ${target}`}
+                              >
+                                {letter}
+                              </span>
+                            ) : (
+                              <span className="text-[13px] text-arc-ink-faint" aria-hidden>
+                                ·
+                              </span>
+                            )}
+                          </div>
+                        )
+                      })}
+                      <span
+                        className="arcade w-14 shrink-0 text-right text-[9px]"
+                        style={{ color: toneFor(remaining) }}
+                      >
+                        {remaining === 0 ? 'LAST YR' : `${remaining} LEFT`}
+                      </span>
                     </div>
                   </div>
                 )
@@ -141,11 +162,13 @@ export default function ContractBoard({ year }: { year: number }) {
                 <span className="tnum text-[12px] text-arc-ink">{money(total)}</span>
               </div>
             ))}
+            <div className="w-14 shrink-0" />
           </div>
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[10px] text-arc-ink-faint">
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-arc-ink-faint">
+        <span>Chip = contract year (A–D) in that season · solid = this year</span>
         {/* Derived from the contracts actually on the board, so the key never
             advertises a tier that cannot appear. */}
         {[
