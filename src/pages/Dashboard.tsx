@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import ManagerTag from '../components/ManagerTag'
 import Ticker from '../components/Ticker'
-import { Confetti, FieldStripes, SpiralingBall } from '../components/effects'
+import { Confetti, FieldStripes, Goalpost, SpiralingBall } from '../components/effects'
 import { Bar, Chip, Empty, Hero, Panel, PageHeader, Stat } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
 import { useBudgets, useCash, useObligationHorizon, usePendingTrades, useTrades } from '../lib/derive'
@@ -41,6 +41,9 @@ export default function Dashboard() {
       <div className="mb-10 grid min-w-0 items-end gap-8 lg:grid-cols-[1.05fr_1fr]">
         <div className="relative isolate">
           <FieldStripes />
+          <span className="pointer-events-none absolute right-0 bottom-0 opacity-45" aria-hidden>
+            <Goalpost size={76} />
+          </span>
           <SpiralingBall size={24} />
           <Hero
           label={`Committed through ${horizon.at(-1)?.year ?? season}`}

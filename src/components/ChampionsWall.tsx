@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { managerName, useLeagueData } from '../lib/data'
 import { managerColor, managerInitials } from '../lib/identity'
-import { Confetti } from './effects'
+import { Confetti, PixelPlayer } from './effects'
 
 /**
  * High-score table. Twenty-two title seasons, each tagged with which title it
@@ -62,8 +62,9 @@ export default function ChampionsWall() {
                 ×{nth}
               </span>
             )}
-            <span className="shrink-0 text-[16px]" aria-hidden>
-              {index === 0 ? '👑' : '🏆'}
+            <span className="flex shrink-0 items-center gap-1" aria-hidden>
+              {index === 0 && <PixelPlayer size={28} color={color} />}
+              <span className="text-[16px]">{index === 0 ? '👑' : '🏆'}</span>
             </span>
           </Link>
         )

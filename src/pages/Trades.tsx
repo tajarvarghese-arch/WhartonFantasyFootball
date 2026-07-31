@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Chip, Empty, Panel, PageHeader, SegmentedControl } from '../components/ui'
 import TradeForm from '../components/TradeForm'
+import { PlayMoment, type MomentKind } from '../components/effects'
+import { animationsDisabled } from '../lib/motion'
 import { managerName, useLeague, useLeagueData } from '../lib/data'
 import { useTrades } from '../lib/derive'
 import { countdown, money, shortDate } from '../lib/format'
@@ -18,6 +20,7 @@ export default function Trades() {
   const [tab, setTab] = useState<Tab>('queue')
   const [composing, setComposing] = useState(false)
   const [busyId, setBusyId] = useState<string | null>(null)
+  const [moment, setMoment] = useState<MomentKind | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [seasonFilter, setSeasonFilter] = useState<'all' | number>('all')
 
@@ -55,6 +58,9 @@ export default function Trades() {
         },
         `Trade ${trade.id}: ${status} (${managerName(managers, trade.seller)} → ${managerName(managers, trade.buyer)})`,
       )
+      if (!animationsDisabled()) {
+        setMoment(status === 'approved' ? 'td' : status === 'rejected' ? 'flag' : 'review')
+      }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not record the ruling.')
     } finally {
@@ -319,6 +325,8 @@ export default function Trades() {
           </div>
         </Panel>
       )}
+
+      {moment && <PlayMoment kind={moment} onDone={() => setMoment(null)} />}
 
       {tab === 'archive' && (
         <div className="space-y-6">

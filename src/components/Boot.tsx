@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { SpiralingBall } from './effects'
+import { Football, Goalpost } from './effects'
 import { animationsDisabled } from '../lib/motion'
 
 const SEEN_KEY = 'wacl.booted'
@@ -12,7 +12,7 @@ export default function Boot({ onDone }: { onDone: () => void }) {
   const [closing, setClosing] = useState(false)
 
   useEffect(() => {
-    const timer = setTimeout(() => setClosing(true), 1500)
+    const timer = setTimeout(() => setClosing(true), 2450)
     return () => clearTimeout(timer)
   }, [])
 
@@ -39,8 +39,7 @@ export default function Boot({ onDone }: { onDone: () => void }) {
       role="status"
       aria-label="Loading"
     >
-      <div className="relative w-full max-w-sm text-center">
-        <SpiralingBall size={26} />
+      <div className="relative w-full max-w-sm pb-24 text-center">
         <div
           className="arcade pop-in text-[40px] leading-tight text-arc-cyan"
           style={{ textShadow: '3px 3px 0 #04030a, 0 0 30px rgba(63,224,245,0.55)' }}
@@ -69,6 +68,20 @@ export default function Boot({ onDone }: { onDone: () => void }) {
           PRESS START
         </div>
         <div className="arcade mt-4 text-[11px] text-arc-ink-faint">22 SEASONS · 12 PLAYERS</div>
+
+        {/* Kickoff: ball off the tee, through the uprights, IT'S GOOD. */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24" aria-hidden>
+          <span className="boot-field absolute inset-x-0 bottom-0 h-10" />
+          <span className="absolute right-3 bottom-2">
+            <Goalpost size={62} />
+          </span>
+          <span className="kickball absolute bottom-6 left-4 inline-block">
+            <Football size={20} />
+          </span>
+          <span className="arcade boot-good absolute top-0 right-1 text-[13px] text-arc-yellow">
+            IT&apos;S GOOD!
+          </span>
+        </div>
       </div>
     </div>
   )

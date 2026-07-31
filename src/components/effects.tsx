@@ -1,8 +1,11 @@
 /**
- * Football flourishes. Everything here is CSS/SVG only — no libraries, no
- * timers — and every animation is disabled under prefers-reduced-motion by the
- * rules in index.css.
+ * Football flourishes. CSS/SVG only — no animation libraries. Ambient effects
+ * are disabled under prefers-reduced-motion by the rules in index.css (unless
+ * the FX switch overrides); action-triggered moments are gated in JS where
+ * they fire.
  */
+
+import { useEffect } from 'react'
 
 /** Pixel-art football. Sized by the caller. */
 export function Football({ size = 18, className = '' }: { size?: number; className?: string }) {
@@ -75,5 +78,124 @@ export function SpiralingBall({ size = 22 }: { size?: number }) {
         <Football size={size} />
       </span>
     </span>
+  )
+}
+
+
+/** Pixel goalposts. Yellow, like every stadium since forever. */
+export function Goalpost({ size = 64, className = '' }: { size?: number; className?: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      className={className}
+      aria-hidden
+      shapeRendering="crispEdges"
+    >
+      <rect x="7" y="9" width="2" height="7" fill="#ffd84d" />
+      <rect x="2" y="8" width="12" height="2" fill="#ffd84d" />
+      <rect x="2" y="1" width="2" height="7" fill="#ffd84d" />
+      <rect x="12" y="1" width="2" height="7" fill="#ffd84d" />
+      <rect x="6" y="15" width="4" height="1" fill="#c98d5f" />
+    </svg>
+  )
+}
+
+/**
+ * Two-frame touchdown dance. The jersey is currentColor, so the reigning
+ * champion dances in their own team colour.
+ */
+export function PixelPlayer({ size = 26, color }: { size?: number; color?: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      style={{ color }}
+      aria-hidden
+      shapeRendering="crispEdges"
+    >
+      {/* frame A — arms straight up, the touchdown signal */}
+      <g className="sprite-a">
+        <rect x="6" y="0" width="4" height="3" fill="#efeafb" />
+        <rect x="7" y="2" width="2" height="1" fill="#221a3a" />
+        <rect x="5" y="4" width="6" height="4" fill="currentColor" />
+        <rect x="3" y="0" width="2" height="4" fill="currentColor" />
+        <rect x="11" y="0" width="2" height="4" fill="currentColor" />
+        <rect x="6" y="8" width="4" height="3" fill="#221a3a" />
+        <rect x="5" y="11" width="2" height="4" fill="#efeafb" />
+        <rect x="9" y="11" width="2" height="4" fill="#efeafb" />
+      </g>
+      {/* frame B — arms wide, legs split */}
+      <g className="sprite-b">
+        <rect x="6" y="1" width="4" height="3" fill="#efeafb" />
+        <rect x="7" y="3" width="2" height="1" fill="#221a3a" />
+        <rect x="5" y="5" width="6" height="4" fill="currentColor" />
+        <rect x="1" y="4" width="4" height="2" fill="currentColor" />
+        <rect x="11" y="4" width="4" height="2" fill="currentColor" />
+        <rect x="6" y="9" width="4" height="2" fill="#221a3a" />
+        <rect x="3" y="11" width="2" height="4" fill="#efeafb" />
+        <rect x="11" y="11" width="2" height="4" fill="#efeafb" />
+      </g>
+    </svg>
+  )
+}
+
+/** Broadcast replay wipe, fired on route changes. Plays once per mount. */
+export function ReplayWipe() {
+  return <span className="wipe-stripes" aria-hidden />
+}
+
+export type MomentKind = 'td' | 'flag' | 'review'
+
+const MOMENT: Record<MomentKind, { text: string; sub: string; color: string }> = {
+  td: { text: 'TOUCHDOWN!', sub: 'trade approved', color: 'var(--color-arc-green)' },
+  flag: { text: 'FLAG ON THE PLAY', sub: 'trade rejected', color: 'var(--color-arc-yellow)' },
+  review: { text: 'UNDER REVIEW', sub: '24-hour market check opened', color: 'var(--color-arc-cyan)' },
+}
+
+/**
+ * Full-screen ruling moment. Fires only from a commissioner action, never
+ * ambiently, and only when animations are enabled — the caller gates it.
+ */
+export function PlayMoment({ kind, onDone }: { kind: MomentKind; onDone: () => void }) {
+  useEffect(() => {
+    const timer = setTimeout(onDone, 2100)
+    return () => clearTimeout(timer)
+  }, [onDone])
+
+  const m = MOMENT[kind]
+  return (
+    <div
+      className="moment pointer-events-none fixed inset-0 z-[95] flex items-center justify-center"
+      role="status"
+      aria-label={`${m.text} — ${m.sub}`}
+    >
+      {kind === 'td' && <Confetti count={24} />}
+      {kind === 'flag' && (
+        <span className="flag-drop absolute left-1/2 top-0" aria-hidden>
+          <svg width="30" height="30" viewBox="0 0 16 16" shapeRendering="crispEdges">
+            <rect x="2" y="2" width="12" height="12" fill="#ffd84d" />
+            <rect x="6" y="6" width="4" height="4" fill="#c9a227" />
+          </svg>
+        </span>
+      )}
+      {kind === 'review' && <span className="wipe-stripes opacity-30" aria-hidden />}
+      <div className="text-center">
+        <div
+          className="arcade slam text-[clamp(22px,7vw,52px)]"
+          style={{ color: m.color, textShadow: '3px 3px 0 #04030a, 0 0 34px ' + m.color }}
+        >
+          {m.text}
+        </div>
+        <div
+          className="arcade slam mt-3 text-[13px] text-arc-ink-soft"
+          style={{ animationDelay: '0.18s' }}
+        >
+          {m.sub}
+        </div>
+      </div>
+    </div>
   )
 }

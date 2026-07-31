@@ -1,10 +1,11 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useLeague } from '../lib/data'
 import { usePendingTrades } from '../lib/derive'
 import CommandPalette from './CommandPalette'
 import CommissionerPanel from './CommissionerPanel'
-import { motionForcedOn, setMotionForcedOn, systemPrefersReduced } from '../lib/motion'
+import { ReplayWipe } from './effects'
+import { animationsDisabled, motionForcedOn, setMotionForcedOn, systemPrefersReduced } from '../lib/motion'
 
 // Each destination owns a colour, so the nav reads as a row of cabinet buttons.
 const NAV = [
@@ -39,8 +40,16 @@ export default function Shell({ children }: { children: ReactNode }) {
   const reducedByOS = systemPrefersReduced()
   const location = useLocation()
 
+  // Broadcast-style replay wipe on every page change (not the first load).
+  const [wipe, setWipe] = useState(0)
+  const firstNav = useRef(true)
   useEffect(() => {
     setMenuOpen(false)
+    if (firstNav.current) {
+      firstNav.current = false
+      return
+    }
+    if (!animationsDisabled()) setWipe((count) => count + 1)
   }, [location.pathname])
 
   useEffect(() => {
@@ -240,6 +249,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         </span>
       </footer>
 
+      {wipe > 0 && <ReplayWipe key={wipe} />}
       {paletteOpen && <CommandPalette onClose={() => setPaletteOpen(false)} />}
       {panelOpen && <CommissionerPanel onClose={() => setPanelOpen(false)} />}
     </div>
