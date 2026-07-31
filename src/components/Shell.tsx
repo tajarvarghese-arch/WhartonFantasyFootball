@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { useLeague } from '../lib/data'
 import { usePendingTrades } from '../lib/derive'
 import CommandPalette from './CommandPalette'
+import HelmetField from './HelmetField'
 import CommissionerPanel from './CommissionerPanel'
 import { ReplayWipe } from './effects'
 import { animationsDisabled, motionForcedOn, setMotionForcedOn, systemPrefersReduced } from '../lib/motion'
@@ -114,6 +115,7 @@ export default function Shell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-dvh pb-10 lg:grid lg:grid-cols-[228px_1fr]">
+      <HelmetField enabled={!animationsDisabled()} />
       {/* Mobile top bar */}
       <div className="sticky top-0 z-40 flex items-center justify-between gap-2 border-b-[3px] border-arc-line bg-arc-panel px-3 py-2 lg:hidden">
         <div className="arcade min-w-0 truncate text-[15px] text-arc-cyan">

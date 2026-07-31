@@ -8,53 +8,52 @@
 import { useEffect } from 'react'
 
 /**
- * Pixel-art football, drawn from rects only — curves under crispEdges render
- * as a ragged blob at small sizes. Horizontal ball: dark outline, brown body,
- * white tip stripes, lace with cross-stitches.
+ * Pixel-art football on a 24-grid — enough rows for the pointed-ellipse
+ * silhouette to actually read as a football. Rects only: curves under
+ * crispEdges render as a ragged blob.
  */
 export function Football({ size = 18, className = '' }: { size?: number; className?: string }) {
-  // silhouette rows as [y, x, width] on a 16x16 grid
+  // [y, x, width] rows
   const outline: [number, number, number][] = [
-    [4, 5, 6],
-    [5, 3, 10],
-    [6, 2, 12],
-    [7, 1, 14],
-    [8, 1, 14],
-    [9, 2, 12],
-    [10, 3, 10],
-    [11, 5, 6],
+    [6, 9, 6], [7, 7, 10], [8, 5, 14], [9, 4, 16], [10, 3, 18], [11, 2, 20],
+    [12, 2, 20], [13, 3, 18], [14, 4, 16], [15, 5, 14], [16, 7, 10], [17, 9, 6],
   ]
-  const body: [number, number, number][] = [
-    [5, 4, 8],
-    [6, 3, 10],
-    [7, 2, 12],
-    [8, 2, 12],
-    [9, 3, 10],
-    [10, 4, 8],
+  const body: [number, number, number, string][] = [
+    [7, 8, 8, '#a9714b'],
+    [8, 6, 12, '#c98d5f'],
+    [9, 5, 14, '#c98d5f'],
+    [10, 4, 16, '#a9714b'],
+    [11, 3, 18, '#a9714b'],
+    [12, 3, 18, '#a9714b'],
+    [13, 4, 16, '#a9714b'],
+    [14, 5, 14, '#7d4e2e'],
+    [15, 6, 12, '#7d4e2e'],
+    [16, 8, 8, '#7d4e2e'],
   ]
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 16 16"
+      viewBox="0 0 24 24"
       className={className}
       aria-hidden
       shapeRendering="crispEdges"
     >
       {outline.map(([y, x, w]) => (
-        <rect key={`o${y}`} x={x} y={y} width={w} height={1} fill="#3d2417" />
+        <rect key={`o${y}`} x={x} y={y} width={w} height={1} fill="#2b1a10" />
       ))}
-      {body.map(([y, x, w]) => (
-        <rect key={`b${y}`} x={x} y={y} width={w} height={1} fill="#a9714b" />
+      {body.map(([y, x, w, fill]) => (
+        <rect key={`b${y}`} x={x} y={y} width={w} height={1} fill={fill} />
       ))}
       {/* tip stripes */}
-      <rect x="3" y="6" width="1" height="4" fill="#f4efe2" />
-      <rect x="12" y="6" width="1" height="4" fill="#f4efe2" />
+      <rect x="5" y="9" width="1" height="6" fill="#f4efe2" />
+      <rect x="18" y="9" width="1" height="6" fill="#f4efe2" />
       {/* lace with cross-stitches */}
-      <rect x="5" y="7" width="6" height="1" fill="#f4efe2" />
-      <rect x="6" y="6" width="1" height="3" fill="#f4efe2" />
-      <rect x="8" y="6" width="1" height="3" fill="#f4efe2" />
-      <rect x="10" y="6" width="1" height="3" fill="#f4efe2" />
+      <rect x="8" y="11" width="8" height="1" fill="#f4efe2" />
+      <rect x="9" y="10" width="1" height="3" fill="#f4efe2" />
+      <rect x="11" y="10" width="1" height="3" fill="#f4efe2" />
+      <rect x="13" y="10" width="1" height="3" fill="#f4efe2" />
+      <rect x="15" y="10" width="1" height="3" fill="#f4efe2" />
     </svg>
   )
 }
@@ -101,12 +100,19 @@ export function FieldStripes() {
   return <span className="field-stripes" aria-hidden />
 }
 
-/** A football that spirals across its container once. */
-export function SpiralingBall({ size = 22 }: { size?: number }) {
+/**
+ * A field-goal attempt across the container. A parabola is linear X plus
+ * quadratic Y, so travel and height animate on separate nested elements —
+ * the X leg runs linear while the Y leg decelerates up and accelerates
+ * down. Innermost, the ball tumbles end over end.
+ */
+export function SpiralingBall({ size = 26 }: { size?: number }) {
   return (
-    <span className="ball-spiral" aria-hidden>
-      <span className="ball-spin inline-block">
-        <Football size={size} />
+    <span className="punt-x" aria-hidden>
+      <span className="punt-y inline-block">
+        <span className="punt-rot inline-block">
+          <Football size={size} />
+        </span>
       </span>
     </span>
   )
@@ -227,6 +233,23 @@ export function PlayMoment({ kind, onDone }: { kind: MomentKind; onDone: () => v
           {m.sub}
         </div>
       </div>
+    </div>
+  )
+}
+
+
+/**
+ * The kick gets its own stage — a strip of field with goalposts at full
+ * brightness and a clear flight lane, instead of being smeared over text.
+ */
+export function FieldGoalStrip() {
+  return (
+    <div className="relative mt-5 h-28 overflow-hidden" aria-hidden>
+      <span className="boot-field absolute inset-x-0 bottom-0 h-9" />
+      <span className="absolute right-2 bottom-1">
+        <Goalpost size={72} />
+      </span>
+      <SpiralingBall size={40} />
     </div>
   )
 }

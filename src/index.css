@@ -517,56 +517,68 @@
     animation: yard-scroll 6s linear infinite;
   }
 
-  /* A ball punted across its container. Horizontal travel animates `left`
-     (relative to the container); translate percentages would be relative to
-     the ball's own two dozen pixels and it would barely move. */
-  @keyframes ball-arc {
+
+  /* Field-goal flight: linear ground speed, quadratic height — a real
+     parabola — with a slow end-over-end tumble. Ends between the uprights. */
+  @keyframes punt-x {
     0% {
+      left: -10px;
       opacity: 0;
-      left: -4%;
-      transform: translateY(6px);
     }
-    10% {
+    6% {
       opacity: 1;
     }
-    50% {
-      transform: translateY(-64px);
-    }
-    90% {
+    92% {
       opacity: 1;
     }
     100% {
+      left: calc(100% - 64px);
       opacity: 0;
-      left: calc(100% - 26px);
-      transform: translateY(2px);
     }
   }
-  .ball-spiral {
+  .punt-x {
     position: absolute;
-    left: 0;
-    bottom: 0;
-    animation: ball-arc 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    left: -10px;
+    bottom: 4px;
+    animation: punt-x 3.2s linear infinite;
   }
-
-  @keyframes ball-spin {
+  @keyframes punt-y {
+    0% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0.18, 0.6, 0.5, 1);
+    }
+    55% {
+      transform: translateY(-56px);
+      animation-timing-function: cubic-bezier(0.5, 0, 0.82, 0.4);
+    }
+    100% {
+      transform: translateY(-30px);
+    }
+  }
+  .punt-y {
+    animation: punt-y 3.2s infinite;
+  }
+  @keyframes punt-rot {
     from {
-      transform: rotate(0deg);
+      transform: rotate(-20deg);
     }
     to {
-      transform: rotate(720deg);
+      transform: rotate(460deg);
     }
   }
-  .ball-spin {
-    animation: ball-spin 1.2s linear infinite;
+  .punt-rot {
+    animation: punt-rot 3.2s linear infinite;
   }
 
   /* Replay wipe between pages — a skewed stripe band sweeps the screen. */
+  /* The skew leans the band by ~tan(8deg) of the viewport height, so the
+     travel has to overshoot well past 100% or a corner stays on screen. */
   @keyframes wipe-sweep {
     0% {
-      transform: translateX(-115%) skewX(-12deg);
+      transform: translateX(-170%) skewX(-8deg);
     }
     100% {
-      transform: translateX(115%) skewX(-12deg);
+      transform: translateX(170%) skewX(-8deg);
     }
   }
   .wipe-stripes {
@@ -730,8 +742,9 @@
     :root:not([data-motion='on']) .hover-wiggle:hover,
     :root:not([data-motion='on']) .confetti,
     :root:not([data-motion='on']) .field-stripes,
-    :root:not([data-motion='on']) .ball-spiral,
-    :root:not([data-motion='on']) .ball-spin,
+    :root:not([data-motion='on']) .punt-x,
+    :root:not([data-motion='on']) .punt-y,
+    :root:not([data-motion='on']) .punt-rot,
     :root:not([data-motion='on']) .redzone,
     :root:not([data-motion='on']) .cursor::after {
       animation: none !important;
@@ -748,7 +761,7 @@
     }
     :root:not([data-motion='on']) .confetti,
     :root:not([data-motion='on']) .wipe-stripes,
-    :root:not([data-motion='on']) .ball-spiral {
+    :root:not([data-motion='on']) .punt-x {
       display: none;
     }
     :root:not([data-motion='on']) .type-in {
