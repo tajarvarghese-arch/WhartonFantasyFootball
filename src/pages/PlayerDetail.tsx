@@ -4,6 +4,7 @@ import { Chip, Empty, Hero, Panel, PageHeader, Sparkline } from '../components/u
 import { managerName, useLeagueData } from '../lib/data'
 import { money } from '../lib/format'
 import { playerDossier } from '../lib/search'
+import { normalizePlayer } from '../lib/analytics'
 
 export default function PlayerDetail() {
   const { name = '' } = useParams()
@@ -35,7 +36,7 @@ export default function PlayerDetail() {
         path="~/players"
         eyebrow={`grep "${dossier.name}" rosters/*`}
         title={dossier.name}
-        lede={`On league rosters from ${dossier.firstSeen} to ${dossier.lastSeen} across ${owners.length} ${owners.length === 1 ? 'manager' : 'managers'}.`}
+        lede={`${data.playerPositions?.[normalizePlayer(dossier.name)] ?? ''} · on league rosters from ${dossier.firstSeen} to ${dossier.lastSeen} across ${owners.length} ${owners.length === 1 ? 'manager' : 'managers'}.`.replace(/^ · /, '')}
       />
 
       <div className="mb-8 grid min-w-0 gap-8 lg:grid-cols-[1fr_1.1fr]">

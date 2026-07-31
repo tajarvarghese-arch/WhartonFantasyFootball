@@ -20,6 +20,7 @@ import gzip
 import io
 import json
 import re
+import unicodedata
 import urllib.request
 from pathlib import Path
 
@@ -37,8 +38,21 @@ URLS = [
 
 SUFFIXES = {"jr", "sr", "ii", "iii", "iv", "v"}
 
+# Sheet nickname -> nflverse legal name, both normalised.
+ALIASES = {
+    "hollywoodbrown": "marquisebrown",
+    "benwatson": "benjaminwatson",
+    "danielherron": "danherron",
+    "joshuapalmer": "joshpalmer",
+    "kennygainwell": "kennethgainwell",
+}
+
+
 
 def normalize(name: str) -> str:
+    # NFKD folds accents (nflverse spells him Estimé; the sheets say Estime)
+    name = unicodedata.normalize("NFKD", name)
+    name = "".join(ch for ch in name if not unicodedata.combining(ch))
     tokens = re.sub(r"[^a-z0-9 ]", "", name.lower().replace(".", " ")).split()
     while tokens and tokens[-1] in SUFFIXES:
         tokens.pop()
@@ -79,11 +93,16 @@ def season_points(year: int) -> dict:
             pos = (row.get("position") or "").strip()
             if pos:
                 positions[key] = pos
-    return {
+    out = {
         key: [round(value, 1), positions.get(key, "")]
         for key, value in totals.items()
         if value != 0.0
     }
+    # sheet nicknames resolve to the same record
+    for alias, real in ALIASES.items():
+        if real in out and alias not in out:
+            out[alias] = out[real]
+    return out
 
 
 def main() -> None:

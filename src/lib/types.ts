@@ -203,6 +203,9 @@ export interface LiveStandings {
 /** year -> normalised player name -> [standard fantasy points, position]. */
 export type PlayerPoints = Record<string, Record<string, [number, string]>>
 
+/** normalised player name -> position, for everyone the league ever rostered. */
+export type PlayerPositions = Record<string, string>
+
 export interface LeagueData {
   league: League
   managers: Manager[]
@@ -219,4 +222,6 @@ export interface LeagueData {
   live: LiveStandings | null
   /** Absent until scripts/player_points.py has been run. */
   playerPoints: PlayerPoints | null
+  /** Absent until scripts/player_positions.py has been run. */
+  playerPositions: PlayerPositions | null
 }

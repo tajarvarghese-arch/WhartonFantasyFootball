@@ -40,8 +40,8 @@ export default function Lab() {
     [seasons, league.currentSeason, activeIds],
   )
   const contracts = useMemo(
-    () => contractRuns(keepers, data.playerPoints),
-    [keepers, data.playerPoints],
+    () => contractRuns(keepers, data.playerPoints, data.playerPositions),
+    [keepers, data.playerPoints, data.playerPositions],
   )
   const odds = useMemo(() => vegasBoard(seasons, activeIds), [seasons, activeIds])
 

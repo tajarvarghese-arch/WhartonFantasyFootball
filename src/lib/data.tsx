@@ -33,6 +33,7 @@ const FILES = {
   tradeQueue: 'trade-queue.json',
   live: 'live.json',
   playerPoints: 'player-points.json',
+  playerPositions: 'player-positions.json',
 } as const
 
 /** Files the commissioner edits in-app. Writes go to GitHub *and* to this cache. */
@@ -126,6 +127,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         tradeQueue,
         live,
         playerPoints,
+        playerPositions,
       ] = await Promise.all([
         loadJson<LeagueData['league']>(FILES.league),
         loadJson<LeagueData['managers']>(FILES.managers),
@@ -141,6 +143,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         loadJson<TradeQueueFile>(FILES.tradeQueue),
         loadOptionalJson<LiveStandings>(FILES.live),
         loadOptionalJson<import('./types').PlayerPoints>(FILES.playerPoints),
+        loadOptionalJson<import('./types').PlayerPositions>(FILES.playerPositions),
       ])
 
       const overlay = readOverlay()
@@ -159,6 +162,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         tradeQueue: (overlay['trade-queue.json'] as TradeQueueFile) ?? tradeQueue,
         live,
         playerPoints,
+        playerPositions,
       }
 
       // Drop overlay entries the deployed site has caught up on.

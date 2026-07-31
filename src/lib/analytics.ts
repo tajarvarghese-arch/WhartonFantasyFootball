@@ -273,6 +273,7 @@ export function normalizePlayer(name: string): string {
 export function contractRuns(
   keepers: LeagueData['keepers'],
   playerPoints: LeagueData['playerPoints'],
+  playerPositions?: LeagueData['playerPositions'],
 ): { steals: ContractRun[]; overpays: ContractRun[]; unmatched: number } {
   const runs = new Map<string, ContractRun>()
   let unmatched = 0
@@ -288,7 +289,9 @@ export function contractRuns(
           if (seasonPoints) unmatched += 1
           continue
         }
-        const [points, position] = entry
+        const [points, statPosition] = entry
+        const position =
+          statPosition || playerPositions?.[normalizePlayer(pick.player)] || ''
         const key = `${block.manager}|${normalizePlayer(pick.player)}`
         const run =
           runs.get(key) ??

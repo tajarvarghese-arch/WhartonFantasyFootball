@@ -1,3 +1,4 @@
+import { normalizePlayer } from './analytics'
 import type { LeagueData, ManagerId } from './types'
 
 export type ResultKind = 'page' | 'manager' | 'player' | 'trade'
@@ -183,7 +184,9 @@ export function buildResults(data: LeagueData, query: string, limit = 24): Searc
           kind: 'player',
           id: player,
           title: player,
-          subtitle: 'Player history',
+          subtitle: data.playerPositions?.[normalizePlayer(player)]
+            ? `${data.playerPositions[normalizePlayer(player)]} · player history`
+            : 'Player history',
           to: `/players/${playerSlug(player)}`,
         },
         player,
