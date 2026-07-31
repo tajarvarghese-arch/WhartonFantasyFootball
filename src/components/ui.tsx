@@ -194,7 +194,7 @@ export function PageHeader({
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0 max-w-2xl">
           <div className="label type-in">{eyebrow}</div>
-          <h1 className="display cursor mt-3 text-arc-ink">{title}</h1>
+          <h1 className="display cursor neon-soft mt-3 text-arc-ink">{title}</h1>
           <div aria-hidden className="dotbar mt-3 w-full max-w-md text-arc-purple" />
           {lede && <p className="mt-3 text-[14px] leading-relaxed text-arc-ink-soft">{lede}</p>}
         </div>

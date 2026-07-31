@@ -136,6 +136,64 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* 3D neon sign: stacked em-based extrusion so it scales with font size,
+     under a two-tone cyan/pink glow that slowly breathes. */
+  .neon-3d {
+    color: var(--color-arc-cyan);
+    animation: neon-pulse 2.8s ease-in-out infinite;
+  }
+  @keyframes neon-pulse {
+    0%,
+    100% {
+      text-shadow:
+        0 0.035em 0 #0b7f91,
+        0 0.07em 0 #095e6b,
+        0 0.105em 0 #073f47,
+        0 0.14em 0 #04030a,
+        0 0.2em 0.35em rgba(0, 0, 0, 0.65),
+        0 0 0.28em rgba(63, 224, 245, 0.9),
+        0 0 0.7em rgba(63, 224, 245, 0.55),
+        0 0.05em 1.4em rgba(255, 111, 179, 0.4);
+    }
+    50% {
+      text-shadow:
+        0 0.035em 0 #0b7f91,
+        0 0.07em 0 #095e6b,
+        0 0.105em 0 #073f47,
+        0 0.14em 0 #04030a,
+        0 0.2em 0.35em rgba(0, 0, 0, 0.65),
+        0 0 0.2em rgba(63, 224, 245, 0.65),
+        0 0 0.5em rgba(63, 224, 245, 0.35),
+        0 0.05em 1em rgba(255, 111, 179, 0.22);
+    }
+  }
+
+  /* Softer neon for page titles: shallow extrusion, quiet glow, no pulse. */
+  .neon-soft {
+    text-shadow:
+      0 0.06em 0 #04030a,
+      0 0 0.45em rgba(63, 224, 245, 0.35),
+      0 0.04em 0.9em rgba(176, 124, 255, 0.25);
+  }
+
+  .sparkle {
+    position: absolute;
+    pointer-events: none;
+    color: var(--color-arc-yellow);
+    animation: twinkle 1.9s steps(5) infinite;
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0;
+      transform: scale(0.3) rotate(0deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1) rotate(180deg);
+    }
+  }
+
   .cursor::after {
     content: '_';
     margin-left: 2px;
@@ -756,8 +814,13 @@
     :root:not([data-motion='on']) .sprite-a,
     :root:not([data-motion='on']) .sprite-b,
     :root:not([data-motion='on']) .kickball,
+    :root:not([data-motion='on']) .neon-3d,
+    :root:not([data-motion='on']) .sparkle,
     :root:not([data-motion='on']) .boot-good {
       animation: none !important;
+    }
+    :root:not([data-motion='on']) .sparkle {
+      display: none;
     }
     :root:not([data-motion='on']) .confetti,
     :root:not([data-motion='on']) .wipe-stripes,

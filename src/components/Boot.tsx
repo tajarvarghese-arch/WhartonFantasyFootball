@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import HeapScene, { HEAP_BOOT_SECONDS } from './HeapScene'
+import { Sparkles } from './effects'
 import { animationsDisabled } from '../lib/motion'
 
 /**
@@ -37,11 +38,9 @@ export default function Boot({
       aria-label="Loading — tap to skip"
     >
       <div className="w-full max-w-md text-center">
-        <div
-          className="arcade pop-in text-[38px] leading-tight text-arc-cyan"
-          style={{ textShadow: '3px 3px 0 #04030a, 0 0 30px rgba(63,224,245,0.55)' }}
-        >
-          WACL
+        <div className="pop-in relative inline-block">
+          <span className="arcade neon-3d text-[46px] leading-tight tracking-wider">WACL</span>
+          <Sparkles count={9} />
         </div>
         <div
           className="arcade pop-in mt-2 text-[12px] leading-relaxed text-arc-ink-soft"

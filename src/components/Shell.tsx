@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { useLeague } from '../lib/data'
 import { usePendingTrades } from '../lib/derive'
 import CommandPalette from './CommandPalette'
+import { Sparkles } from './effects'
 import HelmetField from './HelmetField'
 import CommissionerPanel from './CommissionerPanel'
 import { ReplayWipe } from './effects'
@@ -171,11 +172,9 @@ export default function Shell({ children }: { children: ReactNode }) {
       {/* Desktop sidebar */}
       <aside className="hidden border-r-[3px] border-arc-line bg-arc-bg-deep lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col">
         <div className="border-b-[3px] border-arc-line bg-arc-bg-deep px-4 py-5 text-center">
-          <div
-            className="arcade text-[26px] leading-tight text-arc-cyan"
-            style={{ textShadow: '2px 2px 0 #04030a, 0 0 22px rgba(63,224,245,0.45)' }}
-          >
-            WACL
+          <div className="relative inline-block">
+            <span className="arcade neon-3d text-[26px] leading-tight">WACL</span>
+            <Sparkles count={5} />
           </div>
           <div className="arcade mt-3 text-[11px] leading-relaxed text-arc-ink-soft">
             WHARTON ALUM

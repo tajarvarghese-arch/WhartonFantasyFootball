@@ -258,3 +258,29 @@ export function FieldGoalStrip({ championColor }: { championColor?: string }) {
     </div>
   )
 }
+
+
+/** Twinkling stars over a wordmark. Deterministic spread, staggered phases. */
+export function Sparkles({ count = 8 }: { count?: number }) {
+  const glyphs = ['✦', '✧', '+']
+  const colors = ['var(--color-arc-yellow)', 'var(--color-arc-cyan)', '#fffbe8']
+  return (
+    <span className="pointer-events-none absolute -inset-3" aria-hidden>
+      {Array.from({ length: count }, (_, i) => (
+        <span
+          key={i}
+          className="sparkle"
+          style={{
+            left: `${(i * 61.8 + 8) % 104}%`,
+            top: `${(i * 37.7 + 6) % 92}%`,
+            fontSize: `${9 + ((i * 5) % 9)}px`,
+            color: colors[i % colors.length],
+            animationDelay: `${((i * 431) % 1900) / 1000}s`,
+          }}
+        >
+          {glyphs[i % glyphs.length]}
+        </span>
+      ))}
+    </span>
+  )
+}
