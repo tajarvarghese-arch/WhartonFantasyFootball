@@ -6,6 +6,8 @@ import { useLeague } from './lib/data'
 import Dashboard from './pages/Dashboard'
 import Finances from './pages/Finances'
 import Keepers from './pages/Keepers'
+import Lab from './pages/Lab'
+import Almanac from './pages/Almanac'
 import ManagerDetail from './pages/ManagerDetail'
 import Managers from './pages/Managers'
 import PlayerDetail from './pages/PlayerDetail'
@@ -61,6 +63,8 @@ export default function App() {
         <Route path="/managers/:id" element={<ManagerDetail />} />
         <Route path="/players/:name" element={<PlayerDetail />} />
         <Route path="/records" element={<Records />} />
+        <Route path="/lab" element={<Lab />} />
+        <Route path="/almanac" element={<Almanac />} />
         <Route path="/rules" element={<Rules />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

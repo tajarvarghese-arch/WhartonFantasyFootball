@@ -17,6 +17,8 @@ const NAV = [
   { to: '/standings', label: 'Standings', color: 'var(--color-arc-purple)' },
   { to: '/managers', label: 'Managers', color: 'var(--color-arc-cyan)' },
   { to: '/records', label: 'Records', color: 'var(--color-arc-pink)' },
+  { to: '/lab', label: 'The Lab', color: 'var(--color-arc-navy)' },
+  { to: '/almanac', label: 'Almanac', color: 'var(--color-arc-brown)' },
   { to: '/rules', label: 'Rules', color: 'var(--color-arc-teal)' },
 ]
 

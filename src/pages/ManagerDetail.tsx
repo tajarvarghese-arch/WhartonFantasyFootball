@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import TradingCard from '../components/TradingCard'
 import { Link, useParams } from 'react-router-dom'
 import { ForAgainstChart, WinPctChart } from '../components/charts'
 import { Chip, Empty, Panel, PageHeader, Stat } from '../components/ui'
@@ -63,6 +64,7 @@ export default function ManagerDetail() {
         lede={`${career.seasonsPlayed} seasons · ${record(career.wins, career.losses)} regular season · best finish ${ordinal(career.bestFinish)}${
           manager.displayName !== manager.surname ? ` · recorded as ${manager.surname} in the stat books` : ''
         }`}
+        action={<TradingCard id={id} />}
       />
 
       <div className="line-in mb-8 grid grid-cols-2 gap-6 lg:grid-cols-4">

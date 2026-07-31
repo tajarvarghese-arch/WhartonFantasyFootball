@@ -18,6 +18,8 @@ export const PAGES: { title: string; subtitle: string; to: string }[] = [
   { title: 'Standings', subtitle: '22 seasons of final tables', to: '/standings' },
   { title: 'Managers', subtitle: 'Career records', to: '/managers' },
   { title: 'Records', subtitle: 'Leaderboards, trade flow, champions', to: '/records' },
+  { title: 'The Lab', subtitle: 'Luck index, GOAT index, Elo, title odds, contracts', to: '/lab' },
+  { title: 'Almanac', subtitle: 'The written record, one entry per season', to: '/almanac' },
   { title: 'Rules', subtitle: 'League constitution', to: '/rules' },
 ]
 

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ContractBoard from '../components/ContractBoard'
+import WarRoom from '../components/WarRoom'
 import { Chip, Empty, Panel, PageHeader } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
 import { useBudgets } from '../lib/derive'
@@ -55,6 +56,15 @@ export default function Keepers() {
           </select>
         }
       />
+
+      <div className="mb-6">
+        <Panel
+          title="war room"
+          subtitle="Try any keeper combination and watch the draft budget move. Costs and contract years follow the league rules automatically."
+        >
+          <WarRoom year={year} />
+        </Panel>
+      </div>
 
       <div className="mb-6">
         <Panel
