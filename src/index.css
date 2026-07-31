@@ -1,34 +1,33 @@
 @import 'tailwindcss';
 
 /*
-  "The Ledger" — the commissioner's book for a 22-year auction keeper league.
-  Ink-green paper stock, gold rules, tabular figures everywhere. Money is the
-  subject matter, so the typography treats numbers as first-class.
+  WACL://TERMINAL — the commissioner's console.
+
+  Everything is monospace and column-aligned, because everything here is a
+  readout: budgets, contracts, ledgers. Colour is used the way a shell uses it —
+  green for good, amber for held, red for underwater — never decoratively.
+  Effects stay subtle enough to survive a phone screen in daylight.
 */
 
 @theme {
-  --color-ink-950: #080b09;
-  --color-ink-900: #0b0f0d;
-  --color-ink-850: #0f1512;
-  --color-ink-800: #141b17;
-  --color-ink-700: #1c2520;
-  --color-ink-600: #26312b;
+  --color-term-bg: #0a0d0c;
+  --color-term-surface: #0e1211;
+  --color-term-raised: #141a18;
+  --color-term-line: #1e2723;
+  --color-term-line-bright: #2c3a34;
 
-  --color-parchment: #ece7d9;
-  --color-parchment-dim: #b9b3a4;
-  --color-parchment-faint: #7d7a70;
+  --color-term-text: #c9d4ce;
+  --color-term-dim: #7e8c84;
+  --color-term-faint: #4e5a54;
 
-  --color-gold-400: #e0bd52;
-  --color-gold-500: #c9a227;
-  --color-gold-600: #96761a;
+  --color-term-green: #3df08b;
+  --color-term-green-deep: #26ac63;
+  --color-term-cyan: #4fd6e8;
+  --color-term-amber: #f5b44c;
+  --color-term-red: #ff6b6b;
+  --color-term-violet: #a78bfa;
 
-  --color-ledger-up: #6fbf73;
-  --color-ledger-down: #d9634e;
-  --color-ledger-flag: #e08a3c;
-
-  --font-display: 'Instrument Serif', Georgia, serif;
-  --font-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
 
 @layer base {
@@ -36,79 +35,78 @@
     color-scheme: dark;
   }
 
-  html {
-    scroll-behavior: smooth;
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    background-color: var(--color-ink-900);
-    color: var(--color-parchment);
-    font-family: var(--font-sans);
-    font-size: 14px;
+    background-color: var(--color-term-bg);
+    color: var(--color-term-text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.55;
+    font-variant-ligatures: none;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
   }
 
-  /* Paper grain + a faint ledger rule, fixed behind everything. */
+  /* Scanlines + a slow drift. Barely there; disabled for reduced motion. */
   body::before {
     content: '';
     position: fixed;
-    inset: 0;
-    z-index: 0;
+    inset: -100% 0 0 0;
+    height: 300%;
+    z-index: 60;
     pointer-events: none;
-    opacity: 0.5;
-    background-image:
-      repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 27px,
-        rgba(201, 162, 39, 0.045) 27px,
-        rgba(201, 162, 39, 0.045) 28px
-      ),
-      radial-gradient(ellipse 120% 80% at 50% -10%, rgba(201, 162, 39, 0.09), transparent 60%);
+    opacity: 0.4;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2px,
+      rgba(0, 0, 0, 0.28) 3px,
+      rgba(0, 0, 0, 0.28) 4px
+    );
+    animation: scan-drift 9s linear infinite;
   }
 
+  /* Phosphor bloom in the corners. */
   body::after {
     content: '';
     position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: 59;
     pointer-events: none;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    background:
+      radial-gradient(ellipse 90% 55% at 50% 0%, rgba(61, 240, 139, 0.06), transparent 70%),
+      radial-gradient(ellipse 120% 70% at 50% 120%, rgba(79, 214, 232, 0.05), transparent 70%);
   }
 
-  #root {
-    position: relative;
-    z-index: 1;
+  @keyframes scan-drift {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(4px);
+    }
   }
 
   ::selection {
-    background: var(--color-gold-500);
-    color: var(--color-ink-950);
-  }
-
-  /* Every figure in this app is tabular so columns line up down the page. */
-  .tnum {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-    font-feature-settings: 'tnum' 1;
+    background: var(--color-term-green);
+    color: var(--color-term-bg);
   }
 
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 9px;
+    height: 9px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-ink-950);
+    background: var(--color-term-bg);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-ink-600);
-    border: 2px solid var(--color-ink-950);
-    border-radius: 99px;
+    background: var(--color-term-line-bright);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-gold-600);
+    background: var(--color-term-green-deep);
   }
 
   input,
@@ -116,61 +114,132 @@
   textarea,
   button {
     font: inherit;
+    color: inherit;
+  }
+
+  /* Keyboard focus must stay obvious against all the low-contrast chrome. */
+  :focus-visible {
+    outline: 1px solid var(--color-term-green);
+    outline-offset: 2px;
   }
 }
 
 @layer components {
-  /* Section eyebrow: the small gold caps label above every panel. */
-  .eyebrow {
-    font-family: var(--font-sans);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
+  .glow {
+    text-shadow: 0 0 12px currentColor;
+  }
+
+  /* Blinking block cursor — the thing that makes it read as a live console. */
+  .cursor::after {
+    content: '█';
+    margin-left: 2px;
+    color: var(--color-term-green);
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
-    color: var(--color-gold-500);
+    color: var(--color-term-dim);
   }
 
-  .panel {
-    background:
-      linear-gradient(to bottom, rgba(236, 231, 217, 0.025), transparent 120px),
-      var(--color-ink-850);
-    border: 1px solid rgba(201, 162, 39, 0.16);
+  /* A framed region of output. min-width:0 stops a wide table inside from
+     pushing the whole page sideways on a phone. */
+  .win {
+    min-width: 0;
+    background: var(--color-term-surface);
+    border: 1px solid var(--color-term-line);
+  }
+  .win-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--color-term-raised);
+    border-bottom: 1px solid var(--color-term-line);
   }
 
-  .rule-gold {
-    border-color: rgba(201, 162, 39, 0.16);
-  }
-
-  /* Ledger table: hairline rules, gold header, hover highlight. */
-  .ledger {
+  /* Data table styled as aligned terminal output. */
+  /* Tables scroll inside their own box rather than widening the page. The
+     block display keeps cell alignment while giving the table its own
+     scroll container. */
+  .out {
+    display: block;
     width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  .out > thead,
+  .out > tbody {
+    display: table;
+    width: 100%;
+    min-width: max-content;
     border-collapse: collapse;
   }
-  .ledger thead th {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
+  .out thead th {
+    padding: 8px 12px;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.11em;
     text-transform: uppercase;
-    color: var(--color-gold-500);
     text-align: left;
-    padding: 10px 12px;
-    border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+    color: var(--color-term-faint);
+    border-bottom: 1px solid var(--color-term-line);
+    white-space: nowrap;
+    background: var(--color-term-surface);
+  }
+  .out tbody td {
+    padding: 8px 12px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-term-line) 55%, transparent);
     white-space: nowrap;
   }
-  .ledger tbody td {
-    padding: 9px 12px;
-    border-bottom: 1px solid rgba(236, 231, 217, 0.07);
-    vertical-align: middle;
-  }
-  .ledger tbody tr:hover td {
-    background: rgba(201, 162, 39, 0.05);
-  }
-  .ledger tbody tr:last-child td {
+  .out tbody tr:last-child td {
     border-bottom: none;
   }
-  .ledger .num {
+  .out tbody tr {
+    transition: background 0.12s ease;
+  }
+  .out tbody tr:hover td {
+    background: rgba(61, 240, 139, 0.055);
+  }
+  /* A caret slides in on the hovered row, like a selected line in a TUI. */
+  .out tbody tr td:first-child {
+    position: relative;
+  }
+  .out tbody tr td:first-child::before {
+    content: '>';
+    position: absolute;
+    left: 2px;
+    color: var(--color-term-green);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 0.12s ease;
+  }
+  .out tbody tr:hover td:first-child::before {
+    opacity: 1;
+    transform: none;
+  }
+  .out .n {
     text-align: right;
-    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
   }
 
@@ -178,100 +247,155 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
-    padding: 8px 15px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    border: 1px solid rgba(201, 162, 39, 0.35);
-    color: var(--color-parchment);
-    background: transparent;
+    gap: 6px;
+    min-height: 38px;
+    padding: 7px 13px;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--color-term-text);
+    background: var(--color-term-raised);
+    border: 1px solid var(--color-term-line-bright);
     cursor: pointer;
-    transition:
-      background 0.16s ease,
-      border-color 0.16s ease,
-      color 0.16s ease;
+    transition: all 0.14s ease;
   }
   .btn:hover:not(:disabled) {
-    background: rgba(201, 162, 39, 0.14);
-    border-color: var(--color-gold-500);
+    border-color: var(--color-term-green);
+    color: var(--color-term-green);
+    box-shadow: 0 0 0 1px rgba(61, 240, 139, 0.18);
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(1px);
   }
   .btn:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
   }
   .btn-primary {
-    background: var(--color-gold-500);
-    border-color: var(--color-gold-500);
-    color: var(--color-ink-950);
+    background: var(--color-term-green);
+    border-color: var(--color-term-green);
+    color: var(--color-term-bg);
+    font-weight: 600;
   }
   .btn-primary:hover:not(:disabled) {
-    background: var(--color-gold-400);
-    border-color: var(--color-gold-400);
+    background: #5ff9a2;
+    border-color: #5ff9a2;
+    color: var(--color-term-bg);
+    box-shadow: 0 0 18px rgba(61, 240, 139, 0.35);
   }
   .btn-danger {
-    border-color: rgba(217, 99, 78, 0.5);
-    color: var(--color-ledger-down);
+    color: var(--color-term-red);
+    border-color: color-mix(in srgb, var(--color-term-red) 45%, transparent);
   }
   .btn-danger:hover:not(:disabled) {
-    background: rgba(217, 99, 78, 0.14);
-    border-color: var(--color-ledger-down);
+    border-color: var(--color-term-red);
+    color: var(--color-term-red);
+    box-shadow: 0 0 0 1px rgba(255, 107, 107, 0.2);
   }
 
   .field {
     width: 100%;
-    padding: 8px 11px;
-    background: var(--color-ink-950);
-    border: 1px solid rgba(236, 231, 217, 0.14);
-    color: var(--color-parchment);
+    min-height: 38px;
+    padding: 7px 10px;
+    background: var(--color-term-bg);
+    border: 1px solid var(--color-term-line-bright);
+    color: var(--color-term-text);
     font-size: 13px;
     outline: none;
-    transition: border-color 0.16s ease;
+    transition: border-color 0.14s ease;
   }
   .field:focus {
-    border-color: var(--color-gold-500);
+    border-color: var(--color-term-green);
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(61, 240, 139, 0.2);
   }
   .field::placeholder {
-    color: var(--color-parchment-faint);
+    color: var(--color-term-faint);
   }
 
-  .chip {
+  /* Bracketed status tag: [OK] [PENDING] [FLAG] */
+  .tag {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 2px 7px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
-    border: 1px solid currentColor;
     white-space: nowrap;
+  }
+  .tag::before {
+    content: '[';
+    opacity: 0.55;
+  }
+  .tag::after {
+    content: ']';
+    opacity: 0.55;
   }
 }
 
 @layer utilities {
-  /* Staggered page-load reveal. */
-  @keyframes ledger-rise {
+  /* Staggered line-by-line reveal, like output scrolling in. */
+  @keyframes line-in {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(6px);
     }
     to {
       opacity: 1;
       transform: none;
     }
   }
-  .rise {
-    animation: ledger-rise 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  .line-in {
+    animation: line-in 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+
+  @keyframes type-in {
+    from {
+      max-width: 0;
+    }
+    to {
+      max-width: 100%;
+    }
+  }
+  .type-in {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: type-in 0.7s steps(40, end) both;
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+  .pulse {
+    animation: pulse-dot 1.8s ease-in-out infinite;
+  }
+
+  /* Fade the right edge of a horizontally scrolling table on small screens. */
+  .scroll-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .rise {
+    .line-in,
+    .type-in,
+    .pulse,
+    .cursor::after {
       animation: none;
     }
-    html {
-      scroll-behavior: auto;
+    .type-in {
+      max-width: 100%;
+    }
+    body::before {
+      animation: none;
     }
   }
 }

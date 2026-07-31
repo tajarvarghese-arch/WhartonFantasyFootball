@@ -23,6 +23,7 @@ export default function Finances() {
   return (
     <>
       <PageHeader
+        path="~/finances"
         eyebrow="Balances"
         title="Finances"
         lede="Three separate books: auction dollars traded between managers, the season FAAB budget, and real cash owed around the league."
@@ -65,16 +66,16 @@ function AuctionBook() {
       subtitle="Sellers receive draft dollars in the listed season; buyers pay them. Every column nets to zero."
     >
       <div className="overflow-x-auto">
-        <table className="ledger">
+        <table className="out">
           <thead>
             <tr>
-              <th className="sticky left-0 bg-ink-850">Manager</th>
+              <th className="sticky left-0 bg-term-surface">Manager</th>
               {years.map((year) => (
-                <th key={year} className="num">
+                <th key={year} className="n">
                   {year}
                 </th>
               ))}
-              <th className="num">Career net</th>
+              <th className="n">Career net</th>
             </tr>
           </thead>
           <tbody>
@@ -85,7 +86,7 @@ function AuctionBook() {
               )
               return (
                 <tr key={manager.id}>
-                  <td className="sticky left-0 bg-ink-850 whitespace-nowrap">
+                  <td className="sticky left-0 bg-term-surface whitespace-nowrap">
                     {manager.displayName}
                   </td>
                   {years.map((year) => {
@@ -94,12 +95,12 @@ function AuctionBook() {
                     return (
                       <td
                         key={year}
-                        className={`num ${
+                        className={`n ${
                           net > 0
-                            ? 'text-[var(--color-ledger-up)]'
+                            ? 'text-[var(--color-term-green)]'
                             : net < 0
-                              ? 'text-[var(--color-ledger-down)]'
-                              : 'text-parchment-faint'
+                              ? 'text-[var(--color-term-red)]'
+                              : 'text-term-faint'
                         }`}
                         title={
                           entry
@@ -112,12 +113,12 @@ function AuctionBook() {
                     )
                   })}
                   <td
-                    className={`num ${
+                    className={`n ${
                       career > 0
-                        ? 'text-[var(--color-ledger-up)]'
+                        ? 'text-[var(--color-term-green)]'
                         : career < 0
-                          ? 'text-[var(--color-ledger-down)]'
-                          : 'text-parchment-faint'
+                          ? 'text-[var(--color-term-red)]'
+                          : 'text-term-faint'
                     }`}
                   >
                     {money(career, { sign: true })}
@@ -126,19 +127,19 @@ function AuctionBook() {
               )
             })}
             <tr>
-              <td className="sticky left-0 bg-ink-850 text-parchment-faint">League total</td>
+              <td className="sticky left-0 bg-term-surface text-term-faint">League total</td>
               {years.map((year) => {
                 const total = Object.values(ledger[String(year)] ?? {}).reduce(
                   (sum, entry) => sum + entry.net,
                   0,
                 )
                 return (
-                  <td key={year} className="num text-parchment-faint">
+                  <td key={year} className="n text-term-faint">
                     {Math.abs(total) < 0.01 ? '0' : money(total)}
                   </td>
                 )
               })}
-              <td className="num text-parchment-faint">0</td>
+              <td className="n text-term-faint">0</td>
             </tr>
           </tbody>
         </table>
@@ -200,15 +201,15 @@ function FaabBook({ season }: { season: number }) {
       >
         {adding && <FaabForm season={season} onSubmit={addEntry} />}
         {error && (
-          <p className="px-5 pb-3 text-[12px] text-[var(--color-ledger-down)]">{error}</p>
+          <p className="px-5 pb-3 text-[12px] text-[var(--color-term-red)]">{error}</p>
         )}
-        <table className="ledger">
+        <table className="out">
           <thead>
             <tr>
               <th>Manager</th>
-              <th className="num">Claims</th>
-              <th className="num">Spent</th>
-              <th className="num">Remaining</th>
+              <th className="n">Claims</th>
+              <th className="n">Spent</th>
+              <th className="n">Remaining</th>
               <th className="w-40">Used</th>
             </tr>
           </thead>
@@ -216,12 +217,12 @@ function FaabBook({ season }: { season: number }) {
             {positions.map((row) => (
               <tr key={row.manager}>
                 <td>{managerName(managers, row.manager)}</td>
-                <td className="num text-parchment-dim">{row.claims || '·'}</td>
-                <td className="num text-parchment-dim">{money(row.spent)}</td>
-                <td className="num text-gold-400">{money(row.remaining)}</td>
+                <td className="n text-term-dim">{row.claims || '·'}</td>
+                <td className="n text-term-dim">{money(row.spent)}</td>
+                <td className="n text-term-green">{money(row.remaining)}</td>
                 <td>
                   <Bar value={row.spent} max={league.baseFaabBudget} />
-                  <span className="tnum mt-1 block text-[10px] text-parchment-faint">
+                  <span className="tnum mt-1 block text-[10px] text-term-faint">
                     {pct(row.pctUsed, 0)}
                   </span>
                 </td>
@@ -233,14 +234,14 @@ function FaabBook({ season }: { season: number }) {
 
       {seasonEntries.length > 0 && (
         <Panel title={`${season} claims`}>
-          <table className="ledger">
+          <table className="out">
             <thead>
               <tr>
                 <th>Player</th>
                 <th>Manager</th>
-                <th className="num">Bid</th>
-                <th className="num">% of budget</th>
-                <th className="num">Keeper cost</th>
+                <th className="n">Bid</th>
+                <th className="n">% of budget</th>
+                <th className="n">Keeper cost</th>
                 <th>On ending roster</th>
               </tr>
             </thead>
@@ -248,12 +249,12 @@ function FaabBook({ season }: { season: number }) {
               {seasonEntries.map((entry) => (
                 <tr key={entry.id}>
                   <td>{entry.player}</td>
-                  <td className="text-parchment-dim">{managerName(managers, entry.manager)}</td>
-                  <td className="num">{money(entry.bid)}</td>
-                  <td className="num text-parchment-faint">
+                  <td className="text-term-dim">{managerName(managers, entry.manager)}</td>
+                  <td className="n">{money(entry.bid)}</td>
+                  <td className="n text-term-faint">
                     {pct(entry.bid / league.baseFaabBudget, 0)}
                   </td>
-                  <td className="num text-gold-400">{money(faabKeeperCost(entry.bid, league))}</td>
+                  <td className="n text-term-green">{money(faabKeeperCost(entry.bid, league))}</td>
                   <td>
                     {entry.onEndingRoster ? <Chip tone="up">Yes</Chip> : <Chip>No</Chip>}
                   </td>
@@ -271,14 +272,14 @@ function FaabBook({ season }: { season: number }) {
         {history.length === 0 ? (
           <Empty>No recorded claims.</Empty>
         ) : (
-          <table className="ledger">
+          <table className="out">
             <thead>
               <tr>
                 <th>Player</th>
                 <th>Claimed by</th>
-                <th className="num">Bid</th>
-                <th className="num">% of budget</th>
-                <th className="num">Keeper cost</th>
+                <th className="n">Bid</th>
+                <th className="n">% of budget</th>
+                <th className="n">Keeper cost</th>
               </tr>
             </thead>
             <tbody>
@@ -287,14 +288,14 @@ function FaabBook({ season }: { season: number }) {
                 .map((claim, index) => (
                   <tr key={`${claim.player}-${index}`}>
                     <td>{claim.player}</td>
-                    <td className="text-parchment-dim">
+                    <td className="text-term-dim">
                       {claim.manager ? managerName(managers, claim.manager) : claim.team}
                     </td>
-                    <td className="num">{money(claim.bid)}</td>
-                    <td className="num text-parchment-faint">
+                    <td className="n">{money(claim.bid)}</td>
+                    <td className="n text-term-faint">
                       {pct(claim.bid / league.baseFaabBudget, 0)}
                     </td>
-                    <td className="num text-gold-400">{money(faabKeeperCost(claim.bid, league))}</td>
+                    <td className="n text-term-green">{money(faabKeeperCost(claim.bid, league))}</td>
                   </tr>
                 ))}
             </tbody>
@@ -324,9 +325,9 @@ function FaabForm({
   const cost = faabKeeperCost(bid, league)
 
   return (
-    <div className="grid gap-3 border-b rule-gold px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
+    <div className="grid gap-3 border-b border-term-line px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
       <label className="lg:col-span-2">
-        <span className="eyebrow">Manager</span>
+        <span className="label">Manager</span>
         <select
           className="field mt-1.5"
           value={manager}
@@ -341,7 +342,7 @@ function FaabForm({
         </select>
       </label>
       <label className="lg:col-span-2">
-        <span className="eyebrow">Player</span>
+        <span className="label">Player</span>
         <input
           className="field mt-1.5"
           value={player}
@@ -349,7 +350,7 @@ function FaabForm({
         />
       </label>
       <label>
-        <span className="eyebrow">Bid</span>
+        <span className="label">Bid</span>
         <input
           type="number"
           min={0}
@@ -360,7 +361,7 @@ function FaabForm({
         />
       </label>
       <label>
-        <span className="eyebrow">Week</span>
+        <span className="label">Week</span>
         <input
           type="number"
           min={1}
@@ -375,13 +376,13 @@ function FaabForm({
           type="checkbox"
           checked={onRoster}
           onChange={(event) => setOnRoster(event.target.checked)}
-          className="accent-[var(--color-gold-500)]"
+          className="accent-[var(--color-term-green)]"
         />
-        <span className="text-[12px] text-parchment-dim">Finished the season on their roster</span>
+        <span className="text-[12px] text-term-dim">Finished the season on their roster</span>
       </label>
       <div className="lg:col-span-2">
-        <span className="eyebrow">Keeper cost</span>
-        <div className="tnum mt-1.5 text-[20px] text-gold-400">{money(cost)}</div>
+        <span className="label">Keeper cost</span>
+        <div className="tnum mt-1.5 text-[20px] text-term-green">{money(cost)}</div>
       </div>
       <div className="flex items-end lg:col-span-2">
         <button
@@ -483,31 +484,31 @@ function CashBook({ season }: { season: number }) {
             }}
           />
         )}
-        {error && <p className="px-5 pb-3 text-[12px] text-[var(--color-ledger-down)]">{error}</p>}
-        <table className="ledger">
+        {error && <p className="px-5 pb-3 text-[12px] text-[var(--color-term-red)]">{error}</p>}
+        <table className="out">
           <thead>
             <tr>
               <th>Manager</th>
-              <th className="num">Entries</th>
-              <th className="num">Total</th>
-              <th className="num">Settled</th>
-              <th className="num">Outstanding</th>
+              <th className="n">Entries</th>
+              <th className="n">Total</th>
+              <th className="n">Settled</th>
+              <th className="n">Outstanding</th>
             </tr>
           </thead>
           <tbody>
             {positions.map((row) => (
               <tr key={row.manager}>
                 <td>{managerName(managers, row.manager)}</td>
-                <td className="num text-parchment-faint">{row.entries || '·'}</td>
-                <td className="num text-parchment-dim">{money(row.owed, { sign: true })}</td>
-                <td className="num text-parchment-faint">{money(row.settled, { sign: true })}</td>
+                <td className="n text-term-faint">{row.entries || '·'}</td>
+                <td className="n text-term-dim">{money(row.owed, { sign: true })}</td>
+                <td className="n text-term-faint">{money(row.settled, { sign: true })}</td>
                 <td
-                  className={`num ${
+                  className={`n ${
                     row.outstanding > 0
-                      ? 'text-[var(--color-ledger-up)]'
+                      ? 'text-[var(--color-term-green)]'
                       : row.outstanding < 0
-                        ? 'text-[var(--color-ledger-down)]'
-                        : 'text-parchment-faint'
+                        ? 'text-[var(--color-term-red)]'
+                        : 'text-term-faint'
                   }`}
                 >
                   {row.outstanding === 0 ? '·' : money(row.outstanding, { sign: true })}
@@ -525,31 +526,31 @@ function CashBook({ season }: { season: number }) {
             above.
           </Empty>
         ) : (
-          <table className="ledger">
+          <table className="out">
             <thead>
               <tr>
                 <th>Date</th>
                 <th>Manager</th>
                 <th>Type</th>
                 <th>Description</th>
-                <th className="num">Amount</th>
+                <th className="n">Amount</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
               {entries.map((entry) => (
                 <tr key={entry.id}>
-                  <td className="tnum whitespace-nowrap text-parchment-faint">
+                  <td className="tnum whitespace-nowrap text-term-faint">
                     {shortDate(entry.date)}
                   </td>
                   <td>{managerName(managers, entry.manager)}</td>
-                  <td className="text-[12px] text-parchment-dim capitalize">{entry.type}</td>
-                  <td className="text-parchment-dim">{entry.description}</td>
+                  <td className="text-[12px] text-term-dim capitalize">{entry.type}</td>
+                  <td className="text-term-dim">{entry.description}</td>
                   <td
-                    className={`num ${
+                    className={`n ${
                       entry.amount > 0
-                        ? 'text-[var(--color-ledger-up)]'
-                        : 'text-[var(--color-ledger-down)]'
+                        ? 'text-[var(--color-term-green)]'
+                        : 'text-[var(--color-term-red)]'
                     }`}
                   >
                     {money(entry.amount, { sign: true })}
@@ -558,7 +559,7 @@ function CashBook({ season }: { season: number }) {
                     {commissioner ? (
                       <button
                         type="button"
-                        className="chip text-parchment-faint transition-colors hover:text-gold-400"
+                        className="tag text-term-faint transition-colors hover:text-term-green"
                         onClick={() =>
                           void mutate(
                             (current) => ({
@@ -605,9 +606,9 @@ function CashForm({
   const [busy, setBusy] = useState(false)
 
   return (
-    <div className="grid gap-3 border-b rule-gold px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
+    <div className="grid gap-3 border-b border-term-line px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
       <label className="lg:col-span-2">
-        <span className="eyebrow">Manager</span>
+        <span className="label">Manager</span>
         <select
           className="field mt-1.5"
           value={manager}
@@ -622,7 +623,7 @@ function CashForm({
         </select>
       </label>
       <label>
-        <span className="eyebrow">Type</span>
+        <span className="label">Type</span>
         <select
           className="field mt-1.5"
           value={type}
@@ -636,7 +637,7 @@ function CashForm({
         </select>
       </label>
       <label>
-        <span className="eyebrow">Amount</span>
+        <span className="label">Amount</span>
         <input
           type="number"
           className="field tnum mt-1.5"
@@ -646,7 +647,7 @@ function CashForm({
         />
       </label>
       <label className="lg:col-span-2">
-        <span className="eyebrow">Description</span>
+        <span className="label">Description</span>
         <input
           className="field mt-1.5"
           value={description}
@@ -675,7 +676,7 @@ function CashForm({
         >
           {busy ? 'Saving…' : 'Record entry'}
         </button>
-        <p className="ml-4 text-[11px] text-parchment-faint">
+        <p className="ml-4 text-[11px] text-term-faint">
           Negative = the manager owes the league. Positive = the league owes them.
         </p>
       </div>

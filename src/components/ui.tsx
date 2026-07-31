@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 
+/** Framed block of terminal output. */
 export function Panel({
   title,
   subtitle,
@@ -17,15 +18,20 @@ export function Panel({
 }) {
   return (
     <section
-      className={`panel rise ${className}`}
+      className={`win line-in ${className}`}
       style={delay ? { animationDelay: `${delay}ms` } : undefined}
     >
       {(title || action) && (
-        <header className="flex items-start justify-between gap-4 border-b rule-gold px-5 py-4">
-          <div>
-            {title && <h2 className="eyebrow">{title}</h2>}
+        <header className="win-head flex-wrap">
+          <div className="min-w-0">
+            {title && (
+              <h2 className="label text-term-green">
+                <span className="text-term-faint">$ </span>
+                {title}
+              </h2>
+            )}
             {subtitle && (
-              <p className="mt-1.5 text-[13px] leading-snug text-parchment-dim">{subtitle}</p>
+              <p className="mt-1 text-[12px] leading-snug text-term-dim">{subtitle}</p>
             )}
           </div>
           {action && <div className="shrink-0">{action}</div>}
@@ -36,29 +42,79 @@ export function Panel({
   )
 }
 
+/**
+ * Counts a numeric readout up on mount. Static values (names, strings) pass
+ * straight through.
+ */
+function useCountUp(target: number, run: boolean): number {
+  const [value, setValue] = useState(run ? 0 : target)
+  const frame = useRef(0)
+
+  useEffect(() => {
+    if (!run) {
+      setValue(target)
+      return
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setValue(target)
+      return
+    }
+    const start = performance.now()
+    const duration = 620
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1)
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setValue(target * eased)
+      if (progress < 1) frame.current = requestAnimationFrame(tick)
+    }
+    frame.current = requestAnimationFrame(tick)
+
+    // rAF is paused in background tabs, which would strand the readout at zero.
+    // A timer still fires there, so the true value always lands.
+    const settle = setTimeout(() => setValue(target), duration + 260)
+
+    return () => {
+      cancelAnimationFrame(frame.current)
+      clearTimeout(settle)
+    }
+  }, [target, run])
+
+  return value
+}
+
 export function Stat({
   label,
   value,
   hint,
   tone = 'default',
+  countTo,
+  format,
 }: {
   label: string
   value: ReactNode
   hint?: ReactNode
   tone?: 'default' | 'up' | 'down' | 'gold'
+  /** When set, the readout animates from zero to this number on mount. */
+  countTo?: number
+  format?: (value: number) => string
 }) {
   const toneClass = {
-    default: 'text-parchment',
-    up: 'text-[var(--color-ledger-up)]',
-    down: 'text-[var(--color-ledger-down)]',
-    gold: 'text-gold-400',
+    default: 'text-term-text',
+    up: 'text-term-green',
+    down: 'text-term-red',
+    gold: 'text-term-amber',
   }[tone]
 
+  const counted = useCountUp(countTo ?? 0, countTo !== undefined)
+
   return (
-    <div className="border-l-2 border-gold-600/40 pl-3.5">
-      <div className="eyebrow">{label}</div>
-      <div className={`tnum mt-1.5 text-[26px] leading-none font-medium ${toneClass}`}>{value}</div>
-      {hint && <div className="mt-1.5 text-[11px] text-parchment-faint">{hint}</div>}
+    <div className="border-l border-term-line-bright pl-3">
+      <div className="label">{label}</div>
+      <div className={`mt-1 text-[23px] leading-none font-medium tabular-nums ${toneClass} glow`}>
+        {countTo !== undefined ? (format ? format(counted) : Math.round(counted)) : value}
+      </div>
+      {hint && <div className="mt-1.5 text-[11px] leading-snug text-term-faint">{hint}</div>}
     </div>
   )
 }
@@ -71,36 +127,52 @@ export function Chip({
   tone?: 'neutral' | 'gold' | 'up' | 'down' | 'flag'
 }) {
   const toneClass = {
-    neutral: 'text-parchment-faint',
-    gold: 'text-gold-400',
-    up: 'text-[var(--color-ledger-up)]',
-    down: 'text-[var(--color-ledger-down)]',
-    flag: 'text-[var(--color-ledger-flag)]',
+    neutral: 'text-term-faint',
+    gold: 'text-term-amber',
+    up: 'text-term-green',
+    down: 'text-term-red',
+    flag: 'text-term-amber',
   }[tone]
-  return <span className={`chip ${toneClass}`}>{children}</span>
+  return <span className={`tag ${toneClass}`}>{children}</span>
 }
 
+/** Command-prompt page header. */
 export function PageHeader({
   eyebrow,
   title,
   lede,
   action,
+  path = '~',
 }: {
   eyebrow: string
   title: string
   lede?: string
   action?: ReactNode
+  path?: string
 }) {
   return (
-    <header className="rise mb-8 flex flex-wrap items-end justify-between gap-5 border-b rule-gold pb-6">
-      <div className="max-w-2xl">
-        <div className="eyebrow">{eyebrow}</div>
-        <h1 className="mt-2 font-[family-name:var(--font-display)] text-[42px] leading-[0.95] tracking-tight text-parchment sm:text-[52px]">
-          {title}
-        </h1>
-        {lede && <p className="mt-3 text-[14px] leading-relaxed text-parchment-dim">{lede}</p>}
+    <header className="line-in mb-6 border-b border-term-line pb-5">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="min-w-0 max-w-2xl">
+          <div className="flex flex-wrap items-center gap-x-1.5 text-[11px]">
+            <span className="text-term-green">commish@wacl</span>
+            <span className="text-term-faint">:</span>
+            <span className="text-term-cyan">{path}</span>
+            <span className="text-term-faint">$</span>
+            <span className="type-in text-term-dim">{eyebrow}</span>
+          </div>
+          <h1 className="cursor mt-2 text-[30px] leading-[1.05] font-semibold tracking-tight text-term-text sm:text-[38px]">
+            {title}
+          </h1>
+          {lede && (
+            <p className="mt-2.5 text-[12.5px] leading-relaxed text-term-dim">
+              <span className="text-term-faint select-none"># </span>
+              {lede}
+            </p>
+          )}
+        </div>
+        {action && <div className="shrink-0">{action}</div>}
       </div>
-      {action && <div className="shrink-0 pb-1">{action}</div>}
     </header>
   )
 }
@@ -117,19 +189,19 @@ export function SegmentedControl<T extends string>({
   label?: string
 }) {
   return (
-    <div className="flex items-center gap-3">
-      {label && <span className="eyebrow">{label}</span>}
-      <div className="flex border rule-gold">
+    <div className="flex items-center gap-2">
+      {label && <span className="label">{label}</span>}
+      <div className="scroll-x flex border border-term-line-bright">
         {options.map((option) => (
           <button
             key={option.id}
             type="button"
             onClick={() => onChange(option.id)}
             aria-pressed={value === option.id}
-            className={`px-3 py-1.5 text-[11px] font-semibold tracking-[0.09em] uppercase transition-colors ${
+            className={`min-h-[34px] px-3 py-1 text-[11px] font-medium tracking-wide whitespace-nowrap transition-colors ${
               value === option.id
-                ? 'bg-gold-500 text-ink-950'
-                : 'text-parchment-dim hover:bg-gold-500/12 hover:text-parchment'
+                ? 'bg-term-green text-term-bg'
+                : 'text-term-dim hover:bg-term-raised hover:text-term-green'
             }`}
           >
             {option.label}
@@ -142,16 +214,69 @@ export function SegmentedControl<T extends string>({
 
 export function Empty({ children }: { children: ReactNode }) {
   return (
-    <div className="px-5 py-12 text-center text-[13px] text-parchment-faint italic">{children}</div>
+    <div className="px-4 py-10 text-center text-[12.5px] text-term-faint">
+      <span className="text-term-line-bright">--- </span>
+      {children}
+      <span className="text-term-line-bright"> ---</span>
+    </div>
   )
 }
 
-export function Bar({ value, max, tone = 'gold' }: { value: number; max: number; tone?: string }) {
-  const width = max > 0 ? Math.max(0, Math.min(100, (value / max) * 100)) : 0
-  const color = tone === 'gold' ? 'var(--color-gold-500)' : tone
+/** Meter drawn as terminal blocks rather than a solid bar. */
+export function Bar({
+  value,
+  max,
+  tone = 'var(--color-term-green)',
+  cells = 12,
+}: {
+  value: number
+  max: number
+  tone?: string
+  cells?: number
+}) {
+  const ratio = max > 0 ? Math.max(0, Math.min(1, value / max)) : 0
+  const filled = Math.round(ratio * cells)
   return (
-    <div className="h-1.5 w-full bg-ink-700">
-      <div className="h-full transition-all" style={{ width: `${width}%`, background: color }} />
-    </div>
+    <span
+      className="text-[11px] leading-none tracking-[-0.5px] tabular-nums"
+      aria-hidden
+      title={`${Math.round(ratio * 100)}%`}
+    >
+      <span style={{ color: tone }}>{'█'.repeat(filled)}</span>
+      <span className="text-term-line-bright">{'░'.repeat(cells - filled)}</span>
+    </span>
   )
+}
+
+/**
+ * Inline block sparkline. Reads at any size and costs nothing to render, which
+ * makes it the right chart for a table cell on a phone.
+ */
+export function Sparkline({
+  values,
+  tone = 'text-term-green',
+}: {
+  values: (number | null)[]
+  tone?: string
+}) {
+  const blocks = '▁▂▃▄▅▆▇█'
+  const present = values.filter((value): value is number => value !== null)
+  if (present.length === 0) return <span className="text-term-faint">—</span>
+  const min = Math.min(...present)
+  const max = Math.max(...present)
+  const span = max - min || 1
+  return (
+    <span className={`text-[13px] leading-none tracking-[-0.5px] ${tone}`} aria-hidden>
+      {values
+        .map((value) =>
+          value === null ? ' ' : blocks[Math.round(((value - min) / span) * (blocks.length - 1))],
+        )
+        .join('')}
+    </span>
+  )
+}
+
+/** Horizontally scrollable wrapper for wide tables on small screens. */
+export function Scroller({ children }: { children: ReactNode }) {
+  return <div className="scroll-x">{children}</div>
 }

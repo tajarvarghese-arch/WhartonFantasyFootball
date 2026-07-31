@@ -7,11 +7,12 @@ import { money } from '../lib/format'
 import { contractYearsRemaining, keeperEligibility } from '../lib/rules'
 import type { ContractYear } from '../lib/types'
 
+// A fresh -> D expiring, so the colour reads as a fuse burning down.
 const CONTRACT_TONE: Record<ContractYear, string> = {
-  A: 'text-[var(--color-ledger-up)]',
-  B: 'text-gold-400',
-  C: 'text-[var(--color-ledger-flag)]',
-  D: 'text-[var(--color-ledger-down)]',
+  A: 'text-term-green',
+  B: 'text-term-cyan',
+  C: 'text-term-amber',
+  D: 'text-term-red',
 }
 
 export default function Keepers() {
@@ -34,6 +35,7 @@ export default function Keepers() {
   return (
     <>
       <PageHeader
+        path="~/keepers"
         eyebrow="Contracts & Rosters"
         title="Keepers"
         lede={`Each team retains up to ${league.keeperSlots} players for a maximum ${league.maxContractYears}-year contract. Salary comes off the $${league.baseDraftBudget} auction budget.`}
@@ -53,7 +55,7 @@ export default function Keepers() {
         }
       />
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-2">
         {blocks.map((block, index) => {
           const budget = budgetFor(block.manager)
           const salary = block.keepers.reduce((total, pick) => total + (pick.salary ?? 0), 0)
@@ -65,25 +67,25 @@ export default function Keepers() {
               <div className="px-5 py-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <div className="font-[family-name:var(--font-display)] text-[24px] leading-tight text-parchment">
+                    <div className="text-[24px] leading-tight text-term-text">
                       {block.team}
                     </div>
                     {block.manager && (
                       <Link
                         to={`/managers/${block.manager}`}
-                        className="eyebrow transition-colors hover:text-gold-300"
+                        className="label transition-colors hover:text-term-green"
                       >
                         {managerName(managers, block.manager)}
                       </Link>
                     )}
                   </div>
                   <div className="text-right">
-                    <div className="eyebrow">Draft budget</div>
+                    <div className="label">Draft budget</div>
                     <div
                       className={`tnum text-[24px] leading-none ${
                         (budget?.available ?? block.draftBudget ?? 0) < 0
-                          ? 'text-[var(--color-ledger-down)]'
-                          : 'text-gold-400'
+                          ? 'text-[var(--color-term-red)]'
+                          : 'text-term-green'
                       }`}
                     >
                       {money(budget?.available ?? block.draftBudget)}
@@ -91,18 +93,18 @@ export default function Keepers() {
                   </div>
                 </div>
 
-                <table className="ledger mt-4">
+                <table className="out mt-4">
                   <thead>
                     <tr>
                       <th>Keeper</th>
-                      <th className="num">Salary</th>
-                      <th className="num">Contract</th>
+                      <th className="n">Salary</th>
+                      <th className="n">Contract</th>
                     </tr>
                   </thead>
                   <tbody>
                     {block.keepers.length === 0 ? (
                       <tr>
-                        <td colSpan={3} className="text-parchment-faint italic">
+                        <td colSpan={3} className="text-term-faint italic">
                           No keepers selected.
                         </td>
                       </tr>
@@ -110,8 +112,8 @@ export default function Keepers() {
                       block.keepers.map((pick) => (
                         <tr key={`${pick.player}-${pick.salary}`}>
                           <td>{pick.player}</td>
-                          <td className="num text-parchment-dim">{money(pick.salary)}</td>
-                          <td className="num">
+                          <td className="n text-term-dim">{money(pick.salary)}</td>
+                          <td className="n">
                             <span
                               className={
                                 pick.contractYear ? CONTRACT_TONE[pick.contractYear] : undefined
@@ -119,7 +121,7 @@ export default function Keepers() {
                             >
                               {pick.contractYear ?? '—'}
                             </span>
-                            <span className="ml-2 text-[11px] text-parchment-faint">
+                            <span className="ml-2 text-[11px] text-term-faint">
                               {contractYearsRemaining(pick.contractYear) === 0
                                 ? 'final year'
                                 : `${contractYearsRemaining(pick.contractYear)} left`}
@@ -131,28 +133,28 @@ export default function Keepers() {
                   </tbody>
                 </table>
 
-                <dl className="mt-4 grid grid-cols-3 gap-3 border-t rule-gold pt-4 text-[12px]">
+                <dl className="mt-4 grid grid-cols-3 gap-3 border-t border-term-line pt-4 text-[12px]">
                   <div>
-                    <dt className="text-parchment-faint">Base</dt>
-                    <dd className="tnum mt-0.5 text-parchment-dim">
+                    <dt className="text-term-faint">Base</dt>
+                    <dd className="tnum mt-0.5 text-term-dim">
                       {money(league.baseDraftBudget)}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-parchment-faint">Keeper salary</dt>
-                    <dd className="tnum mt-0.5 text-[var(--color-ledger-down)]">
+                    <dt className="text-term-faint">Keeper salary</dt>
+                    <dd className="tnum mt-0.5 text-[var(--color-term-red)]">
                       {money(-salary)}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-parchment-faint">Traded cash</dt>
+                    <dt className="text-term-faint">Traded cash</dt>
                     <dd
                       className={`tnum mt-0.5 ${
                         (budget?.cashNet ?? block.cashTraded) > 0
-                          ? 'text-[var(--color-ledger-up)]'
+                          ? 'text-[var(--color-term-green)]'
                           : (budget?.cashNet ?? block.cashTraded) < 0
-                            ? 'text-[var(--color-ledger-down)]'
-                            : 'text-parchment-faint'
+                            ? 'text-[var(--color-term-red)]'
+                            : 'text-term-faint'
                       }`}
                     >
                       {money(budget?.cashNet ?? block.cashTraded, { sign: true })}
@@ -162,7 +164,7 @@ export default function Keepers() {
 
                 <button
                   type="button"
-                  className="mt-4 text-[11px] font-semibold tracking-[0.09em] text-gold-400 uppercase hover:text-gold-500"
+                  className="btn mt-4 w-full sm:w-auto"
                   onClick={() => setExpanded(open ? null : block.team)}
                 >
                   {open ? '− Hide' : '+ Show'} {year - 1} ending roster ({block.endingRoster.length})
@@ -170,13 +172,13 @@ export default function Keepers() {
               </div>
 
               {open && (
-                <div className="border-t rule-gold">
-                  <table className="ledger">
+                <div className="border-t border-term-line">
+                  <table className="out">
                     <thead>
                       <tr>
                         <th>Player</th>
-                        <th className="num">Cost</th>
-                        <th className="num">Yr</th>
+                        <th className="n">Cost</th>
+                        <th className="n">Yr</th>
                         <th>Keeper status</th>
                       </tr>
                     </thead>
@@ -184,8 +186,8 @@ export default function Keepers() {
                       {eligible.map((spot) => (
                         <tr key={`${spot.player}-${spot.cost}`}>
                           <td>{spot.player}</td>
-                          <td className="num text-parchment-dim">{money(spot.cost)}</td>
-                          <td className="num">
+                          <td className="n text-term-dim">{money(spot.cost)}</td>
+                          <td className="n">
                             <span
                               className={
                                 spot.contractYear ? CONTRACT_TONE[spot.contractYear] : undefined
@@ -196,7 +198,7 @@ export default function Keepers() {
                           </td>
                           <td className="text-[12px]">
                             {spot.eligible ? (
-                              <span className="text-parchment-faint">{spot.reason}</span>
+                              <span className="text-term-faint">{spot.reason}</span>
                             ) : (
                               <Chip tone="down">{spot.reason}</Chip>
                             )}

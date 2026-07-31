@@ -52,7 +52,7 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-ink-950/85 p-4 backdrop-blur-sm sm:p-8"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-term-bg/90 p-4 backdrop-blur-sm sm:p-8"
       role="dialog"
       aria-modal="true"
       aria-label="Commissioner access"
@@ -60,36 +60,36 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
         if (event.target === event.currentTarget) onClose()
       }}
     >
-      <div className="panel w-full max-w-xl">
-        <header className="flex items-start justify-between gap-4 border-b rule-gold px-6 py-5">
+      <div className="win w-full max-w-xl">
+        <header className="flex items-start justify-between gap-4 border-b border-term-line px-6 py-5">
           <div>
-            <div className="eyebrow">Access</div>
-            <h2 className="mt-1.5 font-[family-name:var(--font-display)] text-[28px] leading-none text-parchment">
+            <div className="label">Access</div>
+            <h2 className="mt-1.5 text-[28px] leading-none text-term-text">
               Commissioner mode
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-[22px] leading-none text-parchment-faint transition-colors hover:text-parchment"
+            className="text-[22px] leading-none text-term-faint transition-colors hover:text-term-text"
             aria-label="Close"
           >
             ×
           </button>
         </header>
 
-        <div className="space-y-5 px-6 py-6 text-[13px] leading-relaxed text-parchment-dim">
+        <div className="space-y-5 px-6 py-6 text-[13px] leading-relaxed text-term-dim">
           {active ? (
             <>
               <p>
-                Commissioner mode is <span className="text-[var(--color-ledger-up)]">on</span> for
+                Commissioner mode is <span className="text-[var(--color-term-green)]">on</span> for
                 this browser. Approvals, FAAB entries, and cash records commit straight to{' '}
-                <code className="text-gold-400">
+                <code className="text-term-green">
                   {REPO_OWNER}/{REPO_NAME}
                 </code>
                 .
               </p>
-              <p className="text-parchment-faint">
+              <p className="text-term-faint">
                 GitHub Pages republishes a minute or two after each change. Until it does, your edits
                 are held locally so the numbers here stay correct.
               </p>
@@ -112,13 +112,13 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
               <p>
                 The league site is public and read-only. To record decisions you need a GitHub
                 fine-grained personal access token with{' '}
-                <span className="text-parchment">Contents: Read and write</span> on{' '}
-                <code className="text-gold-400">{REPO_NAME}</code>.
+                <span className="text-term-text">Contents: Read and write</span> on{' '}
+                <code className="text-term-green">{REPO_NAME}</code>.
               </p>
-              <ol className="ml-4 list-decimal space-y-1.5 text-parchment-faint marker:text-gold-600">
+              <ol className="ml-4 list-decimal space-y-1.5 text-term-faint marker:text-term-faint">
                 <li>
                   <a
-                    className="text-gold-400 underline decoration-gold-600/50 underline-offset-2 hover:decoration-gold-400"
+                    className="text-term-green underline underline-offset-2"
                     href="https://github.com/settings/personal-access-tokens/new"
                     target="_blank"
                     rel="noreferrer noopener"
@@ -131,7 +131,7 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
                 <li>Paste it below. It stays in this browser only.</li>
               </ol>
               <div className="space-y-3">
-                <label className="eyebrow block" htmlFor="pat">
+                <label className="label block" htmlFor="pat">
                   Personal access token
                 </label>
                 <input
@@ -158,10 +158,10 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
             </>
           )}
 
-          {status && <p className="text-[var(--color-ledger-up)]">{status}</p>}
-          {error && <p className="text-[var(--color-ledger-down)]">{error}</p>}
+          {status && <p className="text-[var(--color-term-green)]">{status}</p>}
+          {error && <p className="text-[var(--color-term-red)]">{error}</p>}
           {!active && getToken() && (
-            <p className="text-[var(--color-ledger-flag)]">A token is stored but was not accepted.</p>
+            <p className="text-[var(--color-term-amber)]">A token is stored but was not accepted.</p>
           )}
         </div>
       </div>

@@ -13,6 +13,7 @@ export default function Rules() {
   return (
     <>
       <PageHeader
+        path="~/rules"
         eyebrow="Constitution"
         title="Rules"
         lede="The official keeper rules as maintained by the commissioner, reproduced verbatim from the league workbook."
@@ -29,7 +30,7 @@ export default function Rules() {
         <Stat label="FAAB budget" value={money(league.baseFaabBudget)} hint="Per team per season" />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-2">
         <Panel title="Official keeper rules" delay={60}>
           <ul className="space-y-3 px-5 py-5">
             {body.map((line, index) => {
@@ -39,12 +40,12 @@ export default function Rules() {
                   key={index}
                   className={
                     bullet
-                      ? 'flex gap-3 text-[13px] leading-relaxed text-parchment-dim'
-                      : 'pt-2 text-[13px] leading-relaxed font-semibold text-parchment'
+                      ? 'flex gap-3 text-[13px] leading-relaxed text-term-dim'
+                      : 'pt-2 text-[13px] leading-relaxed font-semibold text-term-text'
                   }
                 >
                   {bullet && (
-                    <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-gold-600" />
+                    <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-term-green" />
                   )}
                   <span>{bullet ? line.replace(/^-\s*/, '') : line}</span>
                 </li>
@@ -59,11 +60,11 @@ export default function Rules() {
             subtitle="Applied automatically to every waiver claim recorded in Finances."
             delay={100}
           >
-            <table className="ledger">
+            <table className="out">
               <thead>
                 <tr>
                   <th>% of FAAB budget spent</th>
-                  <th className="num">Keeper cost</th>
+                  <th className="n">Keeper cost</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,13 +77,13 @@ export default function Rules() {
                           ? `> ${league.faabScale[index - 1].maxPct}%`
                           : `${from}–${tier.maxPct}%`}
                       </td>
-                      <td className="num text-gold-400">{money(tier.keeperCost)}</td>
+                      <td className="n text-term-green">{money(tier.keeperCost)}</td>
                     </tr>
                   )
                 })}
               </tbody>
             </table>
-            <p className="border-t rule-gold px-5 py-3.5 text-[12px] leading-relaxed text-parchment-faint">
+            <p className="border-t border-term-line px-5 py-3.5 text-[12px] leading-relaxed text-term-faint">
               A player drafted in the auction and later re-acquired off waivers keeps the greater of
               the auction value and the waiver-scale cost. Undrafted free agents cost $5.
             </p>
@@ -93,14 +94,14 @@ export default function Rules() {
             subtitle="Automated on every trade in the queue."
             delay={140}
           >
-            <div className="space-y-3 px-5 py-5 text-[13px] leading-relaxed text-parchment-dim">
+            <div className="space-y-3 px-5 py-5 text-[13px] leading-relaxed text-term-dim">
               <p>
-                A trade moving less than <span className="text-gold-400">$10</span> in the
+                A trade moving less than <span className="text-term-green">$10</span> in the
                 subsequent year can be held 24 hours for a market check. By the rule's own example,
                 a $5/$10 trade triggers it and a $10/$2 trade does not — the test is the first
                 obligation year, not the total.
               </p>
-              <p className="text-parchment-faint">
+              <p className="text-term-faint">
                 During the window any manager may offer the seller a better proposal. When it
                 closes, the seller owes the original buyer a right of first refusal before dealing
                 elsewhere.

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Chip, Panel, PageHeader, SegmentedControl } from '../components/ui'
+import { Chip, Panel, PageHeader, SegmentedControl, Scroller, Sparkline } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
 import { num, pct, record } from '../lib/format'
-import { careerTable, eraOptions } from '../lib/stats'
+import { careerTable, eraOptions, managerSeasons } from '../lib/stats'
 
 export default function Managers() {
   const { seasons, managers } = useLeagueData()
@@ -15,6 +15,7 @@ export default function Managers() {
   return (
     <>
       <PageHeader
+        path="~/managers"
         eyebrow="Career Records"
         title="Managers"
         lede="Sixteen managers have played in this league. Win percentage is regular season; titles count finishing first after the playoffs."
@@ -28,20 +29,21 @@ export default function Managers() {
       />
 
       <Panel title={`${era.label} career table`} subtitle={`${table.length} managers`}>
-        <div className="overflow-x-auto">
-          <table className="ledger">
+        <Scroller>
+          <table className="out">
             <thead>
               <tr>
                 <th>Manager</th>
-                <th className="num">Sea</th>
-                <th className="num">Record</th>
-                <th className="num">Win %</th>
-                <th className="num">Titles</th>
-                <th className="num">Top 3</th>
-                <th className="num">Playoffs</th>
-                <th className="num">Rate</th>
-                <th className="num">Avg PF</th>
-                <th className="num">Avg PA</th>
+                <th className="n">Sea</th>
+                <th className="n">Record</th>
+                <th className="n">Win %</th>
+                <th className="n">Titles</th>
+                <th className="n">Top 3</th>
+                <th className="n">Playoffs</th>
+                <th className="n">Rate</th>
+                <th className="n">Avg PF</th>
+                <th className="n">Avg PA</th>
+                <th>Form</th>
               </tr>
             </thead>
             <tbody>
@@ -52,7 +54,7 @@ export default function Managers() {
                     <td className="whitespace-nowrap">
                       <Link
                         to={`/managers/${line.manager}`}
-                        className="font-medium transition-colors hover:text-gold-400"
+                        className="font-medium transition-colors hover:text-term-green"
                       >
                         {managerName(managers, line.manager)}
                       </Link>
@@ -62,32 +64,44 @@ export default function Managers() {
                         </span>
                       )}
                     </td>
-                    <td className="num text-parchment-faint">{line.seasonsPlayed}</td>
-                    <td className="num">{record(line.wins, line.losses)}</td>
-                    <td className="num text-gold-400">{pct(line.winPct)}</td>
-                    <td className="num">
+                    <td className="n text-term-faint">{line.seasonsPlayed}</td>
+                    <td className="n">{record(line.wins, line.losses)}</td>
+                    <td className="n text-term-green">{pct(line.winPct)}</td>
+                    <td className="n">
                       {line.titles > 0 ? (
-                        <span className="text-gold-400">
+                        <span className="text-term-green">
                           {'★'.repeat(Math.min(line.titles, 4))}
                           {line.titles > 4 ? ` ${line.titles}` : ''}
                         </span>
                       ) : (
-                        <span className="text-parchment-faint">·</span>
+                        <span className="text-term-faint">·</span>
                       )}
                     </td>
-                    <td className="num text-parchment-dim">{line.topThree || '·'}</td>
-                    <td className="num text-parchment-dim">
+                    <td className="n text-term-dim">{line.topThree || '·'}</td>
+                    <td className="n text-term-dim">
                       {line.playoffAppearances}/{line.seasonsPlayed}
                     </td>
-                    <td className="num text-parchment-faint">{pct(line.playoffRate, 0)}</td>
-                    <td className="num text-parchment-dim">{num(line.avgPointsFor)}</td>
-                    <td className="num text-parchment-faint">{num(line.avgPointsAgainst)}</td>
+                    <td className="n text-term-faint">{pct(line.playoffRate, 0)}</td>
+                    <td className="n text-term-dim">{num(line.avgPointsFor)}</td>
+                    <td className="n text-term-faint">{num(line.avgPointsAgainst)}</td>
+                    <td title="Win % by season, oldest to newest">
+                      <Sparkline
+                        values={managerSeasons(seasons, line.manager)
+                          .slice(0, 10)
+                          .reverse()
+                          .map((row) =>
+                            row.team.wins + row.team.losses
+                              ? row.team.wins / (row.team.wins + row.team.losses)
+                              : null,
+                          )}
+                      />
+                    </td>
                   </tr>
                 )
               })}
             </tbody>
           </table>
-        </div>
+        </Scroller>
       </Panel>
     </>
   )

@@ -47,7 +47,7 @@ export default function ManagerDetail() {
         <PageHeader eyebrow="Manager" title="Not found" />
         <Panel>
           <Empty>
-            No records for that manager. <Link to="/managers" className="text-gold-400">Back to the list</Link>
+            No records for that manager. <Link to="/managers" className="text-term-green">Back to the list</Link>
           </Empty>
         </Panel>
       </>
@@ -57,6 +57,7 @@ export default function ManagerDetail() {
   return (
     <>
       <PageHeader
+        path="~/managers"
         eyebrow={manager.active ? `Active · ${manager.team}` : 'Former manager'}
         title={manager.displayName}
         lede={`${career.seasonsPlayed} seasons · ${record(career.wins, career.losses)} regular season · best finish ${ordinal(career.bestFinish)}${
@@ -84,7 +85,7 @@ export default function ManagerDetail() {
         />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-2">
         <Panel
           title="Form"
           subtitle="Rolling three-season regular-season win percentage."
@@ -102,36 +103,36 @@ export default function ManagerDetail() {
         </Panel>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+      <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-[1.5fr_1fr]">
         <Panel title="Season by season" delay={160}>
           <div className="overflow-x-auto">
-            <table className="ledger">
+            <table className="out">
               <thead>
                 <tr>
                   <th>Year</th>
                   <th>Team</th>
-                  <th className="num">#</th>
-                  <th className="num">Record</th>
-                  <th className="num">PF/gm</th>
-                  <th className="num">PA/gm</th>
-                  <th className="num">Playoffs</th>
+                  <th className="n">#</th>
+                  <th className="n">Record</th>
+                  <th className="n">PF/gm</th>
+                  <th className="n">PA/gm</th>
+                  <th className="n">Playoffs</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((row) => (
                   <tr key={row.season.year}>
                     <td className="tnum">{row.season.year}</td>
-                    <td className="text-parchment-dim">{row.team.team}</td>
-                    <td className="num">
-                      <span className={row.team.rank === 1 ? 'text-gold-400' : undefined}>
+                    <td className="text-term-dim">{row.team.team}</td>
+                    <td className="n">
+                      <span className={row.team.rank === 1 ? 'text-term-green' : undefined}>
                         {row.team.rank === 1 && '★ '}
                         {row.team.rank}
                       </span>
                     </td>
-                    <td className="num">{record(row.team.wins, row.team.losses)}</td>
-                    <td className="num text-parchment-dim">{num(row.team.avgPointsFor)}</td>
-                    <td className="num text-parchment-faint">{num(row.team.avgPointsAgainst)}</td>
-                    <td className="num text-parchment-faint">
+                    <td className="n">{record(row.team.wins, row.team.losses)}</td>
+                    <td className="n text-term-dim">{num(row.team.avgPointsFor)}</td>
+                    <td className="n text-term-faint">{num(row.team.avgPointsAgainst)}</td>
+                    <td className="n text-term-faint">
                       {row.team.playoffWins + row.team.playoffLosses > 0
                         ? record(row.team.playoffWins, row.team.playoffLosses)
                         : '—'}
@@ -146,19 +147,19 @@ export default function ManagerDetail() {
         <div className="space-y-6">
           {currentBlock && (
             <Panel title={`${league.currentSeason} keepers`} delay={200}>
-              <table className="ledger">
+              <table className="out">
                 <tbody>
                   {currentBlock.keepers.map((pick) => (
                     <tr key={pick.player}>
                       <td>{pick.player}</td>
-                      <td className="num text-parchment-dim">{money(pick.salary)}</td>
-                      <td className="num text-parchment-faint">Yr {pick.contractYear}</td>
+                      <td className="n text-term-dim">{money(pick.salary)}</td>
+                      <td className="n text-term-faint">Yr {pick.contractYear}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <div className="border-t rule-gold px-5 py-3">
-                <Link to="/keepers" className="eyebrow hover:text-gold-400">
+              <div className="border-t border-term-line px-5 py-3">
+                <Link to="/keepers" className="label hover:text-term-green">
                   Full roster →
                 </Link>
               </div>
@@ -169,13 +170,13 @@ export default function ManagerDetail() {
             {obligationYears.length === 0 ? (
               <Empty>No forward obligations.</Empty>
             ) : (
-              <table className="ledger">
+              <table className="out">
                 <thead>
                   <tr>
                     <th>Season</th>
-                    <th className="num">Received</th>
-                    <th className="num">Sent</th>
-                    <th className="num">Net</th>
+                    <th className="n">Received</th>
+                    <th className="n">Sent</th>
+                    <th className="n">Net</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,15 +186,15 @@ export default function ManagerDetail() {
                     return (
                       <tr key={year}>
                         <td className="tnum">{year}</td>
-                        <td className="num text-parchment-dim">{money(entry.received)}</td>
-                        <td className="num text-parchment-dim">{money(entry.sent)}</td>
+                        <td className="n text-term-dim">{money(entry.received)}</td>
+                        <td className="n text-term-dim">{money(entry.sent)}</td>
                         <td
-                          className={`num ${
+                          className={`n ${
                             entry.net > 0
-                              ? 'text-[var(--color-ledger-up)]'
+                              ? 'text-[var(--color-term-green)]'
                               : entry.net < 0
-                                ? 'text-[var(--color-ledger-down)]'
-                                : 'text-parchment-faint'
+                                ? 'text-[var(--color-term-red)]'
+                                : 'text-term-faint'
                           }`}
                         >
                           {money(entry.net, { sign: true })}
@@ -210,19 +211,19 @@ export default function ManagerDetail() {
             {trades.length === 0 ? (
               <Empty>No trades on the structured ledger.</Empty>
             ) : (
-              <ul className="divide-y divide-parchment/7">
+              <ul className="divide-y divide-term-line">
                 {trades.map((trade) => {
                   const selling = trade.seller === id
                   return (
                     <li key={trade.id} className="px-5 py-3">
                       <div className="flex items-center justify-between gap-3">
                         <Chip tone={selling ? 'up' : 'down'}>{selling ? 'Sold' : 'Bought'}</Chip>
-                        <span className="tnum text-[12px] text-gold-400">
+                        <span className="tnum text-[12px] text-term-green">
                           {money(trade.totalDollars)}
                         </span>
                       </div>
-                      <div className="mt-1.5 text-[13px] text-parchment-dim">{trade.players}</div>
-                      <div className="mt-0.5 text-[11px] text-parchment-faint">
+                      <div className="mt-1.5 text-[13px] text-term-dim">{trade.players}</div>
+                      <div className="mt-0.5 text-[11px] text-term-faint">
                         {trade.batch} · {selling ? 'to' : 'from'}{' '}
                         {managerName(managers, selling ? trade.buyer : trade.seller)}
                       </div>

@@ -57,7 +57,7 @@ export function countdown(iso: string | undefined, now = Date.now()): string {
 }
 
 export function toneClass(value: number): string {
-  if (value > 0) return 'text-[var(--color-ledger-up)]'
-  if (value < 0) return 'text-[var(--color-ledger-down)]'
-  return 'text-parchment-faint'
+  if (value > 0) return 'text-term-green'
+  if (value < 0) return 'text-term-red'
+  return 'text-term-faint'
 }

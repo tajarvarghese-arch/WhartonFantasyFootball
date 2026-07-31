@@ -13,24 +13,24 @@ import {
 
 /*
   Chart palette for the ink surface (#0F1512):
-    single series  → brand gold, contrast 3:1+ against the surface
-    two series     → GOLD_MARK + PERIWINKLE, validated for lightness band,
-                     chroma floor, CVD separation, and normal-vision floor
+    single series  → phosphor green, contrast 3:1+ against the surface
+    two series     → #26AC63 + #8A79E6, validated for lightness band, chroma
+                     floor, CVD separation, and normal-vision floor
   Grid and axes stay recessive; every chart on this site sits beside the table
   that holds the same numbers, so the data is never color-only.
 */
-export const GOLD = '#C9A227'
-export const GOLD_MARK = '#A8862A'
-export const PERIWINKLE = '#6E8FD6'
+export const GOLD = '#3DF08B'
+export const GOLD_MARK = '#26AC63'
+export const PERIWINKLE = '#8A79E6'
 
-const AXIS = '#7d7a70'
-const GRID = 'rgba(236, 231, 217, 0.07)'
+const AXIS = '#4e5a54'
+const GRID = 'rgba(201, 212, 206, 0.07)'
 
 const axisProps = {
   stroke: AXIS,
   tickLine: false,
   axisLine: { stroke: GRID },
-  tick: { fill: AXIS, fontSize: 10, fontFamily: 'JetBrains Mono, monospace' },
+  tick: { fill: AXIS, fontSize: 10, fontFamily: 'IBM Plex Mono, monospace' },
 } as const
 
 /** Snap the axis to round numbers so ticks read 80/100/120, not 74.94/136.67. */
@@ -54,8 +54,8 @@ function TooltipBox({
 }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="border border-gold-600/50 bg-ink-950/95 px-3 py-2 shadow-lg">
-      <div className="eyebrow">{label}</div>
+    <div className="border border-term-line-bright bg-term-bg/95 px-3 py-2 shadow-lg">
+      <div className="label">{label}</div>
       {payload.map((entry, index) =>
         entry.value === null ? null : (
           <div key={index} className="mt-1 flex items-center gap-2">
@@ -66,12 +66,12 @@ function TooltipBox({
                 style={{ background: entry.color }}
               />
             )}
-            <span className="tnum text-[14px] text-parchment">
+            <span className="tnum text-[14px] text-term-text">
               {format(entry.value)}
               {suffix}
             </span>
             {payload.length > 1 && entry.name && (
-              <span className="text-[11px] text-parchment-faint">{entry.name}</span>
+              <span className="text-[11px] text-term-faint">{entry.name}</span>
             )}
           </div>
         ),
@@ -118,7 +118,7 @@ export function WinPctChart({
           stroke={GOLD}
           strokeWidth={2}
           dot={false}
-          activeDot={{ r: 4, fill: GOLD, stroke: '#0F1512', strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: GOLD, stroke: '#0A0D0C', strokeWidth: 2 }}
           connectNulls={false}
         />
       </LineChart>
@@ -162,7 +162,7 @@ export function ScoringChart({
           stroke={GOLD}
           strokeWidth={2}
           fill="url(#scoringFill)"
-          activeDot={{ r: 4, fill: GOLD, stroke: '#0F1512', strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: GOLD, stroke: '#0A0D0C', strokeWidth: 2 }}
         />
       </AreaChart>
     </ResponsiveContainer>
@@ -184,7 +184,7 @@ export function ForAgainstChart({
           { label: 'Points for', color: GOLD_MARK },
           { label: 'Points against', color: PERIWINKLE },
         ].map((item) => (
-          <span key={item.label} className="flex items-center gap-2 text-[11px] text-parchment-dim">
+          <span key={item.label} className="flex items-center gap-2 text-[11px] text-term-dim">
             <span aria-hidden className="h-2 w-4" style={{ background: item.color }} />
             {item.label}
           </span>
@@ -212,7 +212,7 @@ export function ForAgainstChart({
             stroke={GOLD_MARK}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 4, fill: GOLD_MARK, stroke: '#0F1512', strokeWidth: 2 }}
+            activeDot={{ r: 4, fill: GOLD_MARK, stroke: '#0A0D0C', strokeWidth: 2 }}
             connectNulls={false}
           />
           <Line
@@ -222,7 +222,7 @@ export function ForAgainstChart({
             stroke={PERIWINKLE}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 4, fill: PERIWINKLE, stroke: '#0F1512', strokeWidth: 2 }}
+            activeDot={{ r: 4, fill: PERIWINKLE, stroke: '#0A0D0C', strokeWidth: 2 }}
             connectNulls={false}
           />
         </LineChart>

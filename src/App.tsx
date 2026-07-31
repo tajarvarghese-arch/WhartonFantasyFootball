@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import Boot, { shouldBoot } from './components/Boot'
 import Shell from './components/Shell'
 import { useLeague } from './lib/data'
 import Dashboard from './pages/Dashboard'
@@ -13,15 +15,18 @@ import Trades from './pages/Trades'
 
 export default function App() {
   const { data, loading, error } = useLeague()
+  const [booting, setBooting] = useState(shouldBoot)
+
+  if (booting) return <Boot onDone={() => setBooting(false)} />
 
   if (loading) {
     return (
-      <div className="grid min-h-dvh place-items-center">
-        <div className="text-center">
-          <div className="font-[family-name:var(--font-display)] text-[34px] text-parchment">
-            Wharton <span className="text-gold-400 italic">Alum</span> Champions
+      <div className="grid min-h-dvh place-items-center px-6">
+        <div className="w-full max-w-sm">
+          <div className="text-[15px] font-semibold text-term-green glow">
+            wacl<span className="text-term-faint">://</span>terminal
           </div>
-          <div className="eyebrow mt-4 animate-pulse">Opening the ledger…</div>
+          <div className="cursor mt-3 text-[12.5px] text-term-dim">reading /data</div>
         </div>
       </div>
     )
@@ -29,16 +34,15 @@ export default function App() {
 
   if (error || !data) {
     return (
-      <div className="grid min-h-dvh place-items-center p-6">
-        <div className="panel max-w-md p-7">
-          <div className="eyebrow">Could not load</div>
-          <p className="mt-3 text-[13px] leading-relaxed text-parchment-dim">
-            {error ?? 'League data is missing.'}
+      <div className="grid min-h-dvh place-items-center px-5">
+        <div className="win w-full max-w-lg p-5">
+          <div className="label text-term-red">error</div>
+          <p className="mt-2 text-[12.5px] leading-relaxed text-term-dim">
+            <span className="text-term-red">✗</span> {error ?? 'League data is missing.'}
           </p>
-          <p className="mt-3 text-[12px] text-parchment-faint">
-            Run <code className="text-gold-400">npm run seed -- "path/to/workbook.xlsx"</code> to
-            rebuild <code className="text-gold-400">public/data</code>.
-          </p>
+          <pre className="mt-3 overflow-x-auto border border-term-line bg-term-bg p-3 text-[11.5px] text-term-faint">
+            $ npm run seed -- &quot;path/to/workbook.xlsx&quot;
+          </pre>
         </div>
       </div>
     )

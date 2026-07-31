@@ -92,7 +92,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
     <div className="space-y-5 px-5 py-5">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="eyebrow">Seller — gives up the player</span>
+          <span className="label">Seller — gives up the player</span>
           <select
             className="field mt-2"
             value={seller}
@@ -107,7 +107,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
           </select>
         </label>
         <label className="block">
-          <span className="eyebrow">Buyer — pays auction dollars</span>
+          <span className="label">Buyer — pays auction dollars</span>
           <select
             className="field mt-2"
             value={buyer}
@@ -124,7 +124,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
       </div>
 
       <label className="block">
-        <span className="eyebrow">Players included</span>
+        <span className="label">Players included</span>
         <input
           className="field mt-2"
           placeholder="Jahmyr Gibbs  ·  or  George Kittle &lt;-&gt; Kendrick Bourne"
@@ -135,10 +135,10 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
 
       <div>
         <div className="flex items-center justify-between">
-          <span className="eyebrow">Auction dollars by year</span>
+          <span className="label">Auction dollars by year</span>
           <button
             type="button"
-            className="text-[11px] font-semibold tracking-[0.09em] text-gold-400 uppercase hover:text-gold-500"
+            className="text-[11px] font-semibold tracking-[0.09em] text-term-green uppercase hover:text-term-green"
             onClick={() =>
               setObligations((current) => [
                 ...current,
@@ -167,7 +167,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
                 aria-label="Season"
               />
               <div className="relative flex-1">
-                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-parchment-faint">
+                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-term-faint">
                   $
                 </span>
                 <input
@@ -184,7 +184,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
               {obligations.length > 1 && (
                 <button
                   type="button"
-                  className="px-2 text-[18px] leading-none text-parchment-faint hover:text-[var(--color-ledger-down)]"
+                  className="px-2 text-[18px] leading-none text-term-faint hover:text-[var(--color-term-red)]"
                   onClick={() =>
                     setObligations((current) => current.filter((_, i) => i !== index))
                   }
@@ -197,13 +197,13 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
           ))}
         </div>
         <div className="mt-2.5 flex items-center justify-between text-[12px]">
-          <span className="text-parchment-faint">Total consideration</span>
-          <span className="tnum text-gold-400">{money(total)}</span>
+          <span className="text-term-faint">Total consideration</span>
+          <span className="tnum text-term-green">{money(total)}</span>
         </div>
       </div>
 
       <label className="block">
-        <span className="eyebrow">Commissioner note (optional)</span>
+        <span className="label">Commissioner note (optional)</span>
         <input
           className="field mt-2"
           placeholder="Context, ROFR history, deadline proximity…"
@@ -213,14 +213,14 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
       </label>
 
       {(issues.length > 0 || verdict.triggered) && (
-        <ul className="space-y-1.5 border-l-2 border-gold-600/40 pl-3 text-[12px]">
+        <ul className="space-y-1.5 border-l-2 border-term-line-bright pl-3 text-[12px]">
           {issues.map((issue, index) => (
             <li
               key={index}
               className={
                 issue.level === 'error'
-                  ? 'text-[var(--color-ledger-down)]'
-                  : 'text-[var(--color-ledger-flag)]'
+                  ? 'text-[var(--color-term-red)]'
+                  : 'text-[var(--color-term-amber)]'
               }
             >
               {issue.message}
@@ -229,12 +229,12 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
         </ul>
       )}
 
-      <div className="border-t rule-gold pt-4">
-        <div className="eyebrow">Reads as</div>
-        <p className="mt-1.5 text-[13px] text-parchment-dim italic">{summary}</p>
+      <div className="border-t border-term-line pt-4">
+        <div className="label">Reads as</div>
+        <p className="mt-1.5 text-[13px] text-term-dim italic">{summary}</p>
       </div>
 
-      {error && <p className="text-[12px] text-[var(--color-ledger-down)]">{error}</p>}
+      {error && <p className="text-[12px] text-[var(--color-term-red)]">{error}</p>}
 
       <div className="flex flex-wrap items-center gap-3">
         {canSave ? (

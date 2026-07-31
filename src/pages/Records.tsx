@@ -29,6 +29,7 @@ export default function Records() {
   return (
     <>
       <PageHeader
+        path="~/records"
         eyebrow="Rolling Statistics"
         title="Records"
         lede="Leaderboards recompute against whichever era you select, so a keeper-era record and an all-time record never get confused."
@@ -51,7 +52,7 @@ export default function Records() {
         </div>
       </Panel>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-2">
         <Board
           title="Titles"
           delay={100}
@@ -128,27 +129,27 @@ export default function Records() {
         />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-2">
         <Panel
           title="Highest scoring seasons"
           subtitle="Points per game across a full regular season."
           delay={340}
         >
-          <table className="ledger">
+          <table className="out">
             <tbody>
               {pointsFor.best.map((row, index) => (
                 <tr key={`${row.manager}-${row.year}`}>
-                  <td className="tnum w-8 text-parchment-faint">{index + 1}</td>
+                  <td className="tnum w-8 text-term-faint">{index + 1}</td>
                   <td>
                     <Link
                       to={`/managers/${row.manager}`}
-                      className="transition-colors hover:text-gold-400"
+                      className="transition-colors hover:text-term-green"
                     >
                       {managerName(managers, row.manager)}
                     </Link>
                   </td>
-                  <td className="num text-parchment-faint">{row.year}</td>
-                  <td className="num text-gold-400">{num(row.value, 2)}</td>
+                  <td className="n text-term-faint">{row.year}</td>
+                  <td className="n text-term-green">{num(row.value, 2)}</td>
                 </tr>
               ))}
             </tbody>
@@ -156,21 +157,21 @@ export default function Records() {
         </Panel>
 
         <Panel title="Lowest scoring seasons" subtitle="The other end of the book." delay={380}>
-          <table className="ledger">
+          <table className="out">
             <tbody>
               {pointsFor.worst.map((row, index) => (
                 <tr key={`${row.manager}-${row.year}`}>
-                  <td className="tnum w-8 text-parchment-faint">{index + 1}</td>
+                  <td className="tnum w-8 text-term-faint">{index + 1}</td>
                   <td>
                     <Link
                       to={`/managers/${row.manager}`}
-                      className="transition-colors hover:text-gold-400"
+                      className="transition-colors hover:text-term-green"
                     >
                       {managerName(managers, row.manager)}
                     </Link>
                   </td>
-                  <td className="num text-parchment-faint">{row.year}</td>
-                  <td className="num text-[var(--color-ledger-down)]">{num(row.value, 2)}</td>
+                  <td className="n text-term-faint">{row.year}</td>
+                  <td className="n text-[var(--color-term-red)]">{num(row.value, 2)}</td>
                 </tr>
               ))}
             </tbody>
@@ -196,13 +197,13 @@ function Board({
 }) {
   return (
     <Panel title={title} delay={delay}>
-      <table className="ledger">
+      <table className="out">
         <thead>
           <tr>
-            <th className="num">#</th>
+            <th className="n">#</th>
             <th>Manager</th>
             {columns.map((column) => (
-              <th key={column.header} className="num">
+              <th key={column.header} className="n">
                 {column.header}
               </th>
             ))}
@@ -211,11 +212,11 @@ function Board({
         <tbody>
           {rows.map((line, index) => (
             <tr key={line.manager}>
-              <td className="num text-parchment-faint">{index + 1}</td>
+              <td className="n text-term-faint">{index + 1}</td>
               <td>
                 <Link
                   to={`/managers/${line.manager}`}
-                  className="transition-colors hover:text-gold-400"
+                  className="transition-colors hover:text-term-green"
                 >
                   {managerName(managers, line.manager)}
                 </Link>
@@ -223,7 +224,7 @@ function Board({
               {columns.map((column) => (
                 <td
                   key={column.header}
-                  className={`num ${column.highlight ? 'text-gold-400' : 'text-parchment-dim'}`}
+                  className={`n ${column.highlight ? 'text-term-green' : 'text-term-dim'}`}
                 >
                   {column.render(line)}
                 </td>
