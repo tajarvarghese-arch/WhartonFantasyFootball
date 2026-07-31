@@ -200,8 +200,8 @@ export interface LiveStandings {
   claims?: LiveClaim[]
 }
 
-/** year -> normalised player name -> standard fantasy points (nflverse). */
-export type PlayerPoints = Record<string, Record<string, number>>
+/** year -> normalised player name -> [standard fantasy points, position]. */
+export type PlayerPoints = Record<string, Record<string, [number, string]>>
 
 export interface LeagueData {
   league: League

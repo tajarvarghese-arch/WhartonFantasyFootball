@@ -5,7 +5,9 @@ public/data/player-points.json for the Lab's points-per-dollar contract math.
     python scripts/player_points.py
 
 Sums STANDARD (0-PPR) fantasy points over the regular season, per player, for
-every season the keeper sheets cover. Names are normalised to bare alphanumerics
+every season the keeper sheets cover, and records each player's position so
+the app can filter boards (the Lab's best-contracts list excludes QBs).
+Values are [points, position]. Names are normalised to bare alphanumerics
 with suffixes (Jr/Sr/III...) stripped, and the app applies the same
 normalisation when joining against keeper rosters.
 
@@ -59,6 +61,7 @@ def season_points(year: int) -> dict:
     if raw is None:
         raise RuntimeError(f"no nflverse file found for {year}")
     totals: dict[str, float] = {}
+    positions: dict[str, str] = {}
     with gzip.open(io.BytesIO(raw), "rt", encoding="utf-8") as handle:
         for row in csv.DictReader(handle):
             if row.get("season_type", "REG") not in ("REG", ""):
@@ -73,7 +76,14 @@ def season_points(year: int) -> dict:
             if not key:
                 continue
             totals[key] = totals.get(key, 0.0) + value
-    return {key: round(value, 1) for key, value in totals.items() if value != 0.0}
+            pos = (row.get("position") or "").strip()
+            if pos:
+                positions[key] = pos
+    return {
+        key: [round(value, 1), positions.get(key, "")]
+        for key, value in totals.items()
+        if value != 0.0
+    }
 
 
 def main() -> None:

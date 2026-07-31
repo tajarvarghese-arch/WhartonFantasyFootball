@@ -238,13 +238,14 @@ export function tortureBoard(seasons: Season[], currentSeason: number): TortureR
 export interface ContractRun {
   manager: ManagerId
   player: string
+  position: string
   years: number[]
   salaries: number[]
   /** Standard fantasy points scored across the kept seasons (nflverse). */
   totalPoints: number
   totalPaid: number
-  /** The metric: points scored per auction dollar spent on the contract. */
-  pointsPerDollar: number
+  /** The ranking metric: points scored minus dollars spent. */
+  netPoints: number
 }
 
 const NAME_SUFFIXES = new Set(['jr', 'sr', 'ii', 'iii', 'iv', 'v'])
@@ -262,11 +263,12 @@ export function normalizePlayer(name: string): string {
 }
 
 /**
- * Contract value the way a GM would compute it: fantasy points produced per
- * auction dollar spent, summed over the whole keeper run. Only seasons with a
- * points record count toward the ratio (2026 hasn't been played; team DEFs
- * have no player line), and the paid total is restricted to the same seasons
- * so the ratio never divides apples by oranges.
+ * Contract value: fantasy points produced minus auction dollars spent, summed
+ * over the whole keeper run. Only seasons with a points record count (2026
+ * hasn't been played; team DEFs have no player line), and spend is restricted
+ * to those same seasons. Quarterbacks are excluded from the steals board —
+ * every year someone finds a $1 QB, and it drowns out the real skill-position
+ * bargains.
  */
 export function contractRuns(
   keepers: LeagueData['keepers'],
@@ -281,22 +283,24 @@ export function contractRuns(
       if (!block.manager) continue
       for (const pick of block.keepers) {
         if (pick.salary === null) continue
-        const points = seasonPoints?.[normalizePlayer(pick.player)]
-        if (points === undefined) {
+        const entry = seasonPoints?.[normalizePlayer(pick.player)]
+        if (entry === undefined) {
           if (seasonPoints) unmatched += 1
           continue
         }
+        const [points, position] = entry
         const key = `${block.manager}|${normalizePlayer(pick.player)}`
         const run =
           runs.get(key) ??
           ({
             manager: block.manager,
             player: pick.player,
+            position,
             years: [],
             salaries: [],
             totalPoints: 0,
             totalPaid: 0,
-            pointsPerDollar: 0,
+            netPoints: 0,
           } as ContractRun)
         run.years.push(Number(yearKey))
         run.salaries.push(pick.salary)
@@ -310,19 +314,19 @@ export function contractRuns(
   const all = [...runs.values()]
   for (const run of all) {
     run.years.sort((a, b) => a - b)
-    run.pointsPerDollar = run.totalPoints / Math.max(run.totalPaid, 1)
+    run.netPoints = run.totalPoints - run.totalPaid
   }
 
   return {
-    // Steals need real production, not an injured $1 flyer with 12 points.
     steals: all
-      .filter((run) => run.totalPoints >= 80)
-      .sort((a, b) => b.pointsPerDollar - a.pointsPerDollar)
+      .filter((run) => run.position !== 'QB')
+      .sort((a, b) => b.netPoints - a.netPoints)
       .slice(0, 12),
-    // Overpays need real money on the table.
+    // Overpays need real money on the table; QBs stay eligible here —
+    // a $40 quarterback bust is a legitimate worst contract.
     overpays: all
       .filter((run) => run.totalPaid >= 25)
-      .sort((a, b) => a.pointsPerDollar - b.pointsPerDollar)
+      .sort((a, b) => a.netPoints - b.netPoints)
       .slice(0, 12),
     unmatched,
   }

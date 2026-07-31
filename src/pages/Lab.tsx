@@ -332,13 +332,13 @@ export default function Lab() {
       <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-2">
         <Panel
           title="best contracts ever"
-          subtitle="Fantasy points produced per auction dollar, summed over the whole keeper run. Minimum 80 points scored."
+          subtitle="Points scored minus dollars spent across the keeper run. Quarterbacks excluded — everyone finds a cheap QB."
         >
           <ContractTable rows={contracts.steals} positive />
         </Panel>
         <Panel
           title="worst contracts ever"
-          subtitle="The same maths, pointed the other way. Minimum $25 committed."
+          subtitle="Same metric from the bottom. Minimum $25 committed; QBs eligible here."
         >
           <ContractTable rows={contracts.overpays} positive={false} />
         </Panel>
@@ -349,7 +349,8 @@ export default function Lab() {
         for/against. GOAT is the sum of within-season scoring z-scores. Elo updates once per season
         on win% against the field's average rating (K=6/game, +14 for a title). Odds resample
         keeper-era scoring with noise; they know nothing about 2026 rosters. Contract value
-        is standard-scoring fantasy points (nflverse) per auction dollar across the kept years.
+        is standard-scoring fantasy points (nflverse) minus auction dollars spent across the
+        kept years; QBs sit out the steals board.
       </p>
     </>
   )
@@ -362,11 +363,12 @@ function ContractTable({
   rows: {
     manager: string
     player: string
+    position: string
     years: number[]
     salaries: number[]
     totalPoints: number
     totalPaid: number
-    pointsPerDollar: number
+    netPoints: number
   }[]
   positive: boolean
 }) {
@@ -384,15 +386,20 @@ function ContractTable({
           <th>Player</th>
           <th>Manager</th>
           <th className="n">Years</th>
-          <th className="n">Paid</th>
+          <th className="n">Spend</th>
           <th className="n">Pts</th>
-          <th className="n">Pts/$</th>
+          <th className="n">Net</th>
         </tr>
       </thead>
       <tbody>
         {rows.map((row) => (
           <tr key={`${row.manager}-${row.player}`}>
-            <td>{row.player}</td>
+            <td>
+              {row.player}
+              {row.position && (
+                <span className="ml-1.5 text-[11px] text-arc-ink-faint">{row.position}</span>
+              )}
+            </td>
             <td>
               <ManagerTag id={row.manager} size={22} />
             </td>
@@ -406,7 +413,8 @@ function ContractTable({
               className="n font-bold"
               style={{ color: positive ? 'var(--color-arc-green)' : 'var(--color-arc-red)' }}
             >
-              {num(row.pointsPerDollar, 1)}
+              {row.netPoints > 0 ? '+' : ''}
+              {num(row.netPoints, 0)}
             </td>
           </tr>
         ))}
