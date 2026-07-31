@@ -86,7 +86,7 @@ export default function Trades() {
         }
       />
 
-      <div className="rise mb-6 flex flex-wrap items-center gap-4">
+      <div className="line-in mb-6 flex flex-wrap items-center gap-4">
         <SegmentedControl<Tab>
           value={tab}
           onChange={setTab}

@@ -28,7 +28,7 @@ export default function Finances() {
         title="Finances"
         lede="Three separate books: auction dollars traded between managers, the season FAAB budget, and real cash owed around the league."
       />
-      <div className="rise mb-6">
+      <div className="line-in mb-6">
         <SegmentedControl<Tab>
           value={tab}
           onChange={setTab}
@@ -177,7 +177,7 @@ function FaabBook({ season }: { season: number }) {
 
   return (
     <div className="space-y-6">
-      <div className="rise grid grid-cols-2 gap-6 lg:grid-cols-4">
+      <div className="line-in grid grid-cols-2 gap-6 lg:grid-cols-4">
         <Stat label={`${season} budget each`} value={money(league.baseFaabBudget)} />
         <Stat label="League spend" value={money(spent)} hint={`${seasonEntries.length} claims`} />
         <Stat
@@ -440,7 +440,7 @@ function CashBook({ season }: { season: number }) {
 
   return (
     <div className="space-y-6">
-      <div className="rise grid grid-cols-2 gap-6 lg:grid-cols-4">
+      <div className="line-in grid grid-cols-2 gap-6 lg:grid-cols-4">
         <Stat label="Owed to the league" value={money(Math.abs(owedToLeague))} tone="down" />
         <Stat label="Owed by the league" value={money(owedByLeague)} tone="up" />
         <Stat label="Entries" value={entries.length} />

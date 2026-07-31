@@ -19,7 +19,7 @@ export default function Rules() {
         lede="The official keeper rules as maintained by the commissioner, reproduced verbatim from the league workbook."
       />
 
-      <div className="rise mb-8 grid grid-cols-2 gap-6 lg:grid-cols-4">
+      <div className="line-in mb-8 grid grid-cols-2 gap-6 lg:grid-cols-4">
         <Stat label="Keeper slots" value={league.keeperSlots} hint="Per team, since 2016" />
         <Stat
           label="Max contract"

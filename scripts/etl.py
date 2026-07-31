@@ -228,6 +228,53 @@ def build_keepers(wb):
     return by_year
 
 
+def backfill_keeper_managers(keepers, seasons):
+    """
+    Only the most recent keeper sheet names the manager beside the budget math.
+    For every other year, the block's team is the roster as it stood at the end
+    of the prior season, so the standings sheet for year-1 supplies the owner.
+    """
+    by_year = {}
+    for season in seasons:
+        for team in season["teams"]:
+            if team["team"]:
+                by_year.setdefault(season["year"], {})[team["team"].strip().lower()] = team[
+                    "manager"
+                ]
+
+    # A team name used by exactly one manager across all 22 seasons is a safe
+    # fallback when that season's own standings sheet used a different name.
+    global_names = {}
+    for season in seasons:
+        for team in season["teams"]:
+            if team["team"]:
+                global_names.setdefault(team["team"].strip().lower(), set()).add(team["manager"])
+    unique_names = {
+        name: next(iter(owners)) for name, owners in global_names.items() if len(owners) == 1
+    }
+
+    resolved = 0
+    for year_key, blocks in keepers.items():
+        lookup = by_year.get(int(year_key) - 1, {})
+        for block in blocks:
+            if block["manager"] or not block["team"]:
+                continue
+            name = block["team"].strip().lower()
+            manager = lookup.get(name)
+            if not manager:
+                # Team names drift between sheets; fall back to a prefix match.
+                for known, candidate in lookup.items():
+                    if known[:10] == name[:10]:
+                        manager = candidate
+                        break
+            if not manager:
+                manager = unique_names.get(name)
+            if manager:
+                block["manager"] = manager
+                resolved += 1
+    return resolved
+
+
 def build_waivers(wb, team_to_manager):
     """FAAB waiver claims, where the workbook recorded them (2025 onward)."""
 
@@ -405,6 +452,17 @@ def main():
     keepers = build_keepers(wb)
     trades = build_trades(wb)
     ledger = build_trade_ledger(trades)
+
+    resolved = backfill_keeper_managers(keepers, seasons)
+    unresolved = [
+        f"{year}:{block['team']}"
+        for year, blocks in keepers.items()
+        for block in blocks
+        if not block["manager"]
+    ]
+    print(f"Backfilled manager on {resolved} keeper blocks from the standings sheets.")
+    if unresolved:
+        print(f"!! {len(unresolved)} keeper blocks still unattributed: {', '.join(unresolved[:8])}")
 
     problems = verify_ledger(wb, ledger)
     if problems:

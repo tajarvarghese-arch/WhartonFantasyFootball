@@ -2,7 +2,7 @@
   "2015": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Matthew Stafford",
@@ -108,7 +108,7 @@
     },
     {
       "team": "TapOrSnap",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Andrew Luck",
@@ -219,7 +219,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Aaron Rodgers",
@@ -325,7 +325,7 @@
     },
     {
       "team": "Juggernaut",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Peyton Manning",
@@ -431,7 +431,7 @@
     },
     {
       "team": "SundaysR4Jesus",
-      "manager": null,
+      "manager": "evans",
       "endingRoster": [
         {
           "player": "Matt Ryan",
@@ -537,7 +537,7 @@
     },
     {
       "team": "the fuckin rake",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Philip Rivers",
@@ -643,7 +643,7 @@
     },
     {
       "team": "Chalupa Batman",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Tom Brady",
@@ -749,7 +749,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Drew Brees",
@@ -855,7 +855,7 @@
     },
     {
       "team": "|--*--|",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "Russell Wilson",
@@ -961,7 +961,7 @@
     },
     {
       "team": "De More de Maryius",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Mark Sanchez",
@@ -1067,7 +1067,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Robert Griffin III",
@@ -1178,7 +1178,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Eli Manning",
@@ -1291,7 +1291,7 @@
   "2016": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Antonio Brown",
@@ -1402,7 +1402,7 @@
     },
     {
       "team": "My Ball Zach Ertz",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Ameer Abdullah",
@@ -1518,7 +1518,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Antonio Andrews",
@@ -1629,7 +1629,7 @@
     },
     {
       "team": "Juggernaut",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Danny Amendola",
@@ -1745,7 +1745,7 @@
     },
     {
       "team": "SundaysR4Jesus",
-      "manager": null,
+      "manager": "evans",
       "endingRoster": [
         {
           "player": "Doug Baldwin",
@@ -1856,7 +1856,7 @@
     },
     {
       "team": "hostile environment",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Kamar Aiken",
@@ -1967,7 +1967,7 @@
     },
     {
       "team": "Free Brady!",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Le'Veon Bell",
@@ -2083,7 +2083,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Dwayne Allen",
@@ -2194,7 +2194,7 @@
     },
     {
       "team": "|--*--|",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "David Cobb",
@@ -2310,7 +2310,7 @@
     },
     {
       "team": "De More de Maryius",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Javorius Allen",
@@ -2426,7 +2426,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Jay Ajayi",
@@ -2542,7 +2542,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Anquan Boldin",
@@ -2650,7 +2650,7 @@
   "2017": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Keenan Allen",
@@ -2761,7 +2761,7 @@
     },
     {
       "team": "We Neil",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Kelvin Benjamin",
@@ -2872,7 +2872,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Robby Anderson",
@@ -2983,7 +2983,7 @@
     },
     {
       "team": "Juggernaut",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Jay Ajayi",
@@ -3094,7 +3094,7 @@
     },
     {
       "team": "SundaysR4Jesus",
-      "manager": null,
+      "manager": "evans",
       "endingRoster": [
         {
           "player": "Doug Baldwin",
@@ -3205,7 +3205,7 @@
     },
     {
       "team": "Hot Pockets",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Davante Adams",
@@ -3316,7 +3316,7 @@
     },
     {
       "team": "Kissing Cousins",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Ameer Abdullah",
@@ -3432,7 +3432,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Martellus Bennett",
@@ -3543,7 +3543,7 @@
     },
     {
       "team": "4 Horsemen",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "C.J. Anderson",
@@ -3659,7 +3659,7 @@
     },
     {
       "team": "DeWhyAmIInThisLeague",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Mike Evans",
@@ -3770,7 +3770,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Tavon Austin",
@@ -3886,7 +3886,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Devontae Booker",
@@ -3999,7 +3999,7 @@
   "2018": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Drew Brees",
@@ -4115,7 +4115,7 @@
     },
     {
       "team": "We Neil",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Case Keenum",
@@ -4226,7 +4226,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Cam Newton",
@@ -4337,7 +4337,7 @@
     },
     {
       "team": "Juggernaut",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Matt Ryan",
@@ -4453,7 +4453,7 @@
     },
     {
       "team": "SundaysR4Jesus",
-      "manager": null,
+      "manager": "evans",
       "endingRoster": [
         {
           "player": "Russell Wilson",
@@ -4564,7 +4564,7 @@
     },
     {
       "team": "Hot Pockets",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Tom Brady",
@@ -4680,7 +4680,7 @@
     },
     {
       "team": "Kissing Cousins",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Kirk Cousins",
@@ -4796,7 +4796,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Jameis Winston",
@@ -4907,7 +4907,7 @@
     },
     {
       "team": "4 Horsemen",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "Ben Roethlisberger",
@@ -5023,7 +5023,7 @@
     },
     {
       "team": "DeWhyAmIInThisLeague",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Philip Rivers",
@@ -5134,7 +5134,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Blake Bortles",
@@ -5250,7 +5250,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Marcus Mariota",
@@ -5368,7 +5368,7 @@
   "2019": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Deshaun Watson",
@@ -5484,7 +5484,7 @@
     },
     {
       "team": "The Chubbies",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Drew Brees",
@@ -5595,7 +5595,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Derek Carr",
@@ -5706,7 +5706,7 @@
     },
     {
       "team": "Juggernaut",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Lamar Jackson",
@@ -5822,7 +5822,7 @@
     },
     {
       "team": "SundaysR4Jesus",
-      "manager": null,
+      "manager": "evans",
       "endingRoster": [
         {
           "player": "Russell Wilson",
@@ -5933,7 +5933,7 @@
     },
     {
       "team": "Le'JuJu McHomes",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Patrick Mahomes",
@@ -6049,7 +6049,7 @@
     },
     {
       "team": "Orchids of Asia",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Ben Roethlisberger",
@@ -6165,7 +6165,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Dak Prescott",
@@ -6276,7 +6276,7 @@
     },
     {
       "team": "Brady's Woodie Ertz",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "Jared Goff",
@@ -6392,7 +6392,7 @@
     },
     {
       "team": "Private Sector",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Aaron Rodgers",
@@ -6508,7 +6508,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Matt Ryan",
@@ -6624,7 +6624,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Andrew Luck",
@@ -6742,7 +6742,7 @@
   "2020": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Deshaun Watson",
@@ -6858,7 +6858,7 @@
     },
     {
       "team": "The Chubbies",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Lamar Jackson",
@@ -6969,7 +6969,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Russell Wilson",
@@ -7085,7 +7085,7 @@
     },
     {
       "team": "Juggernaut",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Carson Wentz",
@@ -7201,7 +7201,7 @@
     },
     {
       "team": "SundaysR4Jesus",
-      "manager": null,
+      "manager": "evans",
       "endingRoster": [
         {
           "player": "Ryan Tannehill",
@@ -7312,7 +7312,7 @@
     },
     {
       "team": "Covidi Covici",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Patrick Mahomes",
@@ -7423,7 +7423,7 @@
     },
     {
       "team": "Orchids of Asia",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Jacoby Brissett",
@@ -7534,7 +7534,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Jared Goff",
@@ -7645,7 +7645,7 @@
     },
     {
       "team": "Mr. Rodgers Hood",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "Jameis Winston",
@@ -7756,7 +7756,7 @@
     },
     {
       "team": "Private Sector",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Matt Ryan",
@@ -7872,7 +7872,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Philip Rivers",
@@ -7978,7 +7978,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Drew Brees",
@@ -8096,7 +8096,7 @@
   "2021": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Deshaun Watson",
@@ -8212,7 +8212,7 @@
     },
     {
       "team": "Ja'MARRVELOUS",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Lamar Jackson",
@@ -8323,7 +8323,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Russell Wilson",
@@ -8434,7 +8434,7 @@
     },
     {
       "team": "Juggerfucked",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Cam Newton",
@@ -8545,7 +8545,7 @@
     },
     {
       "team": "SundaysR4Jesus",
-      "manager": null,
+      "manager": "evans",
       "endingRoster": [
         {
           "player": "Matthew Stafford",
@@ -8656,7 +8656,7 @@
     },
     {
       "team": "guinea alla vodka",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Patrick Mahomes",
@@ -8767,7 +8767,7 @@
     },
     {
       "team": "Orchids of Asia",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Justin Herbert",
@@ -8878,7 +8878,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Kyler Murray",
@@ -8989,7 +8989,7 @@
     },
     {
       "team": "Justin time to Cook Wood",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "Aaron Rodgers",
@@ -9105,7 +9105,7 @@
     },
     {
       "team": "Private Sector",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Jalen Hurts",
@@ -9221,7 +9221,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Josh Allen",
@@ -9332,7 +9332,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Ryan Tannehill",
@@ -9450,7 +9450,7 @@
   "2022": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Russell Wilson",
@@ -9561,7 +9561,7 @@
     },
     {
       "team": "Ja'MARRVELOUS",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Tyler Huntley",
@@ -9672,7 +9672,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Aaron Rodgers",
@@ -9788,7 +9788,7 @@
     },
     {
       "team": "Juggerfucked",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Matt Ryan",
@@ -9904,7 +9904,7 @@
     },
     {
       "team": "SundaysR4Jesus",
-      "manager": null,
+      "manager": "evans",
       "endingRoster": [
         {
           "player": "Tom Brady",
@@ -10020,7 +10020,7 @@
     },
     {
       "team": "no ragrets",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Patrick Mahomes",
@@ -10131,7 +10131,7 @@
     },
     {
       "team": "Orchids of Asia",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Justin Herbert",
@@ -10247,7 +10247,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Kyler Murray",
@@ -10358,7 +10358,7 @@
     },
     {
       "team": "Justin time my dear Watson",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "Matthew Stafford",
@@ -10474,7 +10474,7 @@
     },
     {
       "team": "Private Sector",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Jalen Hurts",
@@ -10590,7 +10590,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Josh Allen",
@@ -10706,7 +10706,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Dak Prescott",
@@ -10824,7 +10824,7 @@
   "2023": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Russell Wilson",
@@ -10940,7 +10940,7 @@
     },
     {
       "team": "Ja'MARRVELOUS",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Trevor Lawrence",
@@ -11056,7 +11056,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Geno Smith",
@@ -11167,7 +11167,7 @@
     },
     {
       "team": "Juggerfucked",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Jared Goff",
@@ -11278,7 +11278,7 @@
     },
     {
       "team": "Quien Es Tu Papa",
-      "manager": null,
+      "manager": "lalwani",
       "endingRoster": [
         {
           "player": "Tom Brady",
@@ -11389,7 +11389,7 @@
     },
     {
       "team": "no ragrets",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Kirk Cousins",
@@ -11500,7 +11500,7 @@
     },
     {
       "team": "Orchids of Asia",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Justin Herbert",
@@ -11611,7 +11611,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Justin Fields",
@@ -11722,7 +11722,7 @@
     },
     {
       "team": "Justin time my dear Watson",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "Aaron Rodgers",
@@ -11833,7 +11833,7 @@
     },
     {
       "team": "Private Sector",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Joe Burrow",
@@ -11949,7 +11949,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Josh Allen",
@@ -12060,7 +12060,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Patrick Mahomes",
@@ -12178,7 +12178,7 @@
   "2024": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Dak Prescott",
@@ -12294,7 +12294,7 @@
     },
     {
       "team": "Ja'MARRVELOUS",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Baker Mayfield",
@@ -12410,7 +12410,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Jordan Love",
@@ -12521,7 +12521,7 @@
     },
     {
       "team": "Juggerfucked",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Jalen Hurts",
@@ -12632,7 +12632,7 @@
     },
     {
       "team": "Quien Es Tu Papa",
-      "manager": null,
+      "manager": "lalwani",
       "endingRoster": [
         {
           "player": "Geno Smith",
@@ -12748,7 +12748,7 @@
     },
     {
       "team": "no ragrets",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Tua Tagovailoa",
@@ -12864,7 +12864,7 @@
     },
     {
       "team": "Orchids of Asia",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Brock Purdy",
@@ -12980,7 +12980,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Justin Fields",
@@ -13091,7 +13091,7 @@
     },
     {
       "team": "Dr. Drake Rome-oraye",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "Lamar Jackson",
@@ -13207,7 +13207,7 @@
     },
     {
       "team": "Private Sector",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Jared Goff",
@@ -13323,7 +13323,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Josh Allen",
@@ -13439,7 +13439,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Patrick Mahomes",
@@ -13552,7 +13552,7 @@
   "2025": [
     {
       "team": "SuperBowlJesus",
-      "manager": null,
+      "manager": "buzik",
       "endingRoster": [
         {
           "player": "Kyler Murray",
@@ -13668,7 +13668,7 @@
     },
     {
       "team": "Malikety Split",
-      "manager": null,
+      "manager": "varghese",
       "endingRoster": [
         {
           "player": "Jared Goff",
@@ -13784,7 +13784,7 @@
     },
     {
       "team": "I Must Break You",
-      "manager": null,
+      "manager": "waldman",
       "endingRoster": [
         {
           "player": "Jordan Love",
@@ -13900,7 +13900,7 @@
     },
     {
       "team": "Juggernaut",
-      "manager": null,
+      "manager": "baugh",
       "endingRoster": [
         {
           "player": "Joe Burrow",
@@ -14011,7 +14011,7 @@
     },
     {
       "team": "Quien Es Tu Papa",
-      "manager": null,
+      "manager": "lalwani",
       "endingRoster": [
         {
           "player": "Matthew Stafford",
@@ -14127,7 +14127,7 @@
     },
     {
       "team": "no ragrets",
-      "manager": null,
+      "manager": "incognito",
       "endingRoster": [
         {
           "player": "Sam Darnold",
@@ -14243,7 +14243,7 @@
     },
     {
       "team": "Orchids of Asia",
-      "manager": null,
+      "manager": "bernstein",
       "endingRoster": [
         {
           "player": "Aaron Rodgers",
@@ -14359,7 +14359,7 @@
     },
     {
       "team": "Bridge N Tunnel",
-      "manager": null,
+      "manager": "konciak",
       "endingRoster": [
         {
           "player": "Baker Mayfield",
@@ -14475,7 +14475,7 @@
     },
     {
       "team": "Karma’s L-Ah-Ma-tized",
-      "manager": null,
+      "manager": "mukheja",
       "endingRoster": [
         {
           "player": "Lamar Jackson",
@@ -14586,7 +14586,7 @@
     },
     {
       "team": "Private Sector",
-      "manager": null,
+      "manager": "velamoor",
       "endingRoster": [
         {
           "player": "Jayden Daniels",
@@ -14702,7 +14702,7 @@
     },
     {
       "team": "El Morro",
-      "manager": null,
+      "manager": "tollinche",
       "endingRoster": [
         {
           "player": "Josh Allen",
@@ -14813,7 +14813,7 @@
     },
     {
       "team": "Whobody Wants It?",
-      "manager": null,
+      "manager": "snyder",
       "endingRoster": [
         {
           "player": "Patrick Mahomes",

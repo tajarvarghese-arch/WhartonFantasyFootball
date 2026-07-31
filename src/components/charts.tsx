@@ -23,8 +23,8 @@ export const GOLD = '#3DF08B'
 export const GOLD_MARK = '#26AC63'
 export const PERIWINKLE = '#8A79E6'
 
-const AXIS = '#4e5a54'
-const GRID = 'rgba(201, 212, 206, 0.07)'
+const AXIS = '#4a5350'
+const GRID = 'rgba(232, 237, 235, 0.06)'
 
 const axisProps = {
   stroke: AXIS,
@@ -118,8 +118,10 @@ export function WinPctChart({
           stroke={GOLD}
           strokeWidth={2}
           dot={false}
-          activeDot={{ r: 4, fill: GOLD, stroke: '#0A0D0C', strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: GOLD, stroke: '#080A0A', strokeWidth: 2 }}
           connectNulls={false}
+          animationDuration={900}
+          animationEasing="ease-out"
         />
       </LineChart>
     </ResponsiveContainer>
@@ -162,7 +164,9 @@ export function ScoringChart({
           stroke={GOLD}
           strokeWidth={2}
           fill="url(#scoringFill)"
-          activeDot={{ r: 4, fill: GOLD, stroke: '#0A0D0C', strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: GOLD, stroke: '#080A0A', strokeWidth: 2 }}
+          animationDuration={1000}
+          animationEasing="ease-out"
         />
       </AreaChart>
     </ResponsiveContainer>
@@ -212,8 +216,10 @@ export function ForAgainstChart({
             stroke={GOLD_MARK}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 4, fill: GOLD_MARK, stroke: '#0A0D0C', strokeWidth: 2 }}
+            activeDot={{ r: 4, fill: GOLD_MARK, stroke: '#080A0A', strokeWidth: 2 }}
             connectNulls={false}
+            animationDuration={900}
+            animationEasing="ease-out"
           />
           <Line
             type="monotone"
@@ -222,8 +228,11 @@ export function ForAgainstChart({
             stroke={PERIWINKLE}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 4, fill: PERIWINKLE, stroke: '#0A0D0C', strokeWidth: 2 }}
+            activeDot={{ r: 4, fill: PERIWINKLE, stroke: '#080A0A', strokeWidth: 2 }}
             connectNulls={false}
+            animationDuration={900}
+            animationBegin={160}
+            animationEasing="ease-out"
           />
         </LineChart>
       </ResponsiveContainer>

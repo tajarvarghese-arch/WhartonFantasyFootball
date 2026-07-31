@@ -25,8 +25,8 @@ export function Panel({
         <header className="win-head flex-wrap">
           <div className="min-w-0">
             {title && (
-              <h2 className="label text-term-green">
-                <span className="text-term-faint">$ </span>
+              <h2 className="label flex items-center gap-1.5">
+                <span aria-hidden className="text-term-line-bright">$</span>
                 {title}
               </h2>
             )}
@@ -60,11 +60,14 @@ function useCountUp(target: number, run: boolean): number {
       return
     }
     const start = performance.now()
-    const duration = 620
+    const duration = 780
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1)
-      // ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3)
+      // Overshoot slightly past the target, then settle — matches --ease-spring.
+      const eased =
+        progress === 1
+          ? 1
+          : 1 + 2.2 * Math.pow(progress - 1, 3) + 1.2 * Math.pow(progress - 1, 2)
       setValue(target * eased)
       if (progress < 1) frame.current = requestAnimationFrame(tick)
     }
@@ -111,10 +114,45 @@ export function Stat({
   return (
     <div className="border-l border-term-line-bright pl-3">
       <div className="label">{label}</div>
-      <div className={`mt-1 text-[23px] leading-none font-medium tabular-nums ${toneClass} glow`}>
+      <div className={`mt-1 text-[23px] leading-none font-medium tabular-nums ${toneClass}`}>
         {countTo !== undefined ? (format ? format(counted) : Math.round(counted)) : value}
       </div>
       {hint && <div className="mt-1.5 text-[11px] leading-snug text-term-faint">{hint}</div>}
+    </div>
+  )
+}
+
+/**
+ * The one figure a screen is about. Everything else is subordinate to it, so
+ * there is exactly one of these per view.
+ */
+export function Hero({
+  label,
+  value,
+  countTo,
+  format,
+  caption,
+  accent = false,
+}: {
+  label: string
+  value: string
+  countTo?: number
+  format?: (value: number) => string
+  caption?: ReactNode
+  accent?: boolean
+}) {
+  const counted = useCountUp(countTo ?? 0, countTo !== undefined)
+  return (
+    <div className="rise-in">
+      <div className="label">{label}</div>
+      <div
+        className={`hero-num mt-2.5 ${accent ? 'text-term-green glow' : ''}`}
+      >
+        {countTo !== undefined && format ? format(counted) : value}
+      </div>
+      {caption && (
+        <div className="mt-3 max-w-md text-[12px] leading-relaxed text-term-dim">{caption}</div>
+      )}
     </div>
   )
 }

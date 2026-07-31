@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useLeague } from '../lib/data'
 import { usePendingTrades } from '../lib/derive'
+import CommandPalette from './CommandPalette'
 import CommissionerPanel from './CommissionerPanel'
 
 const NAV = [
@@ -33,6 +34,7 @@ export default function Shell({ children }: { children: ReactNode }) {
   const pending = usePendingTrades()
   const [panelOpen, setPanelOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [paletteOpen, setPaletteOpen] = useState(false)
   const location = useLocation()
 
   // Close the mobile command menu whenever navigation happens.
@@ -47,6 +49,24 @@ export default function Shell({ children }: { children: ReactNode }) {
       document.body.style.overflow = ''
     }
   }, [menuOpen])
+
+  // Cmd/Ctrl-K anywhere, and "/" when not already typing in a field.
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      const typing =
+        event.target instanceof HTMLElement &&
+        ['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target.tagName)
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        setPaletteOpen((open) => !open)
+      } else if (event.key === '/' && !typing && !paletteOpen) {
+        event.preventDefault()
+        setPaletteOpen(true)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [paletteOpen])
 
   const current = NAV.find((item) =>
     item.end ? location.pathname === item.to : location.pathname.startsWith(item.to),
@@ -100,6 +120,15 @@ export default function Shell({ children }: { children: ReactNode }) {
           <span className="text-term-faint">:</span>
           <span className="truncate text-term-cyan">{current?.label ?? 'ledger'}</span>
         </div>
+        <div className="flex shrink-0 items-center gap-2">
+        <button
+          type="button"
+          onClick={() => setPaletteOpen(true)}
+          className="btn min-h-[34px] px-2.5 py-1"
+          aria-label="Search"
+        >
+          search
+        </button>
         <button
           type="button"
           onClick={() => setMenuOpen((open) => !open)}
@@ -112,6 +141,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             <span className="ml-1 text-term-amber">·{pending.length}</span>
           )}
         </button>
+        </div>
       </div>
 
       {/* Mobile full-screen command list */}
@@ -152,6 +182,14 @@ export default function Shell({ children }: { children: ReactNode }) {
             est. 2004 · 12 teams
           </div>
         </div>
+        <button
+          type="button"
+          onClick={() => setPaletteOpen(true)}
+          className="mx-3 mt-3 flex min-h-[34px] items-center justify-between gap-2 border border-term-line-bright px-2.5 text-[11.5px] text-term-faint transition-colors hover:border-term-dim hover:text-term-mid"
+        >
+          <span>search…</span>
+          <kbd>⌘K</kbd>
+        </button>
         <div className="flex-1 overflow-y-auto py-2">{navList}</div>
         <button
           type="button"
@@ -195,6 +233,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         </div>
       </footer>
 
+      {paletteOpen && <CommandPalette onClose={() => setPaletteOpen(false)} />}
       {panelOpen && <CommissionerPanel onClose={() => setPanelOpen(false)} />}
     </div>
   )

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import ContractBoard from '../components/ContractBoard'
 import { Chip, Empty, Panel, PageHeader } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
 import { useBudgets } from '../lib/derive'
@@ -54,6 +55,17 @@ export default function Keepers() {
           </select>
         }
       />
+
+      <div className="mb-6">
+        <Panel
+          title="contract board"
+          subtitle="Every keeper contract from this season to its expiry. Read down a column to see how much of the league is already committed in that year."
+        >
+          <div className="px-4 py-4">
+            <ContractBoard year={year} />
+          </div>
+        </Panel>
+      </div>
 
       <div className="grid min-w-0 gap-6 lg:grid-cols-2">
         {blocks.map((block, index) => {

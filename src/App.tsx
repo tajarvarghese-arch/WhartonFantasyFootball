@@ -8,6 +8,7 @@ import Finances from './pages/Finances'
 import Keepers from './pages/Keepers'
 import ManagerDetail from './pages/ManagerDetail'
 import Managers from './pages/Managers'
+import PlayerDetail from './pages/PlayerDetail'
 import Records from './pages/Records'
 import Rules from './pages/Rules'
 import Standings from './pages/Standings'
@@ -58,6 +59,7 @@ export default function App() {
         <Route path="/standings" element={<Standings />} />
         <Route path="/managers" element={<Managers />} />
         <Route path="/managers/:id" element={<ManagerDetail />} />
+        <Route path="/players/:name" element={<PlayerDetail />} />
         <Route path="/records" element={<Records />} />
         <Route path="/rules" element={<Rules />} />
         <Route path="*" element={<Navigate to="/" replace />} />

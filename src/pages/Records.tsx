@@ -1,8 +1,11 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import ChampionsWall from '../components/ChampionsWall'
+import TradeFlow from '../components/TradeFlow'
 import { ScoringChart } from '../components/charts'
 import { Panel, PageHeader, SegmentedControl } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
+import { useTrades } from '../lib/derive'
 import { num, pct, record } from '../lib/format'
 import {
   careerTable,
@@ -19,6 +22,7 @@ export default function Records() {
   const [eraId, setEraId] = useState('keeper')
   const era = eras.find((option) => option.id === eraId) ?? eras[0]
 
+  const trades = useTrades()
   const table = careerTable(seasons, era)
   const scoring = useMemo(() => leagueScoringByYear(seasons), [seasons])
   const pointsFor = useMemo(
@@ -127,6 +131,28 @@ export default function Records() {
             { header: 'Seasons', render: (line) => line.seasonsPlayed },
           ]}
         />
+      </div>
+
+      <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-[1fr_1fr]">
+        <Panel
+          title="trade flow"
+          subtitle="Auction dollars exchanged between every pair of managers since the structured ledger began."
+          delay={320}
+        >
+          <div className="px-3 py-5">
+            <TradeFlow trades={trades} />
+          </div>
+        </Panel>
+
+        <Panel
+          title="champions"
+          subtitle="Twenty-two seasons. Repeat winners grow with each title."
+          delay={340}
+        >
+          <div className="max-h-[560px] overflow-y-auto">
+            <ChampionsWall />
+          </div>
+        </Panel>
       </div>
 
       <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-2">

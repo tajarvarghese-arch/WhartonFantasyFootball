@@ -65,7 +65,7 @@ export default function ManagerDetail() {
         }`}
       />
 
-      <div className="rise mb-8 grid grid-cols-2 gap-6 lg:grid-cols-4">
+      <div className="line-in mb-8 grid grid-cols-2 gap-6 lg:grid-cols-4">
         <Stat
           label="Titles"
           value={career.titles}

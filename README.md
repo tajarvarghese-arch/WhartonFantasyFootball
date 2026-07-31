@@ -84,6 +84,18 @@ YAHOO_CLIENT_ID=xxx YAHOO_CLIENT_SECRET=yyy node scripts/yahoo-auth.mjs
 Run the workflow once by hand (**Actions → Yahoo standings sync → Run workflow**);
 any unmapped team is listed in the log and on the dashboard.
 
+## Notable views
+
+- **Contract board** (Keepers) — every keeper contract as a bar running to its
+  expiry, with committed salary totalled per future season.
+- **Trade flow** (Records) — managers on a circle, arcs weighted by the auction
+  dollars exchanged between each pair. Hover isolates one manager.
+- **Champions wall** (Records) — 22 title seasons, repeat winners set larger.
+- **Player dossiers** (`/players/:name`) — every roster appearance, salary, and
+  trade for any player the league has ever rostered.
+- **Command palette** — `⌘K` (or `/`) searches pages, managers, players, and
+  trades with subsequence matching, so `jgib` finds Jahmyr Gibbs.
+
 ## League rules the app enforces
 
 - **Draft budget** — `$200 − keeper salaries ± auction dollars traded for that season`.
