@@ -40,12 +40,12 @@ export default function Rules() {
                   key={index}
                   className={
                     bullet
-                      ? 'flex gap-3 text-[13px] leading-relaxed text-term-dim'
-                      : 'pt-2 text-[13px] leading-relaxed font-semibold text-term-text'
+                      ? 'flex gap-3 text-[13px] leading-relaxed text-arc-ink-soft'
+                      : 'pt-2 text-[13px] leading-relaxed font-semibold text-arc-ink'
                   }
                 >
                   {bullet && (
-                    <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-term-green" />
+                    <span aria-hidden className="mt-2 h-px w-3 shrink-0 bg-arc-lime" />
                   )}
                   <span>{bullet ? line.replace(/^-\s*/, '') : line}</span>
                 </li>
@@ -77,13 +77,13 @@ export default function Rules() {
                           ? `> ${league.faabScale[index - 1].maxPct}%`
                           : `${from}–${tier.maxPct}%`}
                       </td>
-                      <td className="n text-term-green">{money(tier.keeperCost)}</td>
+                      <td className="n text-arc-green">{money(tier.keeperCost)}</td>
                     </tr>
                   )
                 })}
               </tbody>
             </table>
-            <p className="border-t border-term-line px-5 py-3.5 text-[12px] leading-relaxed text-term-faint">
+            <p className="border-t border-arc-ink px-5 py-3.5 text-[12px] leading-relaxed text-arc-ink-faint">
               A player drafted in the auction and later re-acquired off waivers keeps the greater of
               the auction value and the waiver-scale cost. Undrafted free agents cost $5.
             </p>
@@ -94,14 +94,14 @@ export default function Rules() {
             subtitle="Automated on every trade in the queue."
             delay={140}
           >
-            <div className="space-y-3 px-5 py-5 text-[13px] leading-relaxed text-term-dim">
+            <div className="space-y-3 px-5 py-5 text-[13px] leading-relaxed text-arc-ink-soft">
               <p>
-                A trade moving less than <span className="text-term-green">$10</span> in the
+                A trade moving less than <span className="text-arc-green">$10</span> in the
                 subsequent year can be held 24 hours for a market check. By the rule's own example,
                 a $5/$10 trade triggers it and a $10/$2 trade does not — the test is the first
                 obligation year, not the total.
               </p>
-              <p className="text-term-faint">
+              <p className="text-arc-ink-faint">
                 During the window any manager may offer the seller a better proposal. When it
                 closes, the seller owes the original buyer a right of first refusal before dealing
                 elsewhere.

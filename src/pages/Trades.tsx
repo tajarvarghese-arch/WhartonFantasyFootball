@@ -115,7 +115,7 @@ export default function Trades() {
       </div>
 
       {error && (
-        <p className="mb-5 border-l-2 border-[var(--color-term-red)] pl-3 text-[12px] text-[var(--color-term-red)]">
+        <p className="mb-5 border-l-2 border-[var(--color-arc-red)] pl-3 text-[12px] text-[var(--color-arc-red)]">
           {error}
         </p>
       )}
@@ -153,12 +153,12 @@ export default function Trades() {
                   <div className="px-5 py-5">
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div>
-                        <div className="text-[26px] leading-tight text-term-text">
+                        <div className="text-[26px] leading-tight text-arc-ink">
                           {managerName(managers, trade.seller)}
-                          <span className="mx-2.5 text-term-green">→</span>
+                          <span className="mx-2.5 text-arc-green">→</span>
                           {managerName(managers, trade.buyer)}
                         </div>
-                        <div className="mt-1.5 text-[13px] text-term-dim">{trade.players}</div>
+                        <div className="mt-1.5 text-[13px] text-arc-ink-soft">{trade.players}</div>
                         <div className="mt-2 flex flex-wrap items-center gap-2">
                           <Chip tone={onMarketCheck ? 'flag' : 'gold'}>
                             {onMarketCheck ? 'Market check' : 'Pending'}
@@ -167,14 +167,14 @@ export default function Trades() {
                             <Chip tone="flag">Anti-dumping trigger</Chip>
                           )}
                           {onMarketCheck && trade.marketCheckUntil && (
-                            <span className="tnum text-[11px] text-term-faint">
+                            <span className="tnum text-[11px] text-arc-ink-faint">
                               {checkOver
                                 ? 'Window closed — ROFR to the original buyer'
                                 : `Closes in ${countdown(trade.marketCheckUntil)}`}
                             </span>
                           )}
                           {trade.proposedAt && (
-                            <span className="text-[11px] text-term-faint">
+                            <span className="text-[11px] text-arc-ink-faint">
                               Proposed {shortDate(trade.proposedAt)}
                             </span>
                           )}
@@ -182,17 +182,17 @@ export default function Trades() {
                       </div>
                       <div className="text-right">
                         <div className="label">Total</div>
-                        <div className="tnum text-[26px] leading-none text-term-green">
+                        <div className="tnum text-[26px] leading-none text-arc-green">
                           {money(trade.totalDollars)}
                         </div>
                       </div>
                     </div>
 
-                    <p className="mt-4 border-l-2 border-term-line-bright pl-3 text-[12px] text-term-dim">
+                    <p className="mt-4 border-l-2 border-arc-ink pl-3 text-[12px] text-arc-ink-soft">
                       {verdict.summary}
                     </p>
                     {trade.commissionerNote && (
-                      <p className="mt-2 pl-3 text-[12px] text-term-faint italic">
+                      <p className="mt-2 pl-3 text-[12px] text-arc-ink-faint italic">
                         {trade.commissionerNote}
                       </p>
                     )}
@@ -211,21 +211,21 @@ export default function Trades() {
                         </thead>
                         <tbody>
                           <tr>
-                            <td className="text-term-dim">
+                            <td className="text-arc-ink-soft">
                               {managerName(managers, trade.seller)}
                             </td>
                             {impact.map((row) => (
-                              <td key={row.year} className="n text-[var(--color-term-green)]">
+                              <td key={row.year} className="n text-[var(--color-arc-green)]">
                                 {money(row.seller, { sign: true })}
                               </td>
                             ))}
                           </tr>
                           <tr>
-                            <td className="text-term-dim">
+                            <td className="text-arc-ink-soft">
                               {managerName(managers, trade.buyer)}
                             </td>
                             {impact.map((row) => (
-                              <td key={row.year} className="n text-[var(--color-term-red)]">
+                              <td key={row.year} className="n text-[var(--color-arc-red)]">
                                 {money(row.buyer, { sign: true })}
                               </td>
                             ))}
@@ -268,7 +268,7 @@ export default function Trades() {
                         </button>
                       </div>
                     ) : (
-                      <p className="mt-5 text-[12px] text-term-faint">
+                      <p className="mt-5 text-[12px] text-arc-ink-faint">
                         Awaiting a ruling from {league.commissioner}.
                       </p>
                     )}
@@ -301,14 +301,14 @@ export default function Trades() {
               <tbody>
                 {visible.map((trade) => (
                   <tr key={trade.id}>
-                    <td className="tnum whitespace-nowrap text-term-faint">{trade.batch}</td>
+                    <td className="tnum whitespace-nowrap text-arc-ink-faint">{trade.batch}</td>
                     <td className="whitespace-nowrap">{managerName(managers, trade.seller)}</td>
                     <td className="whitespace-nowrap">{managerName(managers, trade.buyer)}</td>
-                    <td className="max-w-[280px] text-term-dim">{trade.players}</td>
-                    <td className="max-w-[220px] text-[12px] text-term-faint">
+                    <td className="max-w-[280px] text-arc-ink-soft">{trade.players}</td>
+                    <td className="max-w-[220px] text-[12px] text-arc-ink-faint">
                       {trade.terms}
                     </td>
-                    <td className="n text-term-green">{money(trade.totalDollars)}</td>
+                    <td className="n text-arc-green">{money(trade.totalDollars)}</td>
                     <td>
                       <Chip tone={trade.status === 'approved' ? 'up' : 'down'}>{trade.status}</Chip>
                     </td>
@@ -322,14 +322,14 @@ export default function Trades() {
 
       {tab === 'archive' && (
         <div className="space-y-6">
-          <p className="text-[13px] text-term-dim">
+          <p className="text-[13px] text-arc-ink-soft">
             The written trade log kept before the structured ledger began, preserved verbatim.
           </p>
           {legacyTrades.map((group, index) => (
             <Panel key={group.heading} title={group.heading} delay={index * 40}>
-              <ul className="divide-y divide-term-line">
+              <ul className="divide-y divide-arc-ink">
                 {group.entries.map((entry, entryIndex) => (
-                  <li key={entryIndex} className="px-5 py-2.5 text-[13px] text-term-dim">
+                  <li key={entryIndex} className="px-5 py-2.5 text-[13px] text-arc-ink-soft">
                     {entry}
                   </li>
                 ))}

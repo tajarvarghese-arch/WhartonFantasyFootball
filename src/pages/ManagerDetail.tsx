@@ -47,7 +47,7 @@ export default function ManagerDetail() {
         <PageHeader eyebrow="Manager" title="Not found" />
         <Panel>
           <Empty>
-            No records for that manager. <Link to="/managers" className="text-term-green">Back to the list</Link>
+            No records for that manager. <Link to="/managers" className="text-arc-green">Back to the list</Link>
           </Empty>
         </Panel>
       </>
@@ -122,17 +122,17 @@ export default function ManagerDetail() {
                 {rows.map((row) => (
                   <tr key={row.season.year}>
                     <td className="tnum">{row.season.year}</td>
-                    <td className="text-term-dim">{row.team.team}</td>
+                    <td className="text-arc-ink-soft">{row.team.team}</td>
                     <td className="n">
-                      <span className={row.team.rank === 1 ? 'text-term-green' : undefined}>
+                      <span className={row.team.rank === 1 ? 'text-arc-green' : undefined}>
                         {row.team.rank === 1 && '★ '}
                         {row.team.rank}
                       </span>
                     </td>
                     <td className="n">{record(row.team.wins, row.team.losses)}</td>
-                    <td className="n text-term-dim">{num(row.team.avgPointsFor)}</td>
-                    <td className="n text-term-faint">{num(row.team.avgPointsAgainst)}</td>
-                    <td className="n text-term-faint">
+                    <td className="n text-arc-ink-soft">{num(row.team.avgPointsFor)}</td>
+                    <td className="n text-arc-ink-faint">{num(row.team.avgPointsAgainst)}</td>
+                    <td className="n text-arc-ink-faint">
                       {row.team.playoffWins + row.team.playoffLosses > 0
                         ? record(row.team.playoffWins, row.team.playoffLosses)
                         : '—'}
@@ -152,14 +152,14 @@ export default function ManagerDetail() {
                   {currentBlock.keepers.map((pick) => (
                     <tr key={pick.player}>
                       <td>{pick.player}</td>
-                      <td className="n text-term-dim">{money(pick.salary)}</td>
-                      <td className="n text-term-faint">Yr {pick.contractYear}</td>
+                      <td className="n text-arc-ink-soft">{money(pick.salary)}</td>
+                      <td className="n text-arc-ink-faint">Yr {pick.contractYear}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <div className="border-t border-term-line px-5 py-3">
-                <Link to="/keepers" className="label hover:text-term-green">
+              <div className="border-t border-arc-ink px-5 py-3">
+                <Link to="/keepers" className="label hover:text-arc-green">
                   Full roster →
                 </Link>
               </div>
@@ -186,15 +186,15 @@ export default function ManagerDetail() {
                     return (
                       <tr key={year}>
                         <td className="tnum">{year}</td>
-                        <td className="n text-term-dim">{money(entry.received)}</td>
-                        <td className="n text-term-dim">{money(entry.sent)}</td>
+                        <td className="n text-arc-ink-soft">{money(entry.received)}</td>
+                        <td className="n text-arc-ink-soft">{money(entry.sent)}</td>
                         <td
                           className={`n ${
                             entry.net > 0
-                              ? 'text-[var(--color-term-green)]'
+                              ? 'text-[var(--color-arc-green)]'
                               : entry.net < 0
-                                ? 'text-[var(--color-term-red)]'
-                                : 'text-term-faint'
+                                ? 'text-[var(--color-arc-red)]'
+                                : 'text-arc-ink-faint'
                           }`}
                         >
                           {money(entry.net, { sign: true })}
@@ -211,19 +211,19 @@ export default function ManagerDetail() {
             {trades.length === 0 ? (
               <Empty>No trades on the structured ledger.</Empty>
             ) : (
-              <ul className="divide-y divide-term-line">
+              <ul className="divide-y divide-arc-ink">
                 {trades.map((trade) => {
                   const selling = trade.seller === id
                   return (
                     <li key={trade.id} className="px-5 py-3">
                       <div className="flex items-center justify-between gap-3">
                         <Chip tone={selling ? 'up' : 'down'}>{selling ? 'Sold' : 'Bought'}</Chip>
-                        <span className="tnum text-[12px] text-term-green">
+                        <span className="tnum text-[12px] text-arc-green">
                           {money(trade.totalDollars)}
                         </span>
                       </div>
-                      <div className="mt-1.5 text-[13px] text-term-dim">{trade.players}</div>
-                      <div className="mt-0.5 text-[11px] text-term-faint">
+                      <div className="mt-1.5 text-[13px] text-arc-ink-soft">{trade.players}</div>
+                      <div className="mt-0.5 text-[11px] text-arc-ink-faint">
                         {trade.batch} · {selling ? 'to' : 'from'}{' '}
                         {managerName(managers, selling ? trade.buyer : trade.seller)}
                       </div>

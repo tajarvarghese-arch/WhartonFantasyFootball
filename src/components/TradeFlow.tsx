@@ -66,7 +66,7 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
 
   if (nodes.length === 0) {
     return (
-      <div className="px-4 py-10 text-center text-[12.5px] text-term-faint">
+      <div className="px-4 py-10 text-center text-[12.5px] text-arc-ink-faint">
         No trades recorded yet.
       </div>
     )
@@ -95,7 +95,7 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
                 key={`${link.from}-${link.to}`}
                 d={`M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`}
                 fill="none"
-                stroke={dimmed ? 'var(--color-term-line-bright)' : 'var(--color-term-green)'}
+                stroke={dimmed ? 'var(--color-arc-ink)' : 'var(--color-arc-green)'}
                 strokeWidth={width}
                 strokeLinecap="round"
                 opacity={dimmed ? 0.18 : focus ? 0.85 : 0.34}
@@ -129,13 +129,13 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
                   cx={point.x}
                   cy={point.y}
                   r={focus === id ? 5 : 3.5}
-                  fill={dimmed ? 'var(--color-term-faint)' : 'var(--color-term-green)'}
+                  fill={dimmed ? 'var(--color-arc-ink-faint)' : 'var(--color-arc-green)'}
                   style={{ transition: 'r 160ms ease, fill 160ms ease' }}
                 />
                 <text
                   x={labelX}
                   y={labelY}
-                  fill={dimmed ? 'var(--color-term-faint)' : 'var(--color-term-text)'}
+                  fill={dimmed ? 'var(--color-arc-ink-faint)' : 'var(--color-arc-ink)'}
                   fontSize="11"
                   fontFamily="IBM Plex Mono, monospace"
                   dominantBaseline="middle"
@@ -152,10 +152,10 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
         </g>
       </svg>
 
-      <p className="mt-2 text-center text-[11px] text-term-faint">
+      <p className="mt-2 text-center text-[11px] text-arc-ink-faint">
         {focus ? (
           <>
-            <span className="text-term-text">{managerName(managers, focus)}</span> —{' '}
+            <span className="text-arc-ink">{managerName(managers, focus)}</span> —{' '}
             {links.filter((link) => link.from === focus || link.to === focus).length} trading
             partners,{' '}
             {money(

@@ -13,24 +13,25 @@ import {
 
 /*
   Chart palette for the ink surface (#0F1512):
-    single series  → phosphor green, contrast 3:1+ against the surface
-    two series     → #26AC63 + #8A79E6, validated for lightness band, chroma
-                     floor, CVD separation, and normal-vision floor
+    single series  → arcade blue, contrast 3:1+ against the cream surface
+    two series     → #3B6BFF + #FF4D3D, validated on a light surface for the
+                     lightness band, chroma floor, CVD separation, and the
+                     normal-vision floor
   Grid and axes stay recessive; every chart on this site sits beside the table
   that holds the same numbers, so the data is never color-only.
 */
-export const GOLD = '#3DF08B'
-export const GOLD_MARK = '#26AC63'
-export const PERIWINKLE = '#8A79E6'
+export const GOLD = '#3B6BFF'
+export const GOLD_MARK = '#3B6BFF'
+export const PERIWINKLE = '#FF4D3D'
 
-const AXIS = '#4a5350'
-const GRID = 'rgba(232, 237, 235, 0.06)'
+const AXIS = '#4b4360'
+const GRID = 'rgba(25, 19, 37, 0.14)'
 
 const axisProps = {
   stroke: AXIS,
   tickLine: false,
   axisLine: { stroke: GRID },
-  tick: { fill: AXIS, fontSize: 10, fontFamily: 'IBM Plex Mono, monospace' },
+  tick: { fill: AXIS, fontSize: 10, fontFamily: 'Pixelify Sans, monospace' },
 } as const
 
 /** Snap the axis to round numbers so ticks read 80/100/120, not 74.94/136.67. */
@@ -54,7 +55,7 @@ function TooltipBox({
 }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="border border-term-line-bright bg-term-bg/95 px-3 py-2 shadow-lg">
+    <div className="border border-arc-ink bg-arc-bg px-3 py-2 shadow-lg">
       <div className="label">{label}</div>
       {payload.map((entry, index) =>
         entry.value === null ? null : (
@@ -66,12 +67,12 @@ function TooltipBox({
                 style={{ background: entry.color }}
               />
             )}
-            <span className="tnum text-[14px] text-term-text">
+            <span className="tnum text-[14px] text-arc-ink">
               {format(entry.value)}
               {suffix}
             </span>
             {payload.length > 1 && entry.name && (
-              <span className="text-[11px] text-term-faint">{entry.name}</span>
+              <span className="text-[11px] text-arc-ink-faint">{entry.name}</span>
             )}
           </div>
         ),
@@ -118,7 +119,7 @@ export function WinPctChart({
           stroke={GOLD}
           strokeWidth={2}
           dot={false}
-          activeDot={{ r: 4, fill: GOLD, stroke: '#080A0A', strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: GOLD, stroke: '#191325', strokeWidth: 2 }}
           connectNulls={false}
           animationDuration={900}
           animationEasing="ease-out"
@@ -164,7 +165,7 @@ export function ScoringChart({
           stroke={GOLD}
           strokeWidth={2}
           fill="url(#scoringFill)"
-          activeDot={{ r: 4, fill: GOLD, stroke: '#080A0A', strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: GOLD, stroke: '#191325', strokeWidth: 2 }}
           animationDuration={1000}
           animationEasing="ease-out"
         />
@@ -188,7 +189,7 @@ export function ForAgainstChart({
           { label: 'Points for', color: GOLD_MARK },
           { label: 'Points against', color: PERIWINKLE },
         ].map((item) => (
-          <span key={item.label} className="flex items-center gap-2 text-[11px] text-term-dim">
+          <span key={item.label} className="flex items-center gap-2 text-[11px] text-arc-ink-soft">
             <span aria-hidden className="h-2 w-4" style={{ background: item.color }} />
             {item.label}
           </span>
@@ -216,7 +217,7 @@ export function ForAgainstChart({
             stroke={GOLD_MARK}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 4, fill: GOLD_MARK, stroke: '#080A0A', strokeWidth: 2 }}
+            activeDot={{ r: 4, fill: GOLD_MARK, stroke: '#191325', strokeWidth: 2 }}
             connectNulls={false}
             animationDuration={900}
             animationEasing="ease-out"
@@ -228,7 +229,7 @@ export function ForAgainstChart({
             stroke={PERIWINKLE}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 4, fill: PERIWINKLE, stroke: '#080A0A', strokeWidth: 2 }}
+            activeDot={{ r: 4, fill: PERIWINKLE, stroke: '#191325', strokeWidth: 2 }}
             connectNulls={false}
             animationDuration={900}
             animationBegin={160}

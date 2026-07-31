@@ -19,7 +19,7 @@ export default function PlayerDetail() {
         <Panel>
           <Empty>
             No roster record for “{decoded}”. Try the{' '}
-            <span className="text-term-green">⌘K</span> search.
+            <span className="text-arc-green">⌘K</span> search.
           </Empty>
         </Panel>
       </>
@@ -56,7 +56,7 @@ export default function PlayerDetail() {
           <div className="text-[26px]">
             <Sparkline values={chronological.map((stint) => stint.cost)} />
           </div>
-          <div className="mt-1 flex justify-between text-[10px] text-term-faint">
+          <div className="mt-1 flex justify-between text-[10px] text-arc-ink-faint">
             <span>{chronological[0]?.year}</span>
             <span>{chronological.at(-1)?.year}</span>
           </div>
@@ -83,7 +83,7 @@ export default function PlayerDetail() {
                     {stint.manager ? (
                       <Link
                         to={`/managers/${stint.manager}`}
-                        className="transition-colors hover:text-term-green"
+                        className="transition-colors hover:text-arc-green"
                       >
                         {managerName(managers, stint.manager)}
                       </Link>
@@ -92,7 +92,7 @@ export default function PlayerDetail() {
                     )}
                   </td>
                   <td className="n">{money(stint.cost)}</td>
-                  <td className="n text-term-faint">{stint.contractYear ?? '—'}</td>
+                  <td className="n text-arc-ink-faint">{stint.contractYear ?? '—'}</td>
                   <td>
                     {stint.kept ? <Chip tone="up">kept</Chip> : <Chip>rostered</Chip>}
                   </td>
@@ -118,10 +118,10 @@ export default function PlayerDetail() {
               <tbody>
                 {dossier.trades.map((trade) => (
                   <tr key={trade.id}>
-                    <td className="tnum text-term-faint">{trade.batch}</td>
+                    <td className="tnum text-arc-ink-faint">{trade.batch}</td>
                     <td>{managerName(managers, trade.seller)}</td>
                     <td>{managerName(managers, trade.buyer)}</td>
-                    <td className="n text-term-green">{money(trade.total)}</td>
+                    <td className="n text-arc-green">{money(trade.total)}</td>
                   </tr>
                 ))}
               </tbody>

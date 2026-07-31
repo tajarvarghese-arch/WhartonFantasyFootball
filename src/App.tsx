@@ -24,10 +24,10 @@ export default function App() {
     return (
       <div className="grid min-h-dvh place-items-center px-6">
         <div className="w-full max-w-sm">
-          <div className="text-[15px] font-semibold text-term-green glow">
-            wacl<span className="text-term-faint">://</span>terminal
+          <div className="text-[15px] font-semibold text-arc-green">
+            wacl<span className="text-arc-ink-faint">://</span>terminal
           </div>
-          <div className="cursor mt-3 text-[12.5px] text-term-dim">reading /data</div>
+          <div className="cursor mt-3 text-[12.5px] text-arc-ink-soft">reading /data</div>
         </div>
       </div>
     )
@@ -37,11 +37,11 @@ export default function App() {
     return (
       <div className="grid min-h-dvh place-items-center px-5">
         <div className="win w-full max-w-lg p-5">
-          <div className="label text-term-red">error</div>
-          <p className="mt-2 text-[12.5px] leading-relaxed text-term-dim">
-            <span className="text-term-red">✗</span> {error ?? 'League data is missing.'}
+          <div className="label text-arc-red">error</div>
+          <p className="mt-2 text-[12.5px] leading-relaxed text-arc-ink-soft">
+            <span className="text-arc-red">✗</span> {error ?? 'League data is missing.'}
           </p>
-          <pre className="mt-3 overflow-x-auto border border-term-line bg-term-bg p-3 text-[11.5px] text-term-faint">
+          <pre className="mt-3 overflow-x-auto border border-arc-ink bg-arc-bg p-3 text-[11.5px] text-arc-ink-faint">
             $ npm run seed -- &quot;path/to/workbook.xlsx&quot;
           </pre>
         </div>

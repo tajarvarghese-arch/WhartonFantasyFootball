@@ -1,39 +1,25 @@
 import { useEffect, useState } from 'react'
 
-const LINES = [
-  'WACL/OS 26.1 — commissioner terminal',
-  'mounting /data ................. ok',
-  'seasons 2004-2025 ............. 22',
-  'keeper contracts .............. ok',
-  'auction ledger ......... reconciled',
-  'ready.',
-]
-
 const SEEN_KEY = 'wacl.booted'
 
 /**
- * Cold-open boot sequence. Runs once per browser session, is skippable by tap,
- * and is bypassed entirely for reduced-motion users.
+ * Attract screen. Runs once per browser session, skippable by tap, and
+ * bypassed entirely for reduced-motion users.
  */
 export default function Boot({ onDone }: { onDone: () => void }) {
-  const [shown, setShown] = useState(0)
   const [closing, setClosing] = useState(false)
 
   useEffect(() => {
-    if (shown >= LINES.length) {
-      const timer = setTimeout(() => setClosing(true), 260)
-      return () => clearTimeout(timer)
-    }
-    const timer = setTimeout(() => setShown((count) => count + 1), shown === 0 ? 90 : 130)
+    const timer = setTimeout(() => setClosing(true), 1500)
     return () => clearTimeout(timer)
-  }, [shown])
+  }, [])
 
   useEffect(() => {
     if (!closing) return
     const timer = setTimeout(() => {
       sessionStorage.setItem(SEEN_KEY, '1')
       onDone()
-    }, 280)
+    }, 260)
     return () => clearTimeout(timer)
   }, [closing, onDone])
 
@@ -44,29 +30,46 @@ export default function Boot({ onDone }: { onDone: () => void }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[70] flex items-center justify-center bg-term-bg px-6 transition-opacity duration-300 ${
+      className={`fixed inset-0 z-[70] flex items-center justify-center bg-arc-bg px-6 transition-opacity duration-200 ${
         closing ? 'opacity-0' : 'opacity-100'
       }`}
       onClick={skip}
       role="status"
       aria-label="Loading"
     >
-      <div className="w-full max-w-md">
-        {LINES.slice(0, shown).map((line, index) => (
-          <div
-            key={line}
-            className={`line-in text-[12.5px] leading-6 ${
-              index === LINES.length - 1 ? 'mt-2 text-term-green glow' : 'text-term-dim'
-            }`}
-          >
-            <span className="text-term-faint select-none">{index === 0 ? '' : '> '}</span>
-            {line}
-          </div>
-        ))}
-        <div className="cursor mt-1 h-4" />
-        <div className="mt-6 text-[10.5px] tracking-widest text-term-faint uppercase">
-          tap to skip
+      <div className="w-full max-w-sm text-center">
+        <div
+          className="arcade pop-in text-[26px] leading-tight text-arc-red"
+          style={{ textShadow: '4px 4px 0 var(--color-arc-ink)' }}
+        >
+          WACL
         </div>
+        <div
+          className="arcade pop-in mt-4 text-[9px] leading-relaxed text-arc-ink"
+          style={{ animationDelay: '120ms' }}
+        >
+          WHARTON ALUM
+          <br />
+          CHAMPIONS LEAGUE
+        </div>
+
+        <div
+          aria-hidden
+          className="pop-in mx-auto mt-6 h-2 w-full max-w-[240px]"
+          style={{
+            animationDelay: '200ms',
+            backgroundImage:
+              'repeating-linear-gradient(90deg, var(--color-arc-red) 0 20px, var(--color-arc-orange) 20px 40px, var(--color-arc-yellow) 40px 60px, var(--color-arc-lime) 60px 80px, var(--color-arc-cyan) 80px 100px, var(--color-arc-blue) 100px 120px)',
+          }}
+        />
+
+        <div
+          className="arcade pulse mt-7 text-[10px] text-arc-ink"
+          style={{ animationDelay: '320ms' }}
+        >
+          PRESS START
+        </div>
+        <div className="arcade mt-3 text-[7px] text-arc-ink-faint">22 SEASONS · 12 PLAYERS</div>
       </div>
     </div>
   )

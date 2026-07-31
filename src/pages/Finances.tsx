@@ -69,7 +69,7 @@ function AuctionBook() {
         <table className="out">
           <thead>
             <tr>
-              <th className="sticky left-0 bg-term-surface">Manager</th>
+              <th className="sticky left-0 bg-arc-panel">Manager</th>
               {years.map((year) => (
                 <th key={year} className="n">
                   {year}
@@ -86,7 +86,7 @@ function AuctionBook() {
               )
               return (
                 <tr key={manager.id}>
-                  <td className="sticky left-0 bg-term-surface whitespace-nowrap">
+                  <td className="sticky left-0 bg-arc-panel whitespace-nowrap">
                     {manager.displayName}
                   </td>
                   {years.map((year) => {
@@ -97,10 +97,10 @@ function AuctionBook() {
                         key={year}
                         className={`n ${
                           net > 0
-                            ? 'text-[var(--color-term-green)]'
+                            ? 'text-[var(--color-arc-green)]'
                             : net < 0
-                              ? 'text-[var(--color-term-red)]'
-                              : 'text-term-faint'
+                              ? 'text-[var(--color-arc-red)]'
+                              : 'text-arc-ink-faint'
                         }`}
                         title={
                           entry
@@ -115,10 +115,10 @@ function AuctionBook() {
                   <td
                     className={`n ${
                       career > 0
-                        ? 'text-[var(--color-term-green)]'
+                        ? 'text-[var(--color-arc-green)]'
                         : career < 0
-                          ? 'text-[var(--color-term-red)]'
-                          : 'text-term-faint'
+                          ? 'text-[var(--color-arc-red)]'
+                          : 'text-arc-ink-faint'
                     }`}
                   >
                     {money(career, { sign: true })}
@@ -127,19 +127,19 @@ function AuctionBook() {
               )
             })}
             <tr>
-              <td className="sticky left-0 bg-term-surface text-term-faint">League total</td>
+              <td className="sticky left-0 bg-arc-panel text-arc-ink-faint">League total</td>
               {years.map((year) => {
                 const total = Object.values(ledger[String(year)] ?? {}).reduce(
                   (sum, entry) => sum + entry.net,
                   0,
                 )
                 return (
-                  <td key={year} className="n text-term-faint">
+                  <td key={year} className="n text-arc-ink-faint">
                     {Math.abs(total) < 0.01 ? '0' : money(total)}
                   </td>
                 )
               })}
-              <td className="n text-term-faint">0</td>
+              <td className="n text-arc-ink-faint">0</td>
             </tr>
           </tbody>
         </table>
@@ -204,7 +204,7 @@ function FaabBook({ season }: { season: number }) {
       >
         {adding && <FaabForm season={season} onSubmit={addEntry} />}
         {error && (
-          <p className="px-5 pb-3 text-[12px] text-[var(--color-term-red)]">{error}</p>
+          <p className="px-5 pb-3 text-[12px] text-[var(--color-arc-red)]">{error}</p>
         )}
         <table className="out">
           <thead>
@@ -220,12 +220,12 @@ function FaabBook({ season }: { season: number }) {
             {positions.map((row) => (
               <tr key={row.manager}>
                 <td>{managerName(managers, row.manager)}</td>
-                <td className="n text-term-dim">{row.claims || '·'}</td>
-                <td className="n text-term-dim">{money(row.spent)}</td>
-                <td className="n text-term-green">{money(row.remaining)}</td>
+                <td className="n text-arc-ink-soft">{row.claims || '·'}</td>
+                <td className="n text-arc-ink-soft">{money(row.spent)}</td>
+                <td className="n text-arc-green">{money(row.remaining)}</td>
                 <td>
                   <Bar value={row.spent} max={league.baseFaabBudget} />
-                  <span className="tnum mt-1 block text-[10px] text-term-faint">
+                  <span className="tnum mt-1 block text-[10px] text-arc-ink-faint">
                     {pct(row.pctUsed, 0)}
                   </span>
                 </td>
@@ -252,12 +252,12 @@ function FaabBook({ season }: { season: number }) {
               {seasonEntries.map((entry) => (
                 <tr key={entry.id}>
                   <td>{entry.player}</td>
-                  <td className="text-term-dim">{managerName(managers, entry.manager)}</td>
+                  <td className="text-arc-ink-soft">{managerName(managers, entry.manager)}</td>
                   <td className="n">{money(entry.bid)}</td>
-                  <td className="n text-term-faint">
+                  <td className="n text-arc-ink-faint">
                     {pct(entry.bid / league.baseFaabBudget, 0)}
                   </td>
-                  <td className="n text-term-green">{money(faabKeeperCost(entry.bid, league))}</td>
+                  <td className="n text-arc-green">{money(faabKeeperCost(entry.bid, league))}</td>
                   <td>
                     {entry.onEndingRoster ? <Chip tone="up">Yes</Chip> : <Chip>No</Chip>}
                   </td>
@@ -289,14 +289,14 @@ function FaabBook({ season }: { season: number }) {
                 .map((claim, index) => (
                   <tr key={`${claim.player}-${index}`}>
                     <td>{claim.player}</td>
-                    <td className="text-term-dim">
+                    <td className="text-arc-ink-soft">
                       {claim.manager ? managerName(managers, claim.manager) : (claim.teamName ?? '—')}
                     </td>
                     <td className="n">{money(claim.bid)}</td>
-                    <td className="n text-term-faint">
+                    <td className="n text-arc-ink-faint">
                       {pct(claim.bid / league.baseFaabBudget, 0)}
                     </td>
-                    <td className="n text-term-green">
+                    <td className="n text-arc-green">
                       {money(faabKeeperCost(claim.bid, league))}
                     </td>
                   </tr>
@@ -329,14 +329,14 @@ function FaabBook({ season }: { season: number }) {
                 .map((claim, index) => (
                   <tr key={`${claim.player}-${index}`}>
                     <td>{claim.player}</td>
-                    <td className="text-term-dim">
+                    <td className="text-arc-ink-soft">
                       {claim.manager ? managerName(managers, claim.manager) : claim.team}
                     </td>
                     <td className="n">{money(claim.bid)}</td>
-                    <td className="n text-term-faint">
+                    <td className="n text-arc-ink-faint">
                       {pct(claim.bid / league.baseFaabBudget, 0)}
                     </td>
-                    <td className="n text-term-green">{money(faabKeeperCost(claim.bid, league))}</td>
+                    <td className="n text-arc-green">{money(faabKeeperCost(claim.bid, league))}</td>
                   </tr>
                 ))}
             </tbody>
@@ -366,7 +366,7 @@ function FaabForm({
   const cost = faabKeeperCost(bid, league)
 
   return (
-    <div className="grid gap-3 border-b border-term-line px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
+    <div className="grid gap-3 border-b border-arc-ink px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
       <label className="lg:col-span-2">
         <span className="label">Manager</span>
         <select
@@ -417,13 +417,13 @@ function FaabForm({
           type="checkbox"
           checked={onRoster}
           onChange={(event) => setOnRoster(event.target.checked)}
-          className="accent-[var(--color-term-green)]"
+          className="accent-[var(--color-arc-green)]"
         />
-        <span className="text-[12px] text-term-dim">Finished the season on their roster</span>
+        <span className="text-[12px] text-arc-ink-soft">Finished the season on their roster</span>
       </label>
       <div className="lg:col-span-2">
         <span className="label">Keeper cost</span>
-        <div className="tnum mt-1.5 text-[20px] text-term-green">{money(cost)}</div>
+        <div className="tnum mt-1.5 text-[20px] text-arc-green">{money(cost)}</div>
       </div>
       <div className="flex items-end lg:col-span-2">
         <button
@@ -525,7 +525,7 @@ function CashBook({ season }: { season: number }) {
             }}
           />
         )}
-        {error && <p className="px-5 pb-3 text-[12px] text-[var(--color-term-red)]">{error}</p>}
+        {error && <p className="px-5 pb-3 text-[12px] text-[var(--color-arc-red)]">{error}</p>}
         <table className="out">
           <thead>
             <tr>
@@ -540,16 +540,16 @@ function CashBook({ season }: { season: number }) {
             {positions.map((row) => (
               <tr key={row.manager}>
                 <td>{managerName(managers, row.manager)}</td>
-                <td className="n text-term-faint">{row.entries || '·'}</td>
-                <td className="n text-term-dim">{money(row.owed, { sign: true })}</td>
-                <td className="n text-term-faint">{money(row.settled, { sign: true })}</td>
+                <td className="n text-arc-ink-faint">{row.entries || '·'}</td>
+                <td className="n text-arc-ink-soft">{money(row.owed, { sign: true })}</td>
+                <td className="n text-arc-ink-faint">{money(row.settled, { sign: true })}</td>
                 <td
                   className={`n ${
                     row.outstanding > 0
-                      ? 'text-[var(--color-term-green)]'
+                      ? 'text-[var(--color-arc-green)]'
                       : row.outstanding < 0
-                        ? 'text-[var(--color-term-red)]'
-                        : 'text-term-faint'
+                        ? 'text-[var(--color-arc-red)]'
+                        : 'text-arc-ink-faint'
                   }`}
                 >
                   {row.outstanding === 0 ? '·' : money(row.outstanding, { sign: true })}
@@ -581,17 +581,17 @@ function CashBook({ season }: { season: number }) {
             <tbody>
               {entries.map((entry) => (
                 <tr key={entry.id}>
-                  <td className="tnum whitespace-nowrap text-term-faint">
+                  <td className="tnum whitespace-nowrap text-arc-ink-faint">
                     {shortDate(entry.date)}
                   </td>
                   <td>{managerName(managers, entry.manager)}</td>
-                  <td className="text-[12px] text-term-dim capitalize">{entry.type}</td>
-                  <td className="text-term-dim">{entry.description}</td>
+                  <td className="text-[12px] text-arc-ink-soft capitalize">{entry.type}</td>
+                  <td className="text-arc-ink-soft">{entry.description}</td>
                   <td
                     className={`n ${
                       entry.amount > 0
-                        ? 'text-[var(--color-term-green)]'
-                        : 'text-[var(--color-term-red)]'
+                        ? 'text-[var(--color-arc-green)]'
+                        : 'text-[var(--color-arc-red)]'
                     }`}
                   >
                     {money(entry.amount, { sign: true })}
@@ -600,7 +600,7 @@ function CashBook({ season }: { season: number }) {
                     {commissioner ? (
                       <button
                         type="button"
-                        className="tag text-term-faint transition-colors hover:text-term-green"
+                        className="tag text-arc-ink-faint transition-colors hover:text-arc-green"
                         onClick={() =>
                           void mutate(
                             (current) => ({
@@ -647,7 +647,7 @@ function CashForm({
   const [busy, setBusy] = useState(false)
 
   return (
-    <div className="grid gap-3 border-b border-term-line px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
+    <div className="grid gap-3 border-b border-arc-ink px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
       <label className="lg:col-span-2">
         <span className="label">Manager</span>
         <select
@@ -717,7 +717,7 @@ function CashForm({
         >
           {busy ? 'Saving…' : 'Record entry'}
         </button>
-        <p className="ml-4 text-[11px] text-term-faint">
+        <p className="ml-4 text-[11px] text-arc-ink-faint">
           Negative = the manager owes the league. Positive = the league owes them.
         </p>
       </div>

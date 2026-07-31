@@ -18,20 +18,15 @@ export function Panel({
 }) {
   return (
     <section
-      className={`win line-in ${className}`}
+      className={`win pop-in ${className}`}
       style={delay ? { animationDelay: `${delay}ms` } : undefined}
     >
       {(title || action) && (
         <header className="win-head flex-wrap">
           <div className="min-w-0">
-            {title && (
-              <h2 className="label flex items-center gap-1.5">
-                <span aria-hidden className="text-term-line-bright">$</span>
-                {title}
-              </h2>
-            )}
+            {title && <h2 className="label">{title}</h2>}
             {subtitle && (
-              <p className="mt-1 text-[12px] leading-snug text-term-dim">{subtitle}</p>
+              <p className="mt-1 text-[12px] leading-snug text-arc-ink-soft">{subtitle}</p>
             )}
           </div>
           {action && <div className="shrink-0">{action}</div>}
@@ -103,21 +98,21 @@ export function Stat({
   format?: (value: number) => string
 }) {
   const toneClass = {
-    default: 'text-term-text',
-    up: 'text-term-green',
-    down: 'text-term-red',
-    gold: 'text-term-amber',
+    default: 'text-arc-ink',
+    up: 'text-arc-green',
+    down: 'text-arc-red',
+    gold: 'text-arc-ink',
   }[tone]
 
   const counted = useCountUp(countTo ?? 0, countTo !== undefined)
 
   return (
-    <div className="border-l border-term-line-bright pl-3">
+    <div className="win px-3 py-3">
       <div className="label">{label}</div>
-      <div className={`mt-1 text-[23px] leading-none font-medium tabular-nums ${toneClass}`}>
+      <div className={`arcade mt-2 text-[17px] leading-none ${toneClass}`}>
         {countTo !== undefined ? (format ? format(counted) : Math.round(counted)) : value}
       </div>
-      {hint && <div className="mt-1.5 text-[11px] leading-snug text-term-faint">{hint}</div>}
+      {hint && <div className="mt-2 text-[13px] leading-snug text-arc-ink-soft">{hint}</div>}
     </div>
   )
 }
@@ -132,26 +127,24 @@ export function Hero({
   countTo,
   format,
   caption,
-  accent = false,
 }: {
   label: string
   value: string
   countTo?: number
   format?: (value: number) => string
   caption?: ReactNode
+  /** Retained for callers written against the previous design. */
   accent?: boolean
 }) {
   const counted = useCountUp(countTo ?? 0, countTo !== undefined)
   return (
     <div className="rise-in">
       <div className="label">{label}</div>
-      <div
-        className={`hero-num mt-2.5 ${accent ? 'text-term-green glow' : ''}`}
-      >
+      <div className="hero-num mt-3">
         {countTo !== undefined && format ? format(counted) : value}
       </div>
       {caption && (
-        <div className="mt-3 max-w-md text-[12px] leading-relaxed text-term-dim">{caption}</div>
+        <div className="mt-4 max-w-md text-[14px] leading-relaxed text-arc-ink-soft">{caption}</div>
       )}
     </div>
   )
@@ -164,14 +157,19 @@ export function Chip({
   children: ReactNode
   tone?: 'neutral' | 'gold' | 'up' | 'down' | 'flag'
 }) {
-  const toneClass = {
-    neutral: 'text-term-faint',
-    gold: 'text-term-amber',
-    up: 'text-term-green',
-    down: 'text-term-red',
-    flag: 'text-term-amber',
+  const bg = {
+    neutral: 'var(--color-arc-bg-deep)',
+    gold: 'var(--color-arc-yellow)',
+    up: 'var(--color-arc-lime)',
+    down: 'var(--color-arc-red)',
+    flag: 'var(--color-arc-orange)',
   }[tone]
-  return <span className={`tag ${toneClass}`}>{children}</span>
+  const fg = tone === 'down' ? 'var(--color-arc-panel)' : 'var(--color-arc-ink)'
+  return (
+    <span className="tag" style={{ background: bg, color: fg }}>
+      {children}
+    </span>
+  )
 }
 
 /** Command-prompt page header. */
@@ -180,34 +178,29 @@ export function PageHeader({
   title,
   lede,
   action,
-  path = '~',
 }: {
   eyebrow: string
   title: string
   lede?: string
   action?: ReactNode
+  /** Retained so callers written for the previous layout still compile. */
   path?: string
 }) {
   return (
-    <header className="line-in mb-6 border-b border-term-line pb-5">
+    <header className="pop-in mb-7">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0 max-w-2xl">
-          <div className="flex flex-wrap items-center gap-x-1.5 text-[11px]">
-            <span className="text-term-green">commish@wacl</span>
-            <span className="text-term-faint">:</span>
-            <span className="text-term-cyan">{path}</span>
-            <span className="text-term-faint">$</span>
-            <span className="type-in text-term-dim">{eyebrow}</span>
-          </div>
-          <h1 className="cursor mt-2 text-[30px] leading-[1.05] font-semibold tracking-tight text-term-text sm:text-[38px]">
-            {title}
-          </h1>
-          {lede && (
-            <p className="mt-2.5 text-[12.5px] leading-relaxed text-term-dim">
-              <span className="text-term-faint select-none"># </span>
-              {lede}
-            </p>
-          )}
+          <div className="label type-in">{eyebrow}</div>
+          <h1 className="display cursor mt-3 text-arc-ink">{title}</h1>
+          <div
+            aria-hidden
+            className="mt-3 h-1.5 w-full max-w-sm"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(90deg, var(--color-arc-red) 0 22px, var(--color-arc-orange) 22px 44px, var(--color-arc-yellow) 44px 66px, var(--color-arc-lime) 66px 88px, var(--color-arc-cyan) 88px 110px, var(--color-arc-blue) 110px 132px)',
+            }}
+          />
+          {lede && <p className="mt-3 text-[14px] leading-relaxed text-arc-ink-soft">{lede}</p>}
         </div>
         {action && <div className="shrink-0">{action}</div>}
       </div>
@@ -229,17 +222,17 @@ export function SegmentedControl<T extends string>({
   return (
     <div className="flex items-center gap-2">
       {label && <span className="label">{label}</span>}
-      <div className="scroll-x flex border border-term-line-bright">
+      <div className="scroll-x flex border-[3px] border-arc-ink shadow-hard-sm">
         {options.map((option) => (
           <button
             key={option.id}
             type="button"
             onClick={() => onChange(option.id)}
             aria-pressed={value === option.id}
-            className={`min-h-[34px] px-3 py-1 text-[11px] font-medium tracking-wide whitespace-nowrap transition-colors ${
+            className={`arcade min-h-[38px] px-3 py-1 text-[9px] whitespace-nowrap transition-colors ${
               value === option.id
-                ? 'bg-term-green text-term-bg'
-                : 'text-term-dim hover:bg-term-raised hover:text-term-green'
+                ? 'bg-arc-blue text-arc-panel'
+                : 'bg-arc-panel text-arc-ink hover:bg-arc-yellow'
             }`}
           >
             {option.label}
@@ -252,10 +245,8 @@ export function SegmentedControl<T extends string>({
 
 export function Empty({ children }: { children: ReactNode }) {
   return (
-    <div className="px-4 py-10 text-center text-[12.5px] text-term-faint">
-      <span className="text-term-line-bright">--- </span>
+    <div className="arcade px-4 py-10 text-center text-[10px] leading-relaxed text-arc-ink-soft">
       {children}
-      <span className="text-term-line-bright"> ---</span>
     </div>
   )
 }
@@ -264,7 +255,7 @@ export function Empty({ children }: { children: ReactNode }) {
 export function Bar({
   value,
   max,
-  tone = 'var(--color-term-green)',
+  tone = 'var(--color-arc-blue)',
   cells = 12,
 }: {
   value: number
@@ -281,7 +272,7 @@ export function Bar({
       title={`${Math.round(ratio * 100)}%`}
     >
       <span style={{ color: tone }}>{'█'.repeat(filled)}</span>
-      <span className="text-term-line-bright">{'░'.repeat(cells - filled)}</span>
+      <span className="text-arc-ink-faint">{'░'.repeat(cells - filled)}</span>
     </span>
   )
 }
@@ -292,14 +283,14 @@ export function Bar({
  */
 export function Sparkline({
   values,
-  tone = 'text-term-green',
+  tone = 'text-arc-blue',
 }: {
   values: (number | null)[]
   tone?: string
 }) {
   const blocks = '▁▂▃▄▅▆▇█'
   const present = values.filter((value): value is number => value !== null)
-  if (present.length === 0) return <span className="text-term-faint">—</span>
+  if (present.length === 0) return <span className="text-arc-ink-faint">—</span>
   const min = Math.min(...present)
   const max = Math.max(...present)
   const span = max - min || 1

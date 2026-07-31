@@ -165,17 +165,17 @@ export default function Records() {
             <tbody>
               {pointsFor.best.map((row, index) => (
                 <tr key={`${row.manager}-${row.year}`}>
-                  <td className="tnum w-8 text-term-faint">{index + 1}</td>
+                  <td className="tnum w-8 text-arc-ink-faint">{index + 1}</td>
                   <td>
                     <Link
                       to={`/managers/${row.manager}`}
-                      className="transition-colors hover:text-term-green"
+                      className="transition-colors hover:text-arc-green"
                     >
                       {managerName(managers, row.manager)}
                     </Link>
                   </td>
-                  <td className="n text-term-faint">{row.year}</td>
-                  <td className="n text-term-green">{num(row.value, 2)}</td>
+                  <td className="n text-arc-ink-faint">{row.year}</td>
+                  <td className="n text-arc-green">{num(row.value, 2)}</td>
                 </tr>
               ))}
             </tbody>
@@ -187,17 +187,17 @@ export default function Records() {
             <tbody>
               {pointsFor.worst.map((row, index) => (
                 <tr key={`${row.manager}-${row.year}`}>
-                  <td className="tnum w-8 text-term-faint">{index + 1}</td>
+                  <td className="tnum w-8 text-arc-ink-faint">{index + 1}</td>
                   <td>
                     <Link
                       to={`/managers/${row.manager}`}
-                      className="transition-colors hover:text-term-green"
+                      className="transition-colors hover:text-arc-green"
                     >
                       {managerName(managers, row.manager)}
                     </Link>
                   </td>
-                  <td className="n text-term-faint">{row.year}</td>
-                  <td className="n text-[var(--color-term-red)]">{num(row.value, 2)}</td>
+                  <td className="n text-arc-ink-faint">{row.year}</td>
+                  <td className="n text-[var(--color-arc-red)]">{num(row.value, 2)}</td>
                 </tr>
               ))}
             </tbody>
@@ -238,11 +238,11 @@ function Board({
         <tbody>
           {rows.map((line, index) => (
             <tr key={line.manager}>
-              <td className="n text-term-faint">{index + 1}</td>
+              <td className="n text-arc-ink-faint">{index + 1}</td>
               <td>
                 <Link
                   to={`/managers/${line.manager}`}
-                  className="transition-colors hover:text-term-green"
+                  className="transition-colors hover:text-arc-green"
                 >
                   {managerName(managers, line.manager)}
                 </Link>
@@ -250,7 +250,7 @@ function Board({
               {columns.map((column) => (
                 <td
                   key={column.header}
-                  className={`n ${column.highlight ? 'text-term-green' : 'text-term-dim'}`}
+                  className={`n ${column.highlight ? 'text-arc-green' : 'text-arc-ink-soft'}`}
                 >
                   {column.render(line)}
                 </td>

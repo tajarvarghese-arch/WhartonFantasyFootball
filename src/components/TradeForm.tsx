@@ -138,7 +138,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
           <span className="label">Auction dollars by year</span>
           <button
             type="button"
-            className="text-[11px] font-semibold tracking-[0.09em] text-term-green uppercase hover:text-term-green"
+            className="text-[11px] font-semibold tracking-[0.09em] text-arc-green uppercase hover:text-arc-green"
             onClick={() =>
               setObligations((current) => [
                 ...current,
@@ -167,7 +167,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
                 aria-label="Season"
               />
               <div className="relative flex-1">
-                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-term-faint">
+                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-arc-ink-faint">
                   $
                 </span>
                 <input
@@ -184,7 +184,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
               {obligations.length > 1 && (
                 <button
                   type="button"
-                  className="px-2 text-[18px] leading-none text-term-faint hover:text-[var(--color-term-red)]"
+                  className="px-2 text-[18px] leading-none text-arc-ink-faint hover:text-[var(--color-arc-red)]"
                   onClick={() =>
                     setObligations((current) => current.filter((_, i) => i !== index))
                   }
@@ -197,8 +197,8 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
           ))}
         </div>
         <div className="mt-2.5 flex items-center justify-between text-[12px]">
-          <span className="text-term-faint">Total consideration</span>
-          <span className="tnum text-term-green">{money(total)}</span>
+          <span className="text-arc-ink-faint">Total consideration</span>
+          <span className="tnum text-arc-green">{money(total)}</span>
         </div>
       </div>
 
@@ -213,14 +213,14 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
       </label>
 
       {(issues.length > 0 || verdict.triggered) && (
-        <ul className="space-y-1.5 border-l-2 border-term-line-bright pl-3 text-[12px]">
+        <ul className="space-y-1.5 border-l-2 border-arc-ink pl-3 text-[12px]">
           {issues.map((issue, index) => (
             <li
               key={index}
               className={
                 issue.level === 'error'
-                  ? 'text-[var(--color-term-red)]'
-                  : 'text-[var(--color-term-amber)]'
+                  ? 'text-[var(--color-arc-red)]'
+                  : 'text-[var(--color-arc-orange)]'
               }
             >
               {issue.message}
@@ -229,12 +229,12 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
         </ul>
       )}
 
-      <div className="border-t border-term-line pt-4">
+      <div className="border-t border-arc-ink pt-4">
         <div className="label">Reads as</div>
-        <p className="mt-1.5 text-[13px] text-term-dim italic">{summary}</p>
+        <p className="mt-1.5 text-[13px] text-arc-ink-soft italic">{summary}</p>
       </div>
 
-      {error && <p className="text-[12px] text-[var(--color-term-red)]">{error}</p>}
+      {error && <p className="text-[12px] text-[var(--color-arc-red)]">{error}</p>}
 
       <div className="flex flex-wrap items-center gap-3">
         {canSave ? (

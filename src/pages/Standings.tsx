@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import ManagerTag from '../components/ManagerTag'
 import { Chip, Panel, PageHeader } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
 import { num, pct, record } from '../lib/format'
@@ -59,35 +59,30 @@ export default function Standings() {
                       <span
                         className={
                           team.rank === 1
-                            ? 'text-term-green'
+                            ? 'text-arc-green'
                             : team.rank <= 3
-                              ? 'text-term-text'
-                              : 'text-term-faint'
+                              ? 'text-arc-ink'
+                              : 'text-arc-ink-faint'
                         }
                       >
                         {team.rank}
                       </span>
                     </td>
                     <td className="whitespace-nowrap">
-                      {team.rank === 1 && <span className="mr-1.5 text-term-green">★</span>}
+                      {team.rank === 1 && <span className="mr-1.5 text-arc-green">★</span>}
                       {team.team}
                     </td>
                     <td>
-                      <Link
-                        to={`/managers/${team.manager}`}
-                        className="text-term-dim transition-colors hover:text-term-green"
-                      >
-                        {managerName(managers, team.manager)}
-                      </Link>
+                      <ManagerTag id={team.manager} />
                     </td>
                     <td className="n">{record(team.wins, team.losses)}</td>
-                    <td className="n text-term-dim">
+                    <td className="n text-arc-ink-soft">
                       {pct(team.wins / Math.max(team.wins + team.losses, 1), 0)}
                     </td>
-                    <td className="n text-term-dim">{num(team.pointsFor, 0)}</td>
-                    <td className="n text-term-faint">{num(team.pointsAgainst, 0)}</td>
-                    <td className="n text-term-green">{num(team.avgPointsFor)}</td>
-                    <td className="n text-term-faint">
+                    <td className="n text-arc-ink-soft">{num(team.pointsFor, 0)}</td>
+                    <td className="n text-arc-ink-faint">{num(team.pointsAgainst, 0)}</td>
+                    <td className="n text-arc-green">{num(team.avgPointsFor)}</td>
+                    <td className="n text-arc-ink-faint">
                       {team.playoffWins + team.playoffLosses > 0
                         ? record(team.playoffWins, team.playoffLosses)
                         : '—'}
@@ -106,14 +101,14 @@ export default function Standings() {
                 {seasons.map((row) => (
                   <tr
                     key={row.year}
-                    className={row.year === year ? 'bg-term-green/10' : undefined}
+                    className={row.year === year ? 'bg-arc-yellow' : undefined}
                     onClick={() => setYear(row.year)}
                     style={{ cursor: 'pointer' }}
                   >
-                    <td className="tnum w-14 text-term-faint">{row.year}</td>
+                    <td className="tnum w-14 text-arc-ink-faint">{row.year}</td>
                     <td>
-                      <span className="text-term-green">{managerName(managers, row.champion)}</span>
-                      <span className="ml-2 text-[11px] text-term-faint">
+                      <span className="text-arc-green">{managerName(managers, row.champion)}</span>
+                      <span className="ml-2 text-[11px] text-arc-ink-faint">
                         d. {managerName(managers, row.runnerUp)}
                       </span>
                     </td>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import ManagerTag from '../components/ManagerTag'
 import Ticker from '../components/Ticker'
 import { Bar, Chip, Empty, Hero, Panel, PageHeader, Stat } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
@@ -91,24 +92,24 @@ export default function Dashboard() {
                 <tbody>
                   {data.live.teams.map((team) => (
                     <tr key={team.teamKey ?? team.teamName}>
-                      <td className="n text-term-faint">{team.rank ?? '—'}</td>
+                      <td className="n text-arc-ink-faint">{team.rank ?? '—'}</td>
                       <td>{team.teamName}</td>
-                      <td className="text-term-dim">
+                      <td className="text-arc-ink-soft">
                         {team.manager ? managerName(managers, team.manager) : '—'}
                       </td>
                       <td className="n">
                         {team.wins}–{team.losses}
                         {team.ties ? `–${team.ties}` : ''}
                       </td>
-                      <td className="n text-term-green">{num(team.pointsFor, 0)}</td>
-                      <td className="n text-term-faint">{num(team.pointsAgainst, 0)}</td>
+                      <td className="n text-arc-green">{num(team.pointsFor, 0)}</td>
+                      <td className="n text-arc-ink-faint">{num(team.pointsAgainst, 0)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
             {data.live.unmapped.length > 0 && (
-              <p className="border-t border-term-line px-5 py-3 text-[12px] text-[var(--color-term-amber)]">
+              <p className="border-t border-arc-ink px-5 py-3 text-[12px] text-[var(--color-arc-orange)]">
                 Unmapped Yahoo teams: {data.live.unmapped.join(', ')} — add them to{' '}
                 <code>public/data/yahoo-map.json</code>.
               </p>
@@ -144,23 +145,18 @@ export default function Dashboard() {
                 {budgets.map((budget) => (
                   <tr key={budget.manager}>
                     <td>
-                      <Link
-                        to={`/managers/${budget.manager}`}
-                        className="font-medium text-term-text transition-colors hover:text-term-green"
-                      >
-                        {managerName(managers, budget.manager)}
-                      </Link>
+                      <ManagerTag id={budget.manager} />
                     </td>
-                    <td className="text-[12px] text-term-faint">{budget.team}</td>
-                    <td className="n text-term-dim">{budget.keeperCount}</td>
-                    <td className="n text-term-dim">{money(-budget.keeperSalary)}</td>
+                    <td className="text-[12px] text-arc-ink-faint">{budget.team}</td>
+                    <td className="n text-arc-ink-soft">{budget.keeperCount}</td>
+                    <td className="n text-arc-ink-soft">{money(-budget.keeperSalary)}</td>
                     <td
                       className={`n ${
                         budget.cashNet > 0
-                          ? 'text-[var(--color-term-green)]'
+                          ? 'text-[var(--color-arc-green)]'
                           : budget.cashNet < 0
-                            ? 'text-[var(--color-term-red)]'
-                            : 'text-term-faint'
+                            ? 'text-[var(--color-arc-red)]'
+                            : 'text-arc-ink-faint'
                       }`}
                     >
                       {budget.cashNet === 0 ? '—' : money(budget.cashNet, { sign: true })}
@@ -168,7 +164,7 @@ export default function Dashboard() {
                     <td className="n">
                       <div
                         className={
-                          budget.overCommitted ? 'text-[var(--color-term-red)]' : 'text-term-green'
+                          budget.overCommitted ? 'text-[var(--color-arc-red)]' : 'text-arc-green'
                         }
                       >
                         {money(budget.available)}
@@ -179,8 +175,8 @@ export default function Dashboard() {
                           max={maxBudget}
                           tone={
                             budget.overCommitted
-                              ? 'var(--color-term-red)'
-                              : 'var(--color-term-green)'
+                              ? 'var(--color-arc-red)'
+                              : 'var(--color-arc-green)'
                           }
                         />
                       </div>
@@ -191,7 +187,7 @@ export default function Dashboard() {
             </table>
           </div>
           {underwater.length > 0 && (
-            <div className="border-t border-term-line px-5 py-3.5 text-[12px] text-[var(--color-term-red)]">
+            <div className="border-t border-arc-ink px-5 py-3.5 text-[12px] text-[var(--color-arc-red)]">
               {underwater.map((budget) => managerName(managers, budget.manager)).join(', ')}{' '}
               {underwater.length === 1 ? 'enters' : 'enter'} the auction underwater — keeper
               selections must be trimmed before draft day.
@@ -213,27 +209,27 @@ export default function Dashboard() {
             {pending.length === 0 ? (
               <Empty>No trades awaiting a ruling.</Empty>
             ) : (
-              <ul className="divide-y divide-term-line">
+              <ul className="divide-y divide-arc-ink">
                 {pending.slice(0, 5).map((trade) => {
                   const verdict = antiDumpingCheck(trade)
                   return (
                     <li key={trade.id} className="px-5 py-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
-                          <div className="text-[13px] text-term-text">
-                            <span className="text-term-dim">
+                          <div className="text-[13px] text-arc-ink">
+                            <span className="text-arc-ink-soft">
                               {managerName(managers, trade.seller)}
                             </span>
-                            <span className="mx-1.5 text-term-faint">→</span>
-                            <span className="text-term-dim">
+                            <span className="mx-1.5 text-arc-ink-faint">→</span>
+                            <span className="text-arc-ink-soft">
                               {managerName(managers, trade.buyer)}
                             </span>
                           </div>
-                          <div className="mt-1 truncate text-[12px] text-term-faint">
+                          <div className="mt-1 truncate text-[12px] text-arc-ink-faint">
                             {trade.players}
                           </div>
                         </div>
-                        <div className="tnum shrink-0 text-right text-[13px] text-term-green">
+                        <div className="tnum shrink-0 text-right text-[13px] text-arc-green">
                           {money(trade.totalDollars)}
                         </div>
                       </div>
@@ -262,8 +258,8 @@ export default function Dashboard() {
                 {horizon.map((row) => (
                   <tr key={row.year}>
                     <td className="tnum">{row.year}</td>
-                    <td className="n text-term-green">{money(row.gross)}</td>
-                    <td className="n text-term-dim">{row.managers}</td>
+                    <td className="n text-arc-green">{money(row.gross)}</td>
+                    <td className="n text-arc-ink-soft">{row.managers}</td>
                   </tr>
                 ))}
               </tbody>
@@ -275,23 +271,23 @@ export default function Dashboard() {
               <tbody>
                 {lastSeason?.teams.slice(0, 6).map((team) => (
                   <tr key={team.manager}>
-                    <td className="tnum w-8 text-term-faint">{team.rank}</td>
+                    <td className="tnum w-8 text-arc-ink-faint">{team.rank}</td>
                     <td>
                       <Link
                         to={`/managers/${team.manager}`}
-                        className="transition-colors hover:text-term-green"
+                        className="transition-colors hover:text-arc-green"
                       >
                         {managerName(managers, team.manager)}
                       </Link>
                     </td>
-                    <td className="n text-term-dim">{record(team.wins, team.losses)}</td>
-                    <td className="n text-term-faint">{num(team.avgPointsFor)}</td>
+                    <td className="n text-arc-ink-soft">{record(team.wins, team.losses)}</td>
+                    <td className="n text-arc-ink-faint">{num(team.avgPointsFor)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div className="border-t border-term-line px-5 py-3">
-              <Link to="/standings" className="label hover:text-term-green">
+            <div className="border-t border-arc-ink px-5 py-3">
+              <Link to="/standings" className="label hover:text-arc-green">
                 All 22 seasons →
               </Link>
             </div>

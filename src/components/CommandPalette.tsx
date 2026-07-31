@@ -11,10 +11,10 @@ const KIND_LABEL: Record<ResultKind, string> = {
 }
 
 const KIND_TONE: Record<ResultKind, string> = {
-  page: 'text-term-faint',
-  manager: 'text-term-cyan',
-  player: 'text-term-green',
-  trade: 'text-term-amber',
+  page: 'text-arc-ink-faint',
+  manager: 'text-arc-cyan',
+  player: 'text-arc-green',
+  trade: 'text-arc-orange',
 }
 
 /**
@@ -66,7 +66,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[80] flex items-start justify-center bg-term-bg/80 px-3 pt-[8vh] backdrop-blur-sm sm:px-6"
+      className="fixed inset-0 z-[80] flex items-start justify-center bg-arc-ink/70 px-3 pt-[8vh] backdrop-blur-sm sm:px-6"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
@@ -75,15 +75,15 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
       aria-label="Command palette"
     >
       <div className="win rise-in flex max-h-[80vh] w-full max-w-xl flex-col overflow-hidden">
-        <div className="flex items-center gap-2.5 border-b border-term-line px-4 py-3">
-          <span className="text-term-green">›</span>
+        <div className="flex items-center gap-2.5 border-b border-arc-ink px-4 py-3">
+          <span className="text-arc-green">›</span>
           <input
             ref={inputRef}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={onKeyDown}
             placeholder="Search managers, players, trades…"
-            className="min-h-0 flex-1 border-0 bg-transparent p-0 text-[14px] text-term-text outline-none placeholder:text-term-faint"
+            className="min-h-0 flex-1 border-0 bg-transparent p-0 text-[14px] text-arc-ink outline-none placeholder:text-arc-ink-faint"
             autoComplete="off"
             spellCheck={false}
             aria-label="Search"
@@ -93,7 +93,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
 
         <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto">
           {results.length === 0 ? (
-            <div className="px-4 py-10 text-center text-[12.5px] text-term-faint">
+            <div className="px-4 py-10 text-center text-[12.5px] text-arc-ink-faint">
               No matches for “{query}”.
             </div>
           ) : (
@@ -117,8 +117,8 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
                   {KIND_LABEL[result.kind]}
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px] text-term-text">{result.title}</span>
-                  <span className="block truncate text-[11px] text-term-faint">
+                  <span className="block truncate text-[13px] text-arc-ink">{result.title}</span>
+                  <span className="block truncate text-[11px] text-arc-ink-faint">
                     {result.subtitle}
                   </span>
                 </span>
@@ -130,7 +130,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-term-line px-4 py-2 text-[10px] text-term-faint">
+        <div className="flex items-center justify-between border-t border-arc-ink px-4 py-2 text-[10px] text-arc-ink-faint">
           <span>{results.length} results</span>
           <span className="hidden items-center gap-2 sm:flex">
             <kbd>↑</kbd>

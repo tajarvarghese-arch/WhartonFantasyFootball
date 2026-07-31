@@ -30,12 +30,12 @@ export default function ContractBoard({ year }: { year: number }) {
 
   const toneFor = (remaining: number) =>
     remaining >= 3
-      ? 'var(--color-term-green)'
+      ? 'var(--color-arc-green)'
       : remaining === 2
-        ? 'var(--color-term-cyan)'
+        ? 'var(--color-arc-cyan)'
         : remaining === 1
-          ? 'var(--color-term-amber)'
-          : 'var(--color-term-red)'
+          ? 'var(--color-arc-orange)'
+          : 'var(--color-arc-red)'
 
   // Total salary committed per future season, for the footer summary.
   const committed = horizon.map((target) =>
@@ -55,7 +55,7 @@ export default function ContractBoard({ year }: { year: number }) {
       <div className="scroll-x">
         <div className="min-w-[540px]">
           {/* year ruler */}
-          <div className="sticky top-0 z-10 flex border-b border-term-line bg-term-surface pb-1.5">
+          <div className="sticky top-0 z-10 flex border-b border-arc-ink bg-arc-panel pb-1.5">
             <div className="w-[168px] shrink-0" />
             {horizon.map((target) => (
               <div key={target} className="label flex-1 text-center">
@@ -65,13 +65,13 @@ export default function ContractBoard({ year }: { year: number }) {
           </div>
 
           {blocks.map((block: KeeperBlock, blockIndex) => (
-            <div key={block.team} className="border-b border-term-line/60 py-2.5 last:border-b-0">
+            <div key={block.team} className="border-b border-arc-ink/60 py-2.5 last:border-b-0">
               <div className="mb-1.5 flex items-baseline gap-2 pl-1">
-                <span className="text-[12px] text-term-text">
+                <span className="text-[12px] text-arc-ink">
                   {block.manager ? (
                     <Link
                       to={`/managers/${block.manager}`}
-                      className="transition-colors hover:text-term-green"
+                      className="transition-colors hover:text-arc-green"
                     >
                       {managerName(managers, block.manager)}
                     </Link>
@@ -79,7 +79,7 @@ export default function ContractBoard({ year }: { year: number }) {
                     block.team
                   )}
                 </span>
-                <span className="truncate text-[10px] text-term-faint">{block.team}</span>
+                <span className="truncate text-[10px] text-arc-ink-faint">{block.team}</span>
               </div>
 
               {block.keepers.map((pick, pickIndex) => {
@@ -98,12 +98,12 @@ export default function ContractBoard({ year }: { year: number }) {
                     <div className="flex w-[168px] shrink-0 items-baseline justify-between gap-1.5 pr-2.5">
                       <Link
                         to={`/players/${playerSlug(pick.player)}`}
-                        className="truncate text-[11.5px] text-term-mid transition-colors hover:text-term-green"
+                        className="truncate text-[11.5px] text-arc-ink-soft transition-colors hover:text-arc-green"
                         title={pick.player}
                       >
                         {pick.player}
                       </Link>
-                      <span className="tnum shrink-0 text-[11px] text-term-faint">
+                      <span className="tnum shrink-0 text-[11px] text-arc-ink-faint">
                         {money(pick.salary)}
                       </span>
                     </div>
@@ -113,7 +113,7 @@ export default function ContractBoard({ year }: { year: number }) {
                         {horizon.map((target) => (
                           <div
                             key={target}
-                            className="flex-1 border-l border-term-line/50 first:border-l-0"
+                            className="flex-1 border-l border-arc-ink/50 first:border-l-0"
                           />
                         ))}
                       </div>
@@ -134,25 +134,25 @@ export default function ContractBoard({ year }: { year: number }) {
           ))}
 
           {/* committed salary per season */}
-          <div className="flex border-t border-term-line pt-2">
+          <div className="flex border-t border-arc-ink pt-2">
             <div className="label w-[168px] shrink-0 pr-2.5 text-right">Committed</div>
             {committed.map((total, index) => (
               <div key={horizon[index]} className="flex-1 text-center">
-                <span className="tnum text-[12px] text-term-text">{money(total)}</span>
+                <span className="tnum text-[12px] text-arc-ink">{money(total)}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[10px] text-term-faint">
+      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[10px] text-arc-ink-faint">
         {/* Derived from the contracts actually on the board, so the key never
             advertises a tier that cannot appear. */}
         {[
-          { remaining: 3, label: '3 yrs left', tone: 'var(--color-term-green)' },
-          { remaining: 2, label: '2 yrs', tone: 'var(--color-term-cyan)' },
-          { remaining: 1, label: '1 yr', tone: 'var(--color-term-amber)' },
-          { remaining: 0, label: 'final year', tone: 'var(--color-term-red)' },
+          { remaining: 3, label: '3 yrs left', tone: 'var(--color-arc-green)' },
+          { remaining: 2, label: '2 yrs', tone: 'var(--color-arc-cyan)' },
+          { remaining: 1, label: '1 yr', tone: 'var(--color-arc-orange)' },
+          { remaining: 0, label: 'final year', tone: 'var(--color-arc-red)' },
         ]
           .filter((item) => item.remaining <= maxRemaining)
           .map((item) => (
