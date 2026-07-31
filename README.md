@@ -1,0 +1,148 @@
+# Wharton Alum Champions League — Commissioner's Ledger
+
+A web app for running the league: 22 seasons of history, keeper contracts, trade
+approvals, and three separate sets of books (auction dollars, FAAB, real cash).
+
+Seeded from `FFL Stats and Keepers_2026 PreSeason.xlsx`. The derived auction-dollar
+ledger is reconciled against that workbook's `Trade $$$` tab on every seed run.
+
+## How it works
+
+There is no server. **The repository is the database.**
+
+| Concern | Mechanism |
+| --- | --- |
+| Reads | Static JSON in `public/data/`, served by GitHub Pages |
+| Writes | GitHub Contents API, straight from the browser — every change is a commit |
+| Auth | A fine-grained GitHub PAT held in the commissioner's `localStorage` |
+| Audit log | `git log public/data/` — who changed what, when, and why |
+| Live scores | A scheduled GitHub Action pulls Yahoo and commits `live.json` |
+
+Anyone with the link can read everything. Only a token with push access can write.
+
+## First-time setup
+
+### 1. Install and seed
+
+```bash
+npm install
+```
+
+```bash
+npm run seed -- "C:/Users/tajar/Downloads/FFL Stats and Keepers_2026 PreSeason.xlsx"
+```
+
+The seed script needs Python with `openpyxl`. It regenerates every file in
+`public/data/` **except** `cash.json`, `faab.json`, and `trade-queue.json` — those
+are owned by the app and are never overwritten once they exist.
+
+### 2. Run locally
+
+```bash
+npm run dev
+```
+
+### 3. Turn on GitHub Pages
+
+In the repository: **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+
+Push to `main` and the deploy workflow publishes to
+`https://tajarvarghese-arch.github.io/WhartonFantasyFootball/`.
+
+### 4. Unlock commissioner mode
+
+1. Create a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
+   scoped to **only this repository**.
+2. Grant **Repository permissions → Contents → Read and write**. Nothing else.
+3. Open the site, click the status pill at the bottom of the sidebar, paste the token.
+
+The token stays in that browser. To revoke access, delete the token on GitHub — no
+redeploy needed. Because writes are commits, GitHub Pages republishes a minute or
+two later; until it does, the app holds your edits locally so the numbers stay right.
+
+## Yahoo sync (optional)
+
+Standings are pulled weekly and committed as `public/data/live.json`. Until the
+first successful run the app simply doesn't show the live panel.
+
+1. Create an app at <https://developer.yahoo.com/apps/create/> with **Fantasy
+   Sports → Read** permission.
+2. Get a refresh token:
+
+```bash
+YAHOO_CLIENT_ID=xxx YAHOO_CLIENT_SECRET=yyy node scripts/yahoo-auth.mjs
+```
+
+3. Add four **repository secrets** (Settings → Secrets and variables → Actions):
+   `YAHOO_CLIENT_ID`, `YAHOO_CLIENT_SECRET`, `YAHOO_REFRESH_TOKEN`, `YAHOO_LEAGUE_KEY`.
+4. Map Yahoo teams to managers in `public/data/yahoo-map.json`:
+
+```json
+{ "461.l.123456.t.1": "waldman", "461.l.123456.t.2": "varghese" }
+```
+
+Run the workflow once by hand (**Actions → Yahoo standings sync → Run workflow**);
+any unmapped team is listed in the log and on the dashboard.
+
+## League rules the app enforces
+
+- **Draft budget** — `$200 − keeper salaries ± auction dollars traded for that season`.
+  Negative budgets are allowed and flagged (El Morro entered 2026 at −$5).
+- **Contracts** — years A→D, four seasons maximum. Players at D are shown as
+  ineligible on the ending-roster view.
+- **FAAB keeper cost** — the sliding scale on the bid as a percentage of the $100
+  budget: 0–20% → $5, 21–40% → $10, 41–60% → $15, >60% → $20. Verified against
+  every 2025 claim that carried into the 2026 rosters. A drafted player
+  re-acquired off waivers keeps the *greater* of auction value and waiver cost.
+- **Anti-dumping** — a trade moving less than $10 in the subsequent year is
+  flagged, and the commissioner can hold it for a 24-hour market check with a
+  live countdown. Per the rule's own example, $5/$10 triggers and $10/$2 does not.
+
+## Data files
+
+| File | Owner | Contents |
+| --- | --- | --- |
+| `league.json` | seed | Budgets, keeper slots, FAAB scale |
+| `managers.json` | seed | 16 managers; surname ↔ first-name mapping |
+| `seasons.json` | seed | 2004–2025 final tables |
+| `keepers.json` | seed | Ending rosters + keeper selections, 2015–2026 |
+| `trades.json` | seed | 34 structured trades, 2023–2025 |
+| `trade-ledger.json` | seed | Derived received/sent/net by year |
+| `waivers.json` | seed | 2025 FAAB claims |
+| `legacy-trades.json` | seed | Free-text trade log, 2013–2022 |
+| `rules.json` | seed | Rule sheet, verbatim |
+| `trade-queue.json` | **app** | Proposals and rulings |
+| `faab.json` | **app** | In-season waiver claims |
+| `cash.json` | **app** | Dues, payouts, side bets |
+| `live.json` | action | Yahoo standings |
+| `yahoo-map.json` | manual | Yahoo team key → manager id |
+
+## Manager name mapping
+
+The stat sheets record surnames; the trade sheets record first names. The join was
+derived from the 2025 standings (team → surname) against the 2026 keeper sheet
+(team → first name):
+
+| Team | Trades | Stats |
+| --- | --- | --- |
+| Malikety Split | Tajar | Varghese |
+| I Must Break You | Stu | Waldman |
+| El Morro | Felix | Tollinche |
+| SuperBowlJesus | Alex | Buzik |
+| no ragrets | Jim | Incognito |
+| Bridge N Tunnel | Dave | Konciak |
+| Karma's L-Ah-Ma-tize | Anik | Mukheja |
+| Whobody Wants It? | Nate | Snyder |
+
+Baugh, Bernstein, Lalwani, and Velamoor use the same name in both. Evans,
+Banerjee, Kim, and Kurucz are former managers.
+
+## Scripts
+
+| Command | Does |
+| --- | --- |
+| `npm run dev` | Local dev server |
+| `npm run build` | Production build into `dist/` |
+| `npm run typecheck` | TypeScript, no emit |
+| `npm run seed -- <xlsx>` | Rebuild `public/data/` from the workbook |
+| `npm run yahoo:sync` | Pull Yahoo standings (needs the env vars) |

@@ -1,0 +1,28 @@
+{
+  "name": "Wharton Alum Champions League",
+  "commissioner": "Tajar Varghese",
+  "currentSeason": 2026,
+  "baseDraftBudget": 200,
+  "baseFaabBudget": 100,
+  "keeperSlots": 4,
+  "maxContractYears": 4,
+  "faabScale": [
+    {
+      "maxPct": 20,
+      "keeperCost": 5
+    },
+    {
+      "maxPct": 40,
+      "keeperCost": 10
+    },
+    {
+      "maxPct": 60,
+      "keeperCost": 15
+    },
+    {
+      "maxPct": 100,
+      "keeperCost": 20
+    }
+  ],
+  "sourceWorkbook": "FFL Stats and Keepers_2026 PreSeason.xlsx"
+}

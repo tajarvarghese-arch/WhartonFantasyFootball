@@ -1,0 +1,249 @@
+{
+  "2023": {
+    "waldman": {
+      "received": 4.0,
+      "sent": 0.0,
+      "net": 4.0
+    },
+    "incognito": {
+      "received": 0.0,
+      "sent": 4.0,
+      "net": -4.0
+    },
+    "bernstein": {
+      "received": 30.0,
+      "sent": 0.0,
+      "net": 30.0
+    },
+    "buzik": {
+      "received": 0.0,
+      "sent": 10.0,
+      "net": -10.0
+    },
+    "tollinche": {
+      "received": 0.0,
+      "sent": 37.0,
+      "net": -37.0
+    },
+    "mukheja": {
+      "received": 20.0,
+      "sent": 0.0,
+      "net": 20.0
+    },
+    "lalwani": {
+      "received": 0.0,
+      "sent": 20.0,
+      "net": -20.0
+    },
+    "snyder": {
+      "received": 17.0,
+      "sent": 0.0,
+      "net": 17.0
+    }
+  },
+  "2024": {
+    "bernstein": {
+      "received": 10.0,
+      "sent": 5.0,
+      "net": 5.0
+    },
+    "buzik": {
+      "received": 0.0,
+      "sent": 25.0,
+      "net": -25.0
+    },
+    "tollinche": {
+      "received": 0.0,
+      "sent": 22.0,
+      "net": -22.0
+    },
+    "mukheja": {
+      "received": 25.0,
+      "sent": 0.0,
+      "net": 25.0
+    },
+    "lalwani": {
+      "received": 0.0,
+      "sent": 34.0,
+      "net": -34.0
+    },
+    "snyder": {
+      "received": 10.0,
+      "sent": 0.0,
+      "net": 10.0
+    },
+    "waldman": {
+      "received": 34.0,
+      "sent": 0.0,
+      "net": 34.0
+    },
+    "velamoor": {
+      "received": 7.0,
+      "sent": 0.0,
+      "net": 7.0
+    }
+  },
+  "2025": {
+    "waldman": {
+      "received": 45.0,
+      "sent": 4.0,
+      "net": 41.0
+    },
+    "lalwani": {
+      "received": 24.0,
+      "sent": 16.0,
+      "net": 8.0
+    },
+    "bernstein": {
+      "received": 40.0,
+      "sent": 2.0,
+      "net": 38.0
+    },
+    "mukheja": {
+      "received": 5.0,
+      "sent": 10.0,
+      "net": -5.0
+    },
+    "buzik": {
+      "received": 0.0,
+      "sent": 35.0,
+      "net": -35.0
+    },
+    "velamoor": {
+      "received": 24.0,
+      "sent": 20.0,
+      "net": 4.0
+    },
+    "snyder": {
+      "received": 4.0,
+      "sent": 18.0,
+      "net": -14.0
+    },
+    "tollinche": {
+      "received": 0.0,
+      "sent": 32.0,
+      "net": -32.0
+    },
+    "incognito": {
+      "received": 0.0,
+      "sent": 5.0,
+      "net": -5.0
+    }
+  },
+  "2026": {
+    "bernstein": {
+      "received": 20.0,
+      "sent": 20.0,
+      "net": 0.0
+    },
+    "tollinche": {
+      "received": 0.0,
+      "sent": 74.0,
+      "net": -74.0
+    },
+    "lalwani": {
+      "received": 14.0,
+      "sent": 22.0,
+      "net": -8.0
+    },
+    "buzik": {
+      "received": 50.0,
+      "sent": 14.0,
+      "net": 36.0
+    },
+    "velamoor": {
+      "received": 2.0,
+      "sent": 10.0,
+      "net": -8.0
+    },
+    "waldman": {
+      "received": 10.0,
+      "sent": 70.0,
+      "net": -60.0
+    },
+    "mukheja": {
+      "received": 29.0,
+      "sent": 2.0,
+      "net": 27.0
+    },
+    "varghese": {
+      "received": 30.0,
+      "sent": 0.0,
+      "net": 30.0
+    },
+    "konciak": {
+      "received": 32.0,
+      "sent": 0.0,
+      "net": 32.0
+    },
+    "baugh": {
+      "received": 25.0,
+      "sent": 0.0,
+      "net": 25.0
+    }
+  },
+  "2027": {
+    "varghese": {
+      "received": 20.0,
+      "sent": 0.0,
+      "net": 20.0
+    },
+    "tollinche": {
+      "received": 0.0,
+      "sent": 30.0,
+      "net": -30.0
+    },
+    "konciak": {
+      "received": 18.0,
+      "sent": 0.0,
+      "net": 18.0
+    },
+    "baugh": {
+      "received": 10.0,
+      "sent": 0.0,
+      "net": 10.0
+    },
+    "bernstein": {
+      "received": 0.0,
+      "sent": 10.0,
+      "net": -10.0
+    },
+    "buzik": {
+      "received": 25.0,
+      "sent": 0.0,
+      "net": 25.0
+    },
+    "waldman": {
+      "received": 0.0,
+      "sent": 38.0,
+      "net": -38.0
+    },
+    "mukheja": {
+      "received": 16.0,
+      "sent": 0.0,
+      "net": 16.0
+    },
+    "lalwani": {
+      "received": 0.0,
+      "sent": 11.0,
+      "net": -11.0
+    }
+  },
+  "2028": {
+    "mukheja": {
+      "received": 14.0,
+      "sent": 0.0,
+      "net": 14.0
+    },
+    "waldman": {
+      "received": 0.0,
+      "sent": 12.0,
+      "net": -12.0
+    },
+    "lalwani": {
+      "received": 0.0,
+      "sent": 2.0,
+      "net": -2.0
+    }
+  }
+}

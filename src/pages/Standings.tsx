@@ -1,0 +1,131 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Chip, Panel, PageHeader } from '../components/ui'
+import { managerName, useLeagueData } from '../lib/data'
+import { num, pct, record } from '../lib/format'
+
+export default function Standings() {
+  const { seasons, managers } = useLeagueData()
+  const [year, setYear] = useState(seasons[0]?.year ?? 0)
+  const season = seasons.find((candidate) => candidate.year === year) ?? seasons[0]
+
+  return (
+    <>
+      <PageHeader
+        eyebrow={`${seasons.at(-1)?.year}–${seasons[0]?.year} · ${seasons.length} seasons`}
+        title="Standings"
+        lede="Final tables as recorded by the commissioner, including playoff results. Rank is the finishing position after the postseason."
+        action={
+          <select
+            className="field w-auto"
+            value={year}
+            onChange={(event) => setYear(Number(event.target.value))}
+            aria-label="Season"
+          >
+            {seasons.map((option) => (
+              <option key={option.year} value={option.year}>
+                {option.year}
+              </option>
+            ))}
+          </select>
+        }
+      />
+
+      <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+        <Panel
+          title={`${season.year} final table`}
+          subtitle={`${season.teamCount} teams · ${season.keeperEra ? 'Keeper era' : 'Pre-keeper era'}`}
+        >
+          <div className="overflow-x-auto">
+            <table className="ledger">
+              <thead>
+                <tr>
+                  <th className="num">#</th>
+                  <th>Team</th>
+                  <th>Manager</th>
+                  <th className="num">Record</th>
+                  <th className="num">Win %</th>
+                  <th className="num">PF</th>
+                  <th className="num">PA</th>
+                  <th className="num">Avg</th>
+                  <th className="num">Playoffs</th>
+                </tr>
+              </thead>
+              <tbody>
+                {season.teams.map((team) => (
+                  <tr key={team.manager}>
+                    <td className="num">
+                      <span
+                        className={
+                          team.rank === 1
+                            ? 'text-gold-400'
+                            : team.rank <= 3
+                              ? 'text-parchment'
+                              : 'text-parchment-faint'
+                        }
+                      >
+                        {team.rank}
+                      </span>
+                    </td>
+                    <td className="whitespace-nowrap">
+                      {team.rank === 1 && <span className="mr-1.5 text-gold-400">★</span>}
+                      {team.team}
+                    </td>
+                    <td>
+                      <Link
+                        to={`/managers/${team.manager}`}
+                        className="text-parchment-dim transition-colors hover:text-gold-400"
+                      >
+                        {managerName(managers, team.manager)}
+                      </Link>
+                    </td>
+                    <td className="num">{record(team.wins, team.losses)}</td>
+                    <td className="num text-parchment-dim">
+                      {pct(team.wins / Math.max(team.wins + team.losses, 1), 0)}
+                    </td>
+                    <td className="num text-parchment-dim">{num(team.pointsFor, 0)}</td>
+                    <td className="num text-parchment-faint">{num(team.pointsAgainst, 0)}</td>
+                    <td className="num text-gold-400">{num(team.avgPointsFor)}</td>
+                    <td className="num text-parchment-faint">
+                      {team.playoffWins + team.playoffLosses > 0
+                        ? record(team.playoffWins, team.playoffLosses)
+                        : '—'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Panel>
+
+        <Panel title="Roll of champions" subtitle="Every title since the 2004 charter season.">
+          <div className="max-h-[720px] overflow-y-auto">
+            <table className="ledger">
+              <tbody>
+                {seasons.map((row) => (
+                  <tr
+                    key={row.year}
+                    className={row.year === year ? 'bg-gold-500/8' : undefined}
+                    onClick={() => setYear(row.year)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <td className="tnum w-14 text-parchment-faint">{row.year}</td>
+                    <td>
+                      <span className="text-gold-400">{managerName(managers, row.champion)}</span>
+                      <span className="ml-2 text-[11px] text-parchment-faint">
+                        d. {managerName(managers, row.runnerUp)}
+                      </span>
+                    </td>
+                    <td className="text-right">
+                      {row.keeperEra && <Chip tone="neutral">Keeper</Chip>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Panel>
+      </div>
+    </>
+  )
+}

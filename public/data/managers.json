@@ -1,0 +1,130 @@
+[
+  {
+    "id": "varghese",
+    "surname": "Varghese",
+    "firstName": "Tajar",
+    "displayName": "Tajar",
+    "team": "Malikety Split",
+    "active": true
+  },
+  {
+    "id": "waldman",
+    "surname": "Waldman",
+    "firstName": "Stu",
+    "displayName": "Stu",
+    "team": "I Must Break You",
+    "active": true
+  },
+  {
+    "id": "tollinche",
+    "surname": "Tollinche",
+    "firstName": "Felix",
+    "displayName": "Felix",
+    "team": "El Morro",
+    "active": true
+  },
+  {
+    "id": "buzik",
+    "surname": "Buzik",
+    "firstName": "Alex",
+    "displayName": "Alex",
+    "team": "SuperBowlJesus",
+    "active": true
+  },
+  {
+    "id": "bernstein",
+    "surname": "Bernstein",
+    "firstName": "Bernstein",
+    "displayName": "Bernstein",
+    "team": "Orchids of Asia",
+    "active": true
+  },
+  {
+    "id": "baugh",
+    "surname": "Baugh",
+    "firstName": "Baugh",
+    "displayName": "Baugh",
+    "team": "Juggernaut",
+    "active": true
+  },
+  {
+    "id": "velamoor",
+    "surname": "Velamoor",
+    "firstName": "Velamoor",
+    "displayName": "Velamoor",
+    "team": "Private Sector",
+    "active": true
+  },
+  {
+    "id": "mukheja",
+    "surname": "Mukheja",
+    "firstName": "Anik",
+    "displayName": "Anik",
+    "team": "Karma's L-Ah-Ma-tize",
+    "active": true
+  },
+  {
+    "id": "snyder",
+    "surname": "Snyder",
+    "firstName": "Nate",
+    "displayName": "Nate",
+    "team": "Whobody Wants It?",
+    "active": true
+  },
+  {
+    "id": "incognito",
+    "surname": "Incognito",
+    "firstName": "Jim",
+    "displayName": "Jim",
+    "team": "no ragrets",
+    "active": true
+  },
+  {
+    "id": "konciak",
+    "surname": "Konciak",
+    "firstName": "Dave",
+    "displayName": "Dave",
+    "team": "Bridge N Tunnel",
+    "active": true
+  },
+  {
+    "id": "lalwani",
+    "surname": "Lalwani",
+    "firstName": "Lalwani",
+    "displayName": "Lalwani",
+    "team": "Quien Es Tu Papa",
+    "active": true
+  },
+  {
+    "id": "evans",
+    "surname": "Evans",
+    "firstName": "Evans",
+    "displayName": "Evans",
+    "team": null,
+    "active": false
+  },
+  {
+    "id": "banerjee",
+    "surname": "Banerjee",
+    "firstName": "Banerjee",
+    "displayName": "Banerjee",
+    "team": null,
+    "active": false
+  },
+  {
+    "id": "kim",
+    "surname": "Kim",
+    "firstName": "Kim",
+    "displayName": "Kim",
+    "team": null,
+    "active": false
+  },
+  {
+    "id": "kurucz",
+    "surname": "Kurucz",
+    "firstName": "Kurucz",
+    "displayName": "Kurucz",
+    "team": null,
+    "active": false
+  }
+]

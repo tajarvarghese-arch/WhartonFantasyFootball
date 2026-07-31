@@ -1,0 +1,747 @@
+[
+  {
+    "id": "t2023-002",
+    "batch": "2023 Preseason",
+    "season": 2023,
+    "preseason": true,
+    "seller": "waldman",
+    "buyer": "incognito",
+    "players": "DeAndre Hopkins",
+    "terms": "$4 in 2023",
+    "totalDollars": 4.0,
+    "obligations": [
+      {
+        "year": 2023,
+        "amount": 4.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-003",
+    "batch": "2023 Preseason",
+    "season": 2023,
+    "preseason": true,
+    "seller": "bernstein",
+    "buyer": "buzik",
+    "players": "Cam Akers",
+    "terms": "$10 in 2023; $5 in 2024",
+    "totalDollars": 15.0,
+    "obligations": [
+      {
+        "year": 2023,
+        "amount": 10.0
+      },
+      {
+        "year": 2024,
+        "amount": 5.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-004",
+    "batch": "2023 Preseason",
+    "season": 2023,
+    "preseason": true,
+    "seller": "bernstein",
+    "buyer": "tollinche",
+    "players": "Travis Kelce",
+    "terms": "$10 in 2023; $5 in 2024",
+    "totalDollars": 15.0,
+    "obligations": [
+      {
+        "year": 2023,
+        "amount": 10.0
+      },
+      {
+        "year": 2024,
+        "amount": 5.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-005",
+    "batch": "2023 Preseason",
+    "season": 2023,
+    "preseason": true,
+    "seller": "mukheja",
+    "buyer": "lalwani",
+    "players": "DeVonta Smith",
+    "terms": "$10 in 2023; $10 in 2024",
+    "totalDollars": 20.0,
+    "obligations": [
+      {
+        "year": 2023,
+        "amount": 10.0
+      },
+      {
+        "year": 2024,
+        "amount": 10.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-006",
+    "batch": "2023 Preseason",
+    "season": 2023,
+    "preseason": true,
+    "seller": "bernstein",
+    "buyer": "lalwani",
+    "players": "Justin Herbert",
+    "terms": "$10 in 2023",
+    "totalDollars": 10.0,
+    "obligations": [
+      {
+        "year": 2023,
+        "amount": 10.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-007",
+    "batch": "2023 Preseason",
+    "season": 2023,
+    "preseason": true,
+    "seller": "snyder",
+    "buyer": "tollinche",
+    "players": "Josh Jacobs",
+    "terms": "$17 in 2023; $7 in 2024",
+    "totalDollars": 24.0,
+    "obligations": [
+      {
+        "year": 2023,
+        "amount": 17.0
+      },
+      {
+        "year": 2024,
+        "amount": 7.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-008",
+    "batch": "2023 Preseason",
+    "season": 2023,
+    "preseason": true,
+    "seller": "mukheja",
+    "buyer": "tollinche",
+    "players": "Calvin Ridley",
+    "terms": "$10 in 2023; $5 in 2024",
+    "totalDollars": 15.0,
+    "obligations": [
+      {
+        "year": 2023,
+        "amount": 10.0
+      },
+      {
+        "year": 2024,
+        "amount": 5.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-009",
+    "batch": "2023",
+    "season": 2023,
+    "preseason": false,
+    "seller": "bernstein",
+    "buyer": "snyder",
+    "players": "Zack Moss <-> Hunter Henry",
+    "terms": "(player-for-player, no cash)",
+    "totalDollars": 0,
+    "obligations": [],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-010",
+    "batch": "2023",
+    "season": 2023,
+    "preseason": false,
+    "seller": "waldman",
+    "buyer": "lalwani",
+    "players": "Austin Ekeler <-> Royce Freeman",
+    "terms": "$16 in 2024; $12 in 2025",
+    "totalDollars": 28.0,
+    "obligations": [
+      {
+        "year": 2024,
+        "amount": 16.0
+      },
+      {
+        "year": 2025,
+        "amount": 12.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-011",
+    "batch": "2023",
+    "season": 2023,
+    "preseason": false,
+    "seller": "waldman",
+    "buyer": "bernstein",
+    "players": "Evan Engram",
+    "terms": "$5 in 2024; $2 in 2025",
+    "totalDollars": 7.0,
+    "obligations": [
+      {
+        "year": 2024,
+        "amount": 5.0
+      },
+      {
+        "year": 2025,
+        "amount": 2.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-012",
+    "batch": "2023",
+    "season": 2023,
+    "preseason": false,
+    "seller": "waldman",
+    "buyer": "tollinche",
+    "players": "Ty Chandler <-> Jerrick McKinnon",
+    "terms": "$5 in 2024",
+    "totalDollars": 5.0,
+    "obligations": [
+      {
+        "year": 2024,
+        "amount": 5.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2023-013",
+    "batch": "2023",
+    "season": 2023,
+    "preseason": false,
+    "seller": "waldman",
+    "buyer": "lalwani",
+    "players": "Cole Kmet <-> Taysom Hill",
+    "terms": "$5 in 2024",
+    "totalDollars": 5.0,
+    "obligations": [
+      {
+        "year": 2024,
+        "amount": 5.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2024-014",
+    "batch": "2024 Preseason",
+    "season": 2024,
+    "preseason": true,
+    "seller": "mukheja",
+    "buyer": "buzik",
+    "players": "Kenneth Walker III",
+    "terms": "$10 in 2024; $5 in 2025",
+    "totalDollars": 15.0,
+    "obligations": [
+      {
+        "year": 2024,
+        "amount": 10.0
+      },
+      {
+        "year": 2025,
+        "amount": 5.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2024-015",
+    "batch": "2024 Preseason",
+    "season": 2024,
+    "preseason": true,
+    "seller": "velamoor",
+    "buyer": "buzik",
+    "players": "DK Metcalf",
+    "terms": "$7 in 2024; $2 in 2025",
+    "totalDollars": 9.0,
+    "obligations": [
+      {
+        "year": 2024,
+        "amount": 7.0
+      },
+      {
+        "year": 2025,
+        "amount": 2.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2024-016",
+    "batch": "2024 Preseason",
+    "season": 2024,
+    "preseason": true,
+    "seller": "waldman",
+    "buyer": "lalwani",
+    "players": "Kyler Murray",
+    "terms": "$3 in 2024; $4 in 2025",
+    "totalDollars": 7.0,
+    "obligations": [
+      {
+        "year": 2024,
+        "amount": 3.0
+      },
+      {
+        "year": 2025,
+        "amount": 4.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2024-017",
+    "batch": "2024 Preseason",
+    "season": 2024,
+    "preseason": true,
+    "seller": "snyder",
+    "buyer": "buzik",
+    "players": "CJ Stroud",
+    "terms": "$3 in 2024; $4 in 2025",
+    "totalDollars": 7.0,
+    "obligations": [
+      {
+        "year": 2024,
+        "amount": 3.0
+      },
+      {
+        "year": 2025,
+        "amount": 4.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2024-018",
+    "batch": "2024",
+    "season": 2024,
+    "preseason": false,
+    "seller": "bernstein",
+    "buyer": "tollinche",
+    "players": "Josh Allen",
+    "terms": "$20 in 2025; $10 in 2026",
+    "totalDollars": 30.0,
+    "obligations": [
+      {
+        "year": 2025,
+        "amount": 20.0
+      },
+      {
+        "year": 2026,
+        "amount": 10.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2024-019",
+    "batch": "2024",
+    "season": 2024,
+    "preseason": false,
+    "seller": "lalwani",
+    "buyer": "buzik",
+    "players": "Kyler Murray",
+    "terms": "$24 in 2025; $14 in 2026",
+    "totalDollars": 38.0,
+    "obligations": [
+      {
+        "year": 2025,
+        "amount": 24.0
+      },
+      {
+        "year": 2026,
+        "amount": 14.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2024-020",
+    "batch": "2024",
+    "season": 2024,
+    "preseason": false,
+    "seller": "bernstein",
+    "buyer": "velamoor",
+    "players": "Christian McCaffrey",
+    "terms": "$20 in 2025; $10 in 2026",
+    "totalDollars": 30.0,
+    "obligations": [
+      {
+        "year": 2025,
+        "amount": 20.0
+      },
+      {
+        "year": 2026,
+        "amount": 10.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2024-021",
+    "batch": "2024",
+    "season": 2024,
+    "preseason": false,
+    "seller": "waldman",
+    "buyer": "tollinche",
+    "players": "Travis Kelce",
+    "terms": "$12 in 2025; $8 in 2026",
+    "totalDollars": 20.0,
+    "obligations": [
+      {
+        "year": 2025,
+        "amount": 12.0
+      },
+      {
+        "year": 2026,
+        "amount": 8.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2024-022",
+    "batch": "2024",
+    "season": 2024,
+    "preseason": false,
+    "seller": "waldman",
+    "buyer": "mukheja",
+    "players": "Justin Jefferson <-> Jaxson Smith-Njigba",
+    "terms": "$10 in 2025; $2 in 2026",
+    "totalDollars": 12.0,
+    "obligations": [
+      {
+        "year": 2025,
+        "amount": 10.0
+      },
+      {
+        "year": 2026,
+        "amount": 2.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-023",
+    "batch": "2025 Preseason",
+    "season": 2025,
+    "preseason": true,
+    "seller": "velamoor",
+    "buyer": "waldman",
+    "players": "Bijan Robinson",
+    "terms": "$4 in 2025; $2 in 2026",
+    "totalDollars": 6.0,
+    "obligations": [
+      {
+        "year": 2025,
+        "amount": 4.0
+      },
+      {
+        "year": 2026,
+        "amount": 2.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-024",
+    "batch": "2025 Preseason",
+    "season": 2025,
+    "preseason": true,
+    "seller": "waldman",
+    "buyer": "incognito",
+    "players": "George Pickens",
+    "terms": "$5 in 2025",
+    "totalDollars": 5.0,
+    "obligations": [
+      {
+        "year": 2025,
+        "amount": 5.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-025",
+    "batch": "2025 Preseason",
+    "season": 2025,
+    "preseason": true,
+    "seller": "velamoor",
+    "buyer": "snyder",
+    "players": "Tyrone Tracy",
+    "terms": "$18 in 2025",
+    "totalDollars": 18.0,
+    "obligations": [
+      {
+        "year": 2025,
+        "amount": 18.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-026",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "varghese",
+    "buyer": "tollinche",
+    "players": "Jahmyr Gibbs",
+    "terms": "$30 in 2026; $20 in 2027",
+    "totalDollars": 50.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 30.0
+      },
+      {
+        "year": 2027,
+        "amount": 20.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-027",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "konciak",
+    "buyer": "tollinche",
+    "players": "George Kittle <-> Kendrick Bourne",
+    "terms": "$16 in 2026; $10 in 2027",
+    "totalDollars": 26.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 16.0
+      },
+      {
+        "year": 2027,
+        "amount": 10.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-028",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "baugh",
+    "buyer": "bernstein",
+    "players": "Derrick Henry <-> Matthew Golden",
+    "terms": "$20 in 2026; $10 in 2027",
+    "totalDollars": 30.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 20.0
+      },
+      {
+        "year": 2027,
+        "amount": 10.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-029",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "buzik",
+    "buyer": "waldman",
+    "players": "Brock Bowers, James Cook",
+    "terms": "$50 in 2026; $25 in 2027",
+    "totalDollars": 75.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 50.0
+      },
+      {
+        "year": 2027,
+        "amount": 25.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-030",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "mukheja",
+    "buyer": "waldman",
+    "players": "Lamar Jackson",
+    "terms": "$14 in 2026; $13 in 2027; $12 in 2028",
+    "totalDollars": 39.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 14.0
+      },
+      {
+        "year": 2027,
+        "amount": 13.0
+      },
+      {
+        "year": 2028,
+        "amount": 12.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-031",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "konciak",
+    "buyer": "waldman",
+    "players": "Denver DEF",
+    "terms": "$4 in 2026",
+    "totalDollars": 4.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 4.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-032",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "mukheja",
+    "buyer": "lalwani",
+    "players": "Sean Tucker",
+    "terms": "$10 in 2026; $3 in 2027; $2 in 2028",
+    "totalDollars": 15.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 10.0
+      },
+      {
+        "year": 2027,
+        "amount": 3.0
+      },
+      {
+        "year": 2028,
+        "amount": 2.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-033",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "baugh",
+    "buyer": "tollinche",
+    "players": "New England DEF <-> Jacoby Brissett",
+    "terms": "$5 in 2026",
+    "totalDollars": 5.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 5.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-034",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "mukheja",
+    "buyer": "tollinche",
+    "players": "Buffalo DEF <-> Hunter Henry",
+    "terms": "$5 in 2026",
+    "totalDollars": 5.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 5.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  },
+  {
+    "id": "t2025-035",
+    "batch": "2025",
+    "season": 2025,
+    "preseason": false,
+    "seller": "konciak",
+    "buyer": "lalwani",
+    "players": "Davante Adams <-> Xavier Worthy",
+    "terms": "$12 in 2026; $8 in 2027",
+    "totalDollars": 20.0,
+    "obligations": [
+      {
+        "year": 2026,
+        "amount": 12.0
+      },
+      {
+        "year": 2027,
+        "amount": 8.0
+      }
+    ],
+    "status": "approved",
+    "source": "workbook"
+  }
+]

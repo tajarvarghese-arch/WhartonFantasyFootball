@@ -1,0 +1,277 @@
+@import 'tailwindcss';
+
+/*
+  "The Ledger" — the commissioner's book for a 22-year auction keeper league.
+  Ink-green paper stock, gold rules, tabular figures everywhere. Money is the
+  subject matter, so the typography treats numbers as first-class.
+*/
+
+@theme {
+  --color-ink-950: #080b09;
+  --color-ink-900: #0b0f0d;
+  --color-ink-850: #0f1512;
+  --color-ink-800: #141b17;
+  --color-ink-700: #1c2520;
+  --color-ink-600: #26312b;
+
+  --color-parchment: #ece7d9;
+  --color-parchment-dim: #b9b3a4;
+  --color-parchment-faint: #7d7a70;
+
+  --color-gold-400: #e0bd52;
+  --color-gold-500: #c9a227;
+  --color-gold-600: #96761a;
+
+  --color-ledger-up: #6fbf73;
+  --color-ledger-down: #d9634e;
+  --color-ledger-flag: #e08a3c;
+
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ink-900);
+    color: var(--color-parchment);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Paper grain + a faint ledger rule, fixed behind everything. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 27px,
+        rgba(201, 162, 39, 0.045) 27px,
+        rgba(201, 162, 39, 0.045) 28px
+      ),
+      radial-gradient(ellipse 120% 80% at 50% -10%, rgba(201, 162, 39, 0.09), transparent 60%);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  #root {
+    position: relative;
+    z-index: 1;
+  }
+
+  ::selection {
+    background: var(--color-gold-500);
+    color: var(--color-ink-950);
+  }
+
+  /* Every figure in this app is tabular so columns line up down the page. */
+  .tnum {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink-950);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-600);
+    border: 2px solid var(--color-ink-950);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gold-600);
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+}
+
+@layer components {
+  /* Section eyebrow: the small gold caps label above every panel. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-gold-500);
+  }
+
+  .panel {
+    background:
+      linear-gradient(to bottom, rgba(236, 231, 217, 0.025), transparent 120px),
+      var(--color-ink-850);
+    border: 1px solid rgba(201, 162, 39, 0.16);
+  }
+
+  .rule-gold {
+    border-color: rgba(201, 162, 39, 0.16);
+  }
+
+  /* Ledger table: hairline rules, gold header, hover highlight. */
+  .ledger {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .ledger thead th {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-gold-500);
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+    white-space: nowrap;
+  }
+  .ledger tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid rgba(236, 231, 217, 0.07);
+    vertical-align: middle;
+  }
+  .ledger tbody tr:hover td {
+    background: rgba(201, 162, 39, 0.05);
+  }
+  .ledger tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .ledger .num {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 8px 15px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    border: 1px solid rgba(201, 162, 39, 0.35);
+    color: var(--color-parchment);
+    background: transparent;
+    cursor: pointer;
+    transition:
+      background 0.16s ease,
+      border-color 0.16s ease,
+      color 0.16s ease;
+  }
+  .btn:hover:not(:disabled) {
+    background: rgba(201, 162, 39, 0.14);
+    border-color: var(--color-gold-500);
+  }
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--color-gold-500);
+    border-color: var(--color-gold-500);
+    color: var(--color-ink-950);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-gold-400);
+    border-color: var(--color-gold-400);
+  }
+  .btn-danger {
+    border-color: rgba(217, 99, 78, 0.5);
+    color: var(--color-ledger-down);
+  }
+  .btn-danger:hover:not(:disabled) {
+    background: rgba(217, 99, 78, 0.14);
+    border-color: var(--color-ledger-down);
+  }
+
+  .field {
+    width: 100%;
+    padding: 8px 11px;
+    background: var(--color-ink-950);
+    border: 1px solid rgba(236, 231, 217, 0.14);
+    color: var(--color-parchment);
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.16s ease;
+  }
+  .field:focus {
+    border-color: var(--color-gold-500);
+  }
+  .field::placeholder {
+    color: var(--color-parchment-faint);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 7px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+  }
+}
+
+@layer utilities {
+  /* Staggered page-load reveal. */
+  @keyframes ledger-rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .rise {
+    animation: ledger-rise 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise {
+      animation: none;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
