@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import ManagerTag from '../components/ManagerTag'
 import Ticker from '../components/Ticker'
 import { Confetti, FieldGoalStrip, FieldStripes } from '../components/effects'
+import { managerColor } from '../lib/identity'
 import { Bar, Chip, Empty, Hero, Panel, PageHeader, Stat } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
 import { useBudgets, useCash, useObligationHorizon, usePendingTrades, useTrades } from '../lib/derive'
@@ -51,7 +52,7 @@ export default function Dashboard() {
             caption={`Auction dollars already promised across future drafts by trades that are on the books. Every dollar here is one a manager cannot spend on draft day.`}
             />
           </div>
-          <FieldGoalStrip />
+          <FieldGoalStrip championColor={managerColor(champion)} />
         </div>
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
           <Stat

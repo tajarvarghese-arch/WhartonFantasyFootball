@@ -1,80 +1,74 @@
 import { useEffect, useState } from 'react'
-import { Football, Goalpost } from './effects'
+import HeapScene, { HEAP_BOOT_SECONDS } from './HeapScene'
 import { animationsDisabled } from '../lib/motion'
 
 /**
- * Attract screen. Plays on every real page load — it is the kickoff, and a
- * tap skips it. Bypassed entirely when animations are off.
+ * Title screen: King of the Heap. Eleven players brawl onto a dogpile and the
+ * reigning champion climbs it to hoist the trophy. Plays on every real page
+ * load, skippable by tap, absent entirely when animations are off.
  */
-export default function Boot({ onDone }: { onDone: () => void }) {
+export default function Boot({
+  onDone,
+  championColor,
+}: {
+  onDone: () => void
+  championColor?: string
+}) {
   const [closing, setClosing] = useState(false)
 
   useEffect(() => {
-    const timer = setTimeout(() => setClosing(true), 2450)
+    const timer = setTimeout(() => setClosing(true), HEAP_BOOT_SECONDS * 1000)
     return () => clearTimeout(timer)
   }, [])
 
   useEffect(() => {
     if (!closing) return
-    const timer = setTimeout(onDone, 260)
+    const timer = setTimeout(onDone, 280)
     return () => clearTimeout(timer)
   }, [closing, onDone])
 
-  function skip() {
-    onDone()
-  }
-
   return (
     <div
-      className={`fixed inset-0 z-[70] flex items-center justify-center bg-arc-bg px-6 transition-opacity duration-200 ${
+      className={`fixed inset-0 z-[70] flex items-center justify-center bg-arc-bg px-4 transition-opacity duration-200 ${
         closing ? 'opacity-0' : 'opacity-100'
       }`}
-      onClick={skip}
+      onClick={onDone}
       role="status"
-      aria-label="Loading"
+      aria-label="Loading — tap to skip"
     >
-      <div className="relative w-full max-w-sm pb-24 text-center">
+      <div className="w-full max-w-md text-center">
         <div
-          className="arcade pop-in text-[40px] leading-tight text-arc-cyan"
+          className="arcade pop-in text-[38px] leading-tight text-arc-cyan"
           style={{ textShadow: '3px 3px 0 #04030a, 0 0 30px rgba(63,224,245,0.55)' }}
         >
           WACL
         </div>
         <div
-          className="arcade pop-in mt-5 text-[13px] leading-relaxed text-arc-ink-soft"
+          className="arcade pop-in mt-2 text-[12px] leading-relaxed text-arc-ink-soft"
           style={{ animationDelay: '120ms' }}
         >
-          WHARTON ALUM
-          <br />
-          CHAMPIONS LEAGUE
+          WHARTON ALUM CHAMPIONS LEAGUE
         </div>
 
-        <div
-          aria-hidden
-          className="dotbar pop-in mx-auto mt-7 w-full max-w-[220px] text-arc-cyan"
-          style={{ animationDelay: '200ms', maskImage: 'none', WebkitMaskImage: 'none' }}
-        />
+        <div className="mx-auto mt-2 flex justify-center">
+          <HeapScene mode="boot" championColor={championColor} width={380} height={230} />
+        </div>
 
+        {/* timed to land as the trophy goes up */}
         <div
-          className="arcade pulse mt-8 text-[15px] text-arc-yellow"
-          style={{ animationDelay: '320ms' }}
+          className="arcade text-[15px] text-arc-yellow"
+          style={{
+            animation:
+              'pop-in 0.3s steps(3) 3.9s both, pulse-dot 1.2s steps(1) 4.2s infinite',
+          }}
         >
           PRESS START
         </div>
-        <div className="arcade mt-4 text-[11px] text-arc-ink-faint">22 SEASONS · 12 PLAYERS</div>
-
-        {/* Kickoff: ball off the tee, through the uprights, IT'S GOOD. */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24" aria-hidden>
-          <span className="boot-field absolute inset-x-0 bottom-0 h-10" />
-          <span className="absolute right-3 bottom-2">
-            <Goalpost size={62} />
-          </span>
-          <span className="kickball absolute bottom-6 left-4 inline-block">
-            <Football size={20} />
-          </span>
-          <span className="arcade boot-good absolute top-0 right-1 text-[13px] text-arc-yellow">
-            IT&apos;S GOOD!
-          </span>
+        <div
+          className="arcade pop-in mt-3 text-[10px] text-arc-ink-faint"
+          style={{ animationDelay: '4.1s' }}
+        >
+          22 SEASONS · 12 PLAYERS · 1 HEAP
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@
  */
 
 import { useEffect } from 'react'
+import HeapScene from './HeapScene'
 
 /**
  * Pixel-art football on a 24-grid — enough rows for the pointed-ellipse
@@ -242,12 +243,16 @@ export function PlayMoment({ kind, onDone }: { kind: MomentKind; onDone: () => v
  * The kick gets its own stage — a strip of field with goalposts at full
  * brightness and a clear flight lane, instead of being smeared over text.
  */
-export function FieldGoalStrip() {
+export function FieldGoalStrip({ championColor }: { championColor?: string }) {
   return (
     <div className="relative mt-5 h-28 overflow-hidden" aria-hidden>
       <span className="boot-field absolute inset-x-0 bottom-0 h-9" />
       <span className="absolute right-2 bottom-1">
         <Goalpost size={72} />
+      </span>
+      {/* the reigning champ holds the heap while the kick sails overhead */}
+      <span className="absolute bottom-0 left-2">
+        <HeapScene mode="idle" championColor={championColor} width={180} height={106} />
       </span>
       <SpiralingBall size={40} />
     </div>

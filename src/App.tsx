@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Boot, { shouldBoot } from './components/Boot'
 import Shell from './components/Shell'
 import { useLeague } from './lib/data'
+import { managerColor } from './lib/identity'
 import Dashboard from './pages/Dashboard'
 import Finances from './pages/Finances'
 import Keepers from './pages/Keepers'
@@ -20,7 +21,13 @@ export default function App() {
   const { data, loading, error } = useLeague()
   const [booting, setBooting] = useState(shouldBoot)
 
-  if (booting) return <Boot onDone={() => setBooting(false)} />
+  if (booting)
+    return (
+      <Boot
+        onDone={() => setBooting(false)}
+        championColor={data ? managerColor(data.seasons[0]?.champion) : undefined}
+      />
+    )
 
   if (loading) {
     return (
