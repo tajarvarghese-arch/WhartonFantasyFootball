@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react'
 import { Football, Goalpost } from './effects'
 import { animationsDisabled } from '../lib/motion'
 
-const SEEN_KEY = 'wacl.booted'
-
 /**
- * Attract screen. Runs once per browser session, skippable by tap, and
- * bypassed entirely for reduced-motion users.
+ * Attract screen. Plays on every real page load — it is the kickoff, and a
+ * tap skips it. Bypassed entirely when animations are off.
  */
 export default function Boot({ onDone }: { onDone: () => void }) {
   const [closing, setClosing] = useState(false)
@@ -18,15 +16,11 @@ export default function Boot({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     if (!closing) return
-    const timer = setTimeout(() => {
-      sessionStorage.setItem(SEEN_KEY, '1')
-      onDone()
-    }, 260)
+    const timer = setTimeout(onDone, 260)
     return () => clearTimeout(timer)
   }, [closing, onDone])
 
   function skip() {
-    sessionStorage.setItem(SEEN_KEY, '1')
     onDone()
   }
 
@@ -89,7 +83,6 @@ export default function Boot({ onDone }: { onDone: () => void }) {
 
 export function shouldBoot(): boolean {
   try {
-    if (sessionStorage.getItem(SEEN_KEY)) return false
     return !animationsDisabled()
   } catch {
     return false

@@ -7,8 +7,31 @@
 
 import { useEffect } from 'react'
 
-/** Pixel-art football. Sized by the caller. */
+/**
+ * Pixel-art football, drawn from rects only — curves under crispEdges render
+ * as a ragged blob at small sizes. Horizontal ball: dark outline, brown body,
+ * white tip stripes, lace with cross-stitches.
+ */
 export function Football({ size = 18, className = '' }: { size?: number; className?: string }) {
+  // silhouette rows as [y, x, width] on a 16x16 grid
+  const outline: [number, number, number][] = [
+    [4, 5, 6],
+    [5, 3, 10],
+    [6, 2, 12],
+    [7, 1, 14],
+    [8, 1, 14],
+    [9, 2, 12],
+    [10, 3, 10],
+    [11, 5, 6],
+  ]
+  const body: [number, number, number][] = [
+    [5, 4, 8],
+    [6, 3, 10],
+    [7, 2, 12],
+    [8, 2, 12],
+    [9, 3, 10],
+    [10, 4, 8],
+  ]
   return (
     <svg
       width={size}
@@ -18,12 +41,20 @@ export function Football({ size = 18, className = '' }: { size?: number; classNa
       aria-hidden
       shapeRendering="crispEdges"
     >
-      <path d="M3 8 Q3 4 8 3 Q13 4 13 8 Q13 12 8 13 Q3 12 3 8 Z" fill="#8a4b2a" />
-      <path d="M4 8 Q4 5 8 4 Q12 5 12 8 Q12 11 8 12 Q4 11 4 8 Z" fill="#a9714b" />
-      <rect x="7" y="5" width="2" height="6" fill="#f4efe2" />
-      <rect x="6" y="6" width="4" height="1" fill="#f4efe2" />
-      <rect x="6" y="8" width="4" height="1" fill="#f4efe2" />
-      <rect x="6" y="10" width="4" height="1" fill="#f4efe2" />
+      {outline.map(([y, x, w]) => (
+        <rect key={`o${y}`} x={x} y={y} width={w} height={1} fill="#3d2417" />
+      ))}
+      {body.map(([y, x, w]) => (
+        <rect key={`b${y}`} x={x} y={y} width={w} height={1} fill="#a9714b" />
+      ))}
+      {/* tip stripes */}
+      <rect x="3" y="6" width="1" height="4" fill="#f4efe2" />
+      <rect x="12" y="6" width="1" height="4" fill="#f4efe2" />
+      {/* lace with cross-stitches */}
+      <rect x="5" y="7" width="6" height="1" fill="#f4efe2" />
+      <rect x="6" y="6" width="1" height="3" fill="#f4efe2" />
+      <rect x="8" y="6" width="1" height="3" fill="#f4efe2" />
+      <rect x="10" y="6" width="1" height="3" fill="#f4efe2" />
     </svg>
   )
 }

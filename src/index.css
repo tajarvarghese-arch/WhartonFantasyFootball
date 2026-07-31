@@ -517,31 +517,35 @@
     animation: yard-scroll 6s linear infinite;
   }
 
-  /* A ball punted across its container. */
+  /* A ball punted across its container. Horizontal travel animates `left`
+     (relative to the container); translate percentages would be relative to
+     the ball's own two dozen pixels and it would barely move. */
   @keyframes ball-arc {
     0% {
       opacity: 0;
-      transform: translate(-10%, 40%);
+      left: -4%;
+      transform: translateY(6px);
     }
     10% {
       opacity: 1;
     }
     50% {
-      transform: translate(50%, -70%);
+      transform: translateY(-64px);
     }
     90% {
       opacity: 1;
     }
     100% {
       opacity: 0;
-      transform: translate(110%, 40%);
+      left: calc(100% - 26px);
+      transform: translateY(2px);
     }
   }
   .ball-spiral {
     position: absolute;
     left: 0;
     bottom: 0;
-    animation: ball-arc 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: ball-arc 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   @keyframes ball-spin {
@@ -654,21 +658,24 @@
     animation: sprite-b 0.6s steps(1) infinite;
   }
 
-  /* Boot-screen kickoff: ball flies up and through the uprights. */
+  /* Boot-screen kickoff: ball flies up and splits the uprights. `left`
+     animates against the container so it works at any screen width. */
   @keyframes kick-arc {
     0% {
       opacity: 0;
-      transform: translate(0, 0) rotate(0deg);
+      left: 16px;
+      transform: translateY(0) rotate(0deg);
     }
     8% {
       opacity: 1;
     }
     60% {
-      transform: translate(150px, -84px) rotate(400deg);
+      transform: translateY(-92px) rotate(400deg);
     }
     100% {
       opacity: 1;
-      transform: translate(228px, -58px) rotate(680deg);
+      left: calc(100% - 54px);
+      transform: translateY(-64px) rotate(680deg);
     }
   }
   .kickball {
