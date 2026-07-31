@@ -83,7 +83,7 @@ export default function Rules() {
                 })}
               </tbody>
             </table>
-            <p className="border-t border-arc-ink px-5 py-3.5 text-[12px] leading-relaxed text-arc-ink-faint">
+            <p className="border-t border-arc-line px-5 py-3.5 text-[12px] leading-relaxed text-arc-ink-faint">
               A player drafted in the auction and later re-acquired off waivers keeps the greater of
               the auction value and the waiver-scale cost. Undrafted free agents cost $5.
             </p>

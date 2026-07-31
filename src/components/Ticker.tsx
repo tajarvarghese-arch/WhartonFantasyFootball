@@ -33,7 +33,7 @@ export default function Ticker({ trades }: { trades: Trade[] }) {
   const duration = Math.max(40, items.length * 4.5)
 
   return (
-    <div className="marquee-host relative overflow-hidden border-y border-arc-ink bg-arc-panel">
+    <div className="marquee-host relative overflow-hidden border-y border-arc-line bg-arc-panel">
       <div
         className="marquee flex w-max items-center gap-7 py-2"
         style={{ ['--marquee-duration' as string]: `${duration}s` }}

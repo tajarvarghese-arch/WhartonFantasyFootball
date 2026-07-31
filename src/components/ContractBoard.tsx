@@ -55,7 +55,7 @@ export default function ContractBoard({ year }: { year: number }) {
       <div className="scroll-x">
         <div className="min-w-0 sm:min-w-[540px]">
           {/* year ruler */}
-          <div className="sticky top-0 z-10 flex border-b border-arc-ink bg-arc-panel pb-1.5">
+          <div className="sticky top-0 z-10 flex border-b border-arc-line bg-arc-panel pb-1.5">
             <div className="w-[100px] shrink-0 sm:w-[168px]" />
             {horizon.map((target) => (
               <div key={target} className="label flex-1 text-center">
@@ -65,7 +65,7 @@ export default function ContractBoard({ year }: { year: number }) {
           </div>
 
           {blocks.map((block: KeeperBlock, blockIndex) => (
-            <div key={block.team} className="border-b border-arc-ink/60 py-2.5 last:border-b-0">
+            <div key={block.team} className="border-b border-arc-line/60 py-2.5 last:border-b-0">
               <div className="mb-1.5 flex items-baseline gap-2 pl-1">
                 <span className="text-[12px] text-arc-ink">
                   {block.manager ? (
@@ -113,7 +113,7 @@ export default function ContractBoard({ year }: { year: number }) {
                         {horizon.map((target) => (
                           <div
                             key={target}
-                            className="flex-1 border-l border-arc-ink/50 first:border-l-0"
+                            className="flex-1 border-l border-arc-line/50 first:border-l-0"
                           />
                         ))}
                       </div>
@@ -134,7 +134,7 @@ export default function ContractBoard({ year }: { year: number }) {
           ))}
 
           {/* committed salary per season */}
-          <div className="flex border-t border-arc-ink pt-2">
+          <div className="flex border-t border-arc-line pt-2">
             <div className="label w-[100px] shrink-0 pr-1.5 text-right sm:w-[168px] sm:pr-2.5">Committed</div>
             {committed.map((total, index) => (
               <div key={horizon[index]} className="flex-1 text-center">

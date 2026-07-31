@@ -109,7 +109,7 @@ export default function Dashboard() {
               </table>
             </div>
             {data.live.unmapped.length > 0 && (
-              <p className="border-t border-arc-ink px-5 py-3 text-[12px] text-[var(--color-arc-orange)]">
+              <p className="border-t border-arc-line px-5 py-3 text-[12px] text-[var(--color-arc-orange)]">
                 Unmapped Yahoo teams: {data.live.unmapped.join(', ')} — add them to{' '}
                 <code>public/data/yahoo-map.json</code>.
               </p>
@@ -187,7 +187,7 @@ export default function Dashboard() {
             </table>
           </div>
           {underwater.length > 0 && (
-            <div className="border-t border-arc-ink px-5 py-3.5 text-[12px] text-[var(--color-arc-red)]">
+            <div className="border-t border-arc-line px-5 py-3.5 text-[12px] text-[var(--color-arc-red)]">
               {underwater.map((budget) => managerName(managers, budget.manager)).join(', ')}{' '}
               {underwater.length === 1 ? 'enters' : 'enter'} the auction underwater — keeper
               selections must be trimmed before draft day.
@@ -286,7 +286,7 @@ export default function Dashboard() {
                 ))}
               </tbody>
             </table>
-            <div className="border-t border-arc-ink px-5 py-3">
+            <div className="border-t border-arc-line px-5 py-3">
               <Link to="/standings" className="label hover:text-arc-green">
                 All 22 seasons →
               </Link>

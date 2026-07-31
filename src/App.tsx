@@ -41,7 +41,7 @@ export default function App() {
           <p className="mt-2 text-[12.5px] leading-relaxed text-arc-ink-soft">
             <span className="text-arc-red">✗</span> {error ?? 'League data is missing.'}
           </p>
-          <pre className="mt-3 overflow-x-auto border border-arc-ink bg-arc-bg p-3 text-[11.5px] text-arc-ink-faint">
+          <pre className="mt-3 overflow-x-auto border border-arc-line bg-arc-bg p-3 text-[11.5px] text-arc-ink-faint">
             $ npm run seed -- &quot;path/to/workbook.xlsx&quot;
           </pre>
         </div>

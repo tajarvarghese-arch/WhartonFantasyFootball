@@ -5,29 +5,29 @@ import type { Manager, ManagerId } from './types'
  * badge, their standings row, their contract bars — so the league reads as
  * twelve identities rather than twelve rows of grey.
  *
- * All values are mid-to-dark enough to carry white badge text.
+ * All values are bright enough to carry near-black badge text on a dark panel.
  */
 export const MANAGER_COLOR: Record<ManagerId, string> = {
-  varghese: '#3b6bff',
-  waldman: '#ff4d3d',
-  tollinche: '#5aa832',
-  buzik: '#9b5de5',
-  bernstein: '#e07b00',
-  baugh: '#1394b4',
-  velamoor: '#ff5da2',
-  mukheja: '#17bebb',
-  snyder: '#2a3990',
-  incognito: '#14a06a',
-  konciak: '#a9714b',
-  lalwani: '#c9860b',
-  // Former managers sit in muted tones so the active twelve stay loudest.
-  evans: '#7a7490',
-  banerjee: '#6b6480',
-  kim: '#8d8698',
-  kurucz: '#5d5770',
+  varghese: '#5a83ff',
+  waldman: '#ff5f52',
+  tollinche: '#8be356',
+  buzik: '#b07cff',
+  bernstein: '#ffa92e',
+  baugh: '#3fe0f5',
+  velamoor: '#ff6fb3',
+  mukheja: '#2bd9d2',
+  snyder: '#6b7dff',
+  incognito: '#2ad68a',
+  konciak: '#c98d5f',
+  lalwani: '#ffd84d',
+  // Former managers sit muted so the active twelve stay loudest.
+  evans: '#8d84a8',
+  banerjee: '#7d7398',
+  kim: '#9a92b0',
+  kurucz: '#6e6588',
 }
 
-export const FALLBACK_COLOR = '#4b4360'
+export const FALLBACK_COLOR = '#8d84a8'
 
 export function managerColor(id: ManagerId | null | undefined): string {
   if (!id) return FALLBACK_COLOR

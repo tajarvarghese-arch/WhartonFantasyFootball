@@ -192,14 +192,7 @@ export function PageHeader({
         <div className="min-w-0 max-w-2xl">
           <div className="label type-in">{eyebrow}</div>
           <h1 className="display cursor mt-3 text-arc-ink">{title}</h1>
-          <div
-            aria-hidden
-            className="mt-3 h-1.5 w-full max-w-sm"
-            style={{
-              backgroundImage:
-                'repeating-linear-gradient(90deg, var(--color-arc-red) 0 22px, var(--color-arc-orange) 22px 44px, var(--color-arc-yellow) 44px 66px, var(--color-arc-lime) 66px 88px, var(--color-arc-cyan) 88px 110px, var(--color-arc-blue) 110px 132px)',
-            }}
-          />
+          <div aria-hidden className="dotbar mt-3 w-full max-w-md text-arc-purple" />
           {lede && <p className="mt-3 text-[14px] leading-relaxed text-arc-ink-soft">{lede}</p>}
         </div>
         {action && <div className="shrink-0">{action}</div>}
@@ -222,7 +215,7 @@ export function SegmentedControl<T extends string>({
   return (
     <div className="flex items-center gap-2">
       {label && <span className="label">{label}</span>}
-      <div className="scroll-x flex border-[3px] border-arc-ink shadow-hard-sm">
+      <div className="scroll-x flex border-[3px] border-arc-line shadow-hard-sm">
         {options.map((option) => (
           <button
             key={option.id}

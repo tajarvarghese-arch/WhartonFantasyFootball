@@ -188,7 +188,7 @@ export default function Trades() {
                       </div>
                     </div>
 
-                    <p className="mt-4 border-l-2 border-arc-ink pl-3 text-[12px] text-arc-ink-soft">
+                    <p className="mt-4 border-l-2 border-arc-line pl-3 text-[12px] text-arc-ink-soft">
                       {verdict.summary}
                     </p>
                     {trade.commissionerNote && (

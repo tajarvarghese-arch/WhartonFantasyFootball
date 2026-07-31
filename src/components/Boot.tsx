@@ -39,13 +39,13 @@ export default function Boot({ onDone }: { onDone: () => void }) {
     >
       <div className="w-full max-w-sm text-center">
         <div
-          className="arcade pop-in text-[26px] leading-tight text-arc-red"
-          style={{ textShadow: '4px 4px 0 var(--color-arc-ink)' }}
+          className="arcade pop-in text-[40px] leading-tight text-arc-cyan"
+          style={{ textShadow: '3px 3px 0 #04030a, 0 0 30px rgba(63,224,245,0.55)' }}
         >
           WACL
         </div>
         <div
-          className="arcade pop-in mt-4 text-[9px] leading-relaxed text-arc-ink"
+          className="arcade pop-in mt-5 text-[13px] leading-relaxed text-arc-ink-soft"
           style={{ animationDelay: '120ms' }}
         >
           WHARTON ALUM
@@ -55,21 +55,17 @@ export default function Boot({ onDone }: { onDone: () => void }) {
 
         <div
           aria-hidden
-          className="pop-in mx-auto mt-6 h-2 w-full max-w-[240px]"
-          style={{
-            animationDelay: '200ms',
-            backgroundImage:
-              'repeating-linear-gradient(90deg, var(--color-arc-red) 0 20px, var(--color-arc-orange) 20px 40px, var(--color-arc-yellow) 40px 60px, var(--color-arc-lime) 60px 80px, var(--color-arc-cyan) 80px 100px, var(--color-arc-blue) 100px 120px)',
-          }}
+          className="dotbar pop-in mx-auto mt-7 w-full max-w-[220px] text-arc-cyan"
+          style={{ animationDelay: '200ms', maskImage: 'none', WebkitMaskImage: 'none' }}
         />
 
         <div
-          className="arcade pulse mt-7 text-[10px] text-arc-ink"
+          className="arcade pulse mt-8 text-[15px] text-arc-yellow"
           style={{ animationDelay: '320ms' }}
         >
           PRESS START
         </div>
-        <div className="arcade mt-3 text-[7px] text-arc-ink-faint">22 SEASONS · 12 PLAYERS</div>
+        <div className="arcade mt-4 text-[11px] text-arc-ink-faint">22 SEASONS · 12 PLAYERS</div>
       </div>
     </div>
   )

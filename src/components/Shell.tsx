@@ -73,7 +73,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         <NavLink key={item.to} to={item.to} end={item.end} className="block no-underline">
           {({ isActive }) => (
             <span
-              className="arcade flex min-h-[44px] items-center justify-between gap-2 border-[3px] border-arc-ink px-3 py-2 text-[9.5px]"
+              className="arcade flex min-h-[44px] items-center justify-between gap-2 border-[3px] border-arc-line px-3 py-2 text-[13px]"
               style={{
                 background: isActive ? item.color : 'var(--color-arc-panel)',
                 color: isActive ? 'var(--color-arc-panel)' : 'var(--color-arc-ink)',
@@ -85,7 +85,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               {item.label}
               {item.label === 'Trades' && pending.length > 0 && (
                 <span
-                  className="pulse flex h-5 min-w-[20px] items-center justify-center border-2 border-arc-ink px-1 text-[8px]"
+                  className="pulse flex h-5 min-w-[20px] items-center justify-center border-2 border-arc-line px-1 text-[11px]"
                   style={{ background: 'var(--color-arc-yellow)', color: 'var(--color-arc-ink)' }}
                 >
                   {pending.length}
@@ -101,10 +101,10 @@ export default function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-dvh pb-10 lg:grid lg:grid-cols-[228px_1fr]">
       {/* Mobile top bar */}
-      <div className="sticky top-0 z-40 flex items-center justify-between gap-2 border-b-[3px] border-arc-ink bg-arc-yellow px-3 py-2 lg:hidden">
-        <div className="arcade min-w-0 truncate text-[11px]">
-          WACL<span className="text-arc-red">★</span>
-          <span className="ml-1 text-[8px] text-arc-ink-soft">{current?.label ?? 'Ledger'}</span>
+      <div className="sticky top-0 z-40 flex items-center justify-between gap-2 border-b-[3px] border-arc-line bg-arc-panel px-3 py-2 lg:hidden">
+        <div className="arcade min-w-0 truncate text-[15px] text-arc-cyan">
+          WACL
+          <span className="ml-2 text-[12px] text-arc-ink-soft">{current?.label ?? 'Ledger'}</span>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <button
@@ -151,17 +151,20 @@ export default function Shell({ children }: { children: ReactNode }) {
       )}
 
       {/* Desktop sidebar */}
-      <aside className="hidden border-r-[3px] border-arc-ink bg-arc-bg-deep lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col">
-        <div className="border-b-[3px] border-arc-ink bg-arc-red px-4 py-5 text-center">
-          <div className="arcade text-[16px] leading-tight text-arc-panel [text-shadow:2px_2px_0_var(--color-arc-ink)]">
+      <aside className="hidden border-r-[3px] border-arc-line bg-arc-bg-deep lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col">
+        <div className="border-b-[3px] border-arc-line bg-arc-bg-deep px-4 py-5 text-center">
+          <div
+            className="arcade text-[26px] leading-tight text-arc-cyan"
+            style={{ textShadow: '2px 2px 0 #04030a, 0 0 22px rgba(63,224,245,0.45)' }}
+          >
             WACL
           </div>
-          <div className="arcade mt-2.5 text-[7px] leading-relaxed text-arc-panel">
+          <div className="arcade mt-3 text-[11px] leading-relaxed text-arc-ink-soft">
             WHARTON ALUM
             <br />
             CHAMPIONS
           </div>
-          <div className="arcade mt-2 text-[7px] text-arc-yellow">EST. 2004</div>
+          <div className="arcade mt-2 text-[10px] text-arc-yellow">EST. 2004</div>
         </div>
 
         <button
@@ -178,11 +181,11 @@ export default function Shell({ children }: { children: ReactNode }) {
         <button
           type="button"
           onClick={() => setPanelOpen(true)}
-          className="arcade flex min-h-[44px] items-center gap-2 border-t-[3px] border-arc-ink px-4 py-3 text-left text-[8px] transition-colors hover:bg-arc-yellow"
+          className="arcade flex min-h-[44px] items-center gap-2 border-t-[3px] border-arc-line px-4 py-3 text-left text-[11px] transition-colors hover:bg-arc-panel"
         >
           <span
             aria-hidden
-            className={`inline-block h-2.5 w-2.5 border-2 border-arc-ink ${commissioner ? 'pulse' : ''}`}
+            className={`inline-block h-2.5 w-2.5 border-2 border-arc-line ${commissioner ? 'pulse' : ''}`}
             style={{
               background: commissioner ? 'var(--color-arc-lime)' : 'var(--color-arc-ink-faint)',
             }}
@@ -196,7 +199,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       </main>
 
       {/* Credits bar, bottom of the cabinet */}
-      <footer className="arcade fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t-[3px] border-arc-ink bg-arc-ink px-3 py-2 text-[8px] text-arc-panel">
+      <footer className="arcade fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t-[3px] border-arc-line bg-arc-bg-deep px-3 py-2 text-[11px] text-arc-ink-soft">
         <span className="flex min-w-0 items-center gap-2.5">
           <span style={{ color: 'var(--color-arc-yellow)' }}>
             {commissioner ? '2 CREDITS' : '1 CREDIT'}

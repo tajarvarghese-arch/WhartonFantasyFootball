@@ -158,7 +158,7 @@ export default function ManagerDetail() {
                   ))}
                 </tbody>
               </table>
-              <div className="border-t border-arc-ink px-5 py-3">
+              <div className="border-t border-arc-line px-5 py-3">
                 <Link to="/keepers" className="label hover:text-arc-green">
                   Full roster →
                 </Link>

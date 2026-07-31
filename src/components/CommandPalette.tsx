@@ -66,7 +66,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[80] flex items-start justify-center bg-arc-ink/70 px-3 pt-[8vh] backdrop-blur-sm sm:px-6"
+      className="fixed inset-0 z-[80] flex items-start justify-center bg-arc-bg-deep/85 px-3 pt-[8vh] backdrop-blur-sm sm:px-6"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
@@ -75,7 +75,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
       aria-label="Command palette"
     >
       <div className="win rise-in flex max-h-[80vh] w-full max-w-xl flex-col overflow-hidden">
-        <div className="flex items-center gap-2.5 border-b border-arc-ink px-4 py-3">
+        <div className="flex items-center gap-2.5 border-b border-arc-line px-4 py-3">
           <span className="text-arc-green">›</span>
           <input
             ref={inputRef}
@@ -130,7 +130,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-arc-ink px-4 py-2 text-[10px] text-arc-ink-faint">
+        <div className="flex items-center justify-between border-t border-arc-line px-4 py-2 text-[10px] text-arc-ink-faint">
           <span>{results.length} results</span>
           <span className="hidden items-center gap-2 sm:flex">
             <kbd>↑</kbd>

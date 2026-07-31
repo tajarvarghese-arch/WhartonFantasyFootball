@@ -46,7 +46,7 @@ export function ManagerSwatch({ id }: { id: ManagerId | null | undefined }) {
   return (
     <span
       aria-hidden
-      className="inline-block h-3 w-3 border-2 border-arc-ink"
+      className="inline-block h-3 w-3 border-2 border-arc-line"
       style={{ background: managerColor(id) }}
     />
   )

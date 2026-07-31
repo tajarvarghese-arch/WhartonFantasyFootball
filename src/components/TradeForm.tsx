@@ -213,7 +213,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
       </label>
 
       {(issues.length > 0 || verdict.triggered) && (
-        <ul className="space-y-1.5 border-l-2 border-arc-ink pl-3 text-[12px]">
+        <ul className="space-y-1.5 border-l-2 border-arc-line pl-3 text-[12px]">
           {issues.map((issue, index) => (
             <li
               key={index}
@@ -229,7 +229,7 @@ export default function TradeForm({ onSubmit, onCancel, canSave }: Props) {
         </ul>
       )}
 
-      <div className="border-t border-arc-ink pt-4">
+      <div className="border-t border-arc-line pt-4">
         <div className="label">Reads as</div>
         <p className="mt-1.5 text-[13px] text-arc-ink-soft italic">{summary}</p>
       </div>

@@ -13,19 +13,19 @@ import {
 
 /*
   Chart palette for the ink surface (#0F1512):
-    single series  → arcade blue, contrast 3:1+ against the cream surface
-    two series     → #3B6BFF + #FF4D3D, validated on a light surface for the
-                     lightness band, chroma floor, CVD separation, and the
+    single series  → arcade blue, contrast 3:1+ against the dark panel
+    two series     → #5478E8 + #E85447, validated against the #171128 panel for
+                     the lightness band, chroma floor, CVD separation, and the
                      normal-vision floor
   Grid and axes stay recessive; every chart on this site sits beside the table
   that holds the same numbers, so the data is never color-only.
 */
-export const GOLD = '#3B6BFF'
-export const GOLD_MARK = '#3B6BFF'
-export const PERIWINKLE = '#FF4D3D'
+export const GOLD = '#5A83FF'
+export const GOLD_MARK = '#5478E8'
+export const PERIWINKLE = '#E85447'
 
-const AXIS = '#4b4360'
-const GRID = 'rgba(25, 19, 37, 0.14)'
+const AXIS = '#6b6089'
+const GRID = 'rgba(239, 234, 251, 0.09)'
 
 const axisProps = {
   stroke: AXIS,
@@ -55,7 +55,7 @@ function TooltipBox({
 }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="border border-arc-ink bg-arc-bg px-3 py-2 shadow-lg">
+    <div className="border border-arc-line bg-arc-bg px-3 py-2 shadow-lg">
       <div className="label">{label}</div>
       {payload.map((entry, index) =>
         entry.value === null ? null : (
@@ -119,7 +119,7 @@ export function WinPctChart({
           stroke={GOLD}
           strokeWidth={2}
           dot={false}
-          activeDot={{ r: 4, fill: GOLD, stroke: '#191325', strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: GOLD, stroke: '#171128', strokeWidth: 2 }}
           connectNulls={false}
           animationDuration={900}
           animationEasing="ease-out"
@@ -165,7 +165,7 @@ export function ScoringChart({
           stroke={GOLD}
           strokeWidth={2}
           fill="url(#scoringFill)"
-          activeDot={{ r: 4, fill: GOLD, stroke: '#191325', strokeWidth: 2 }}
+          activeDot={{ r: 4, fill: GOLD, stroke: '#171128', strokeWidth: 2 }}
           animationDuration={1000}
           animationEasing="ease-out"
         />
@@ -217,7 +217,7 @@ export function ForAgainstChart({
             stroke={GOLD_MARK}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 4, fill: GOLD_MARK, stroke: '#191325', strokeWidth: 2 }}
+            activeDot={{ r: 4, fill: GOLD_MARK, stroke: '#171128', strokeWidth: 2 }}
             connectNulls={false}
             animationDuration={900}
             animationEasing="ease-out"
@@ -229,7 +229,7 @@ export function ForAgainstChart({
             stroke={PERIWINKLE}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 4, fill: PERIWINKLE, stroke: '#191325', strokeWidth: 2 }}
+            activeDot={{ r: 4, fill: PERIWINKLE, stroke: '#171128', strokeWidth: 2 }}
             connectNulls={false}
             animationDuration={900}
             animationBegin={160}

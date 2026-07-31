@@ -1,45 +1,48 @@
 @import 'tailwindcss';
 
 /*
-  WACL ARCADE — high-score screen for a 22-year league.
+  WACL ARCADE — dark cabinet.
 
-  Bright cabinet-art palette on warm cream, chunky ink outlines, hard offset
-  shadows with no blur, and stepped animation. Every manager owns a colour and
-  keeps it everywhere, so the league has an identity instead of a greyscale.
+  Deep violet-black cabinet interior, saturated LED accents, chunky outlines
+  and hard offset shadows. Type sits on a finer pixel grid than before:
+  DotGothic16 (16px matrix) for display instead of Press Start 2P's 8px blocks,
+  so headings read as a dot-matrix scoreboard rather than a Game Boy.
+  Every manager owns a colour and keeps it everywhere.
 */
 
 @theme {
-  --color-arc-bg: #f6efe0;
-  --color-arc-bg-deep: #ece2cd;
-  --color-arc-panel: #fffdf7;
-  --color-arc-ink: #191325;
-  --color-arc-ink-soft: #4b4360;
-  --color-arc-ink-faint: #8b83a0;
-  --color-arc-line: #191325;
+  --color-arc-bg: #0d0a17;
+  --color-arc-bg-deep: #08060f;
+  --color-arc-panel: #171128;
+  --color-arc-raised: #221a3a;
+  --color-arc-ink: #efeafb;
+  --color-arc-ink-soft: #a79cc4;
+  --color-arc-ink-faint: #6b6089;
+  --color-arc-line: #3a2f5c;
 
-  --color-arc-red: #ff4d3d;
-  --color-arc-orange: #ff9f1c;
-  --color-arc-yellow: #ffd23f;
-  --color-arc-lime: #7dd84a;
-  --color-arc-green: #14a06a;
-  --color-arc-cyan: #29c7e8;
-  --color-arc-blue: #3b6bff;
-  --color-arc-purple: #9b5de5;
-  --color-arc-pink: #ff5da2;
-  --color-arc-teal: #17bebb;
-  --color-arc-brown: #a9714b;
-  --color-arc-navy: #2a3990;
+  --color-arc-red: #ff5f52;
+  --color-arc-orange: #ffa92e;
+  --color-arc-yellow: #ffd84d;
+  --color-arc-lime: #8be356;
+  --color-arc-green: #2ad68a;
+  --color-arc-cyan: #3fe0f5;
+  --color-arc-blue: #5a83ff;
+  --color-arc-purple: #b07cff;
+  --color-arc-pink: #ff6fb3;
+  --color-arc-teal: #2bd9d2;
+  --color-arc-brown: #c98d5f;
+  --color-arc-navy: #6b7dff;
 
-  --font-display: 'Press Start 2P', ui-monospace, monospace;
+  --font-display: 'DotGothic16', ui-monospace, monospace;
   --font-body: 'Pixelify Sans', ui-monospace, monospace;
 
-  --shadow-hard: 4px 4px 0 var(--color-arc-ink);
-  --shadow-hard-sm: 2px 2px 0 var(--color-arc-ink);
+  --shadow-hard: 4px 4px 0 #04030a;
+  --shadow-hard-sm: 2px 2px 0 #04030a;
 }
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   * {
@@ -48,18 +51,9 @@
 
   body {
     background-color: var(--color-arc-bg);
-    /* Faint checker, like cabinet side art. */
-    background-image:
-      linear-gradient(45deg, rgba(25, 19, 37, 0.022) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(25, 19, 37, 0.022) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(25, 19, 37, 0.022) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(25, 19, 37, 0.022) 75%);
-    background-size: 16px 16px;
-    background-position:
-      0 0,
-      0 8px,
-      8px -8px,
-      -8px 0;
+    /* Fine dot matrix, the texture of a lit cabinet panel. */
+    background-image: radial-gradient(rgba(176, 124, 255, 0.07) 1px, transparent 1px);
+    background-size: 6px 6px;
     color: var(--color-arc-ink);
     font-family: var(--font-body);
     font-size: 16px;
@@ -70,8 +64,8 @@
   }
 
   ::selection {
-    background: var(--color-arc-yellow);
-    color: var(--color-arc-ink);
+    background: var(--color-arc-cyan);
+    color: var(--color-arc-bg);
   }
 
   ::-webkit-scrollbar {
@@ -82,8 +76,8 @@
     background: var(--color-arc-bg-deep);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-arc-blue);
-    border: 2px solid var(--color-arc-ink);
+    background: var(--color-arc-purple);
+    border: 2px solid var(--color-arc-bg-deep);
   }
 
   input,
@@ -95,7 +89,7 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-arc-blue);
+    outline: 3px solid var(--color-arc-cyan);
     outline-offset: 2px;
   }
 }
@@ -103,45 +97,48 @@
 @layer components {
   /* ---- type ------------------------------------------------------------ */
 
-  /* Press Start 2P is enormous per character — always size it down and let it
-     breathe, never use it for running text. */
   .arcade {
     font-family: var(--font-display);
-    letter-spacing: 0.02em;
-    line-height: 1.35;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
   }
 
+  /* Lit like a segment display: a coloured glow behind a hard offset. */
   .hero-num {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 8vw, 3.75rem);
-    line-height: 1.05;
-    color: var(--color-arc-ink);
-    text-shadow: 4px 4px 0 var(--color-arc-yellow);
+    font-size: clamp(2.6rem, 11vw, 5rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--color-arc-cyan);
+    text-shadow:
+      3px 3px 0 #04030a,
+      0 0 26px rgba(63, 224, 245, 0.5);
   }
 
   .display {
     font-family: var(--font-display);
-    font-size: clamp(1rem, 3.6vw, 1.6rem);
-    line-height: 1.25;
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    color: var(--color-arc-ink);
   }
 
   .label {
     font-family: var(--font-display);
-    font-size: 9px;
-    letter-spacing: 0.06em;
+    font-size: 11px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--color-arc-ink-soft);
+    color: var(--color-arc-ink-faint);
   }
 
   .tnum {
     font-variant-numeric: tabular-nums;
   }
 
-  /* Blinking arcade cursor. */
   .cursor::after {
     content: '_';
     margin-left: 2px;
-    color: var(--color-arc-red);
+    color: var(--color-arc-cyan);
     animation: blink 0.9s steps(1) infinite;
   }
   @keyframes blink {
@@ -155,13 +152,22 @@
     }
   }
 
+  /* Replaces the rainbow rule: a two-row LED dot matrix that fades out. */
+  .dotbar {
+    height: 12px;
+    background-image: radial-gradient(circle at center, currentColor 42%, transparent 44%);
+    background-size: 6px 6px;
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 55%, transparent 100%);
+    mask-image: linear-gradient(90deg, #000 0%, #000 55%, transparent 100%);
+  }
+
   /* ---- surfaces -------------------------------------------------------- */
 
   .win {
     min-width: 0;
     position: relative;
     background: var(--color-arc-panel);
-    border: 3px solid var(--color-arc-ink);
+    border: 3px solid var(--color-arc-line);
     box-shadow: var(--shadow-hard);
   }
 
@@ -171,8 +177,8 @@
     justify-content: space-between;
     gap: 12px;
     padding: 10px 14px;
-    background: var(--color-arc-yellow);
-    border-bottom: 3px solid var(--color-arc-ink);
+    background: var(--color-arc-raised);
+    border-bottom: 3px solid var(--color-arc-line);
   }
 
   /* ---- tables ---------------------------------------------------------- */
@@ -195,31 +201,31 @@
   .out thead th {
     padding: 9px 12px;
     font-family: var(--font-display);
-    font-size: 8.5px;
-    letter-spacing: 0.05em;
+    font-size: 11px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     text-align: left;
-    color: var(--color-arc-ink);
+    color: var(--color-arc-ink-soft);
     background: var(--color-arc-bg-deep);
-    border-bottom: 3px solid var(--color-arc-ink);
+    border-bottom: 3px solid var(--color-arc-line);
     white-space: nowrap;
   }
   .out tbody td {
     padding: 8px 12px;
     font-size: 15px;
     font-weight: 500;
-    border-bottom: 2px solid rgba(25, 19, 37, 0.12);
+    color: var(--color-arc-ink);
+    border-bottom: 2px solid rgba(58, 47, 92, 0.5);
     white-space: nowrap;
   }
   .out tbody tr:last-child td {
     border-bottom: none;
   }
-  /* Zebra striping reads as a scoreboard rather than a spreadsheet. */
   .out tbody tr:nth-child(even) td {
-    background: rgba(25, 19, 37, 0.032);
+    background: rgba(255, 255, 255, 0.028);
   }
   .out tbody tr:hover td {
-    background: var(--color-arc-yellow);
+    background: rgba(90, 131, 255, 0.16);
   }
   .out .n {
     text-align: right;
@@ -228,7 +234,6 @@
 
   /* ---- controls -------------------------------------------------------- */
 
-  /* Buttons physically depress — the shadow collapses as it moves. */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -237,74 +242,84 @@
     min-height: 42px;
     padding: 8px 16px;
     font-family: var(--font-display);
-    font-size: 9.5px;
-    letter-spacing: 0.04em;
+    font-size: 12px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-arc-ink);
-    background: var(--color-arc-panel);
-    border: 3px solid var(--color-arc-ink);
+    background: var(--color-arc-raised);
+    border: 3px solid var(--color-arc-line);
     box-shadow: var(--shadow-hard-sm);
     cursor: pointer;
     transition:
       transform 0.08s steps(2),
       box-shadow 0.08s steps(2),
-      background 0.12s;
+      background 0.12s,
+      border-color 0.12s;
   }
   .btn:hover:not(:disabled) {
-    background: var(--color-arc-yellow);
+    background: var(--color-arc-panel);
+    border-color: var(--color-arc-cyan);
+    color: var(--color-arc-cyan);
   }
   .btn:active:not(:disabled) {
     transform: translate(2px, 2px);
     box-shadow: none;
   }
   .btn:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
   }
   .btn-primary {
-    background: var(--color-arc-lime);
+    background: var(--color-arc-green);
+    border-color: var(--color-arc-green);
+    color: #04120b;
   }
   .btn-primary:hover:not(:disabled) {
-    background: var(--color-arc-yellow);
+    background: #4ff0a4;
+    border-color: #4ff0a4;
+    color: #04120b;
   }
   .btn-danger {
     background: var(--color-arc-red);
-    color: var(--color-arc-panel);
+    border-color: var(--color-arc-red);
+    color: #1a0605;
   }
   .btn-danger:hover:not(:disabled) {
-    background: #ff6a5c;
+    background: #ff7a6e;
+    border-color: #ff7a6e;
+    color: #1a0605;
   }
 
   .field {
     width: 100%;
     min-height: 42px;
     padding: 9px 11px;
-    background: var(--color-arc-panel);
-    border: 3px solid var(--color-arc-ink);
+    background: var(--color-arc-bg-deep);
+    border: 3px solid var(--color-arc-line);
     color: var(--color-arc-ink);
     font-size: 15px;
     outline: none;
+    transition: border-color 0.12s;
   }
   .field:focus {
-    background: #fffbe8;
+    border-color: var(--color-arc-cyan);
     outline: none;
   }
   .field::placeholder {
     color: var(--color-arc-ink-faint);
   }
 
-  /* Badge-style status pill. */
   .tag {
     display: inline-flex;
     align-items: center;
-    padding: 3px 7px;
+    padding: 3px 8px;
     font-family: var(--font-display);
-    font-size: 8px;
-    letter-spacing: 0.04em;
+    font-size: 10px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-arc-ink);
-    background: var(--color-arc-panel);
-    border: 2px solid var(--color-arc-ink);
+    color: var(--color-arc-bg);
+    background: var(--color-arc-ink-soft);
+    border: 2px solid rgba(4, 3, 10, 0.6);
     white-space: nowrap;
   }
 
@@ -313,12 +328,12 @@
     align-items: center;
     padding: 2px 6px;
     font-family: var(--font-display);
-    font-size: 8px;
+    font-size: 10px;
+    color: var(--color-arc-ink-soft);
     background: var(--color-arc-bg-deep);
-    border: 2px solid var(--color-arc-ink);
+    border: 2px solid var(--color-arc-line);
   }
 
-  /* Manager identity chip: their colour plus initials. */
   .badge {
     display: inline-flex;
     align-items: center;
@@ -327,15 +342,14 @@
     height: 26px;
     flex-shrink: 0;
     font-family: var(--font-display);
-    font-size: 8.5px;
-    color: var(--color-arc-panel);
-    border: 2px solid var(--color-arc-ink);
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+    font-size: 11px;
+    color: #06040d;
+    border: 2px solid rgba(4, 3, 10, 0.65);
+    font-weight: 700;
   }
 }
 
 @layer utilities {
-  /* Stepped, springy entrances — nothing eases smoothly in an arcade. */
   @keyframes pop-in {
     0% {
       opacity: 0;
@@ -398,7 +412,6 @@
     animation: pulse-dot 1.2s steps(1) infinite;
   }
 
-  /* Champion rows wobble a touch on hover, like a selected menu item. */
   @keyframes wiggle {
     0%,
     100% {

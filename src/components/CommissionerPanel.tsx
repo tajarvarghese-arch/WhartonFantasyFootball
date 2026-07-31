@@ -52,7 +52,7 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-arc-ink/70 p-4 backdrop-blur-sm sm:p-8"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-arc-bg-deep/85 p-4 backdrop-blur-sm sm:p-8"
       role="dialog"
       aria-modal="true"
       aria-label="Commissioner access"
@@ -61,7 +61,7 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
       }}
     >
       <div className="win w-full max-w-xl">
-        <header className="flex items-start justify-between gap-4 border-b border-arc-ink px-6 py-5">
+        <header className="flex items-start justify-between gap-4 border-b border-arc-line px-6 py-5">
           <div>
             <div className="label">Access</div>
             <h2 className="mt-1.5 text-[28px] leading-none text-arc-ink">

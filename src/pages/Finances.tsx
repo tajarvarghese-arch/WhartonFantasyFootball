@@ -366,7 +366,7 @@ function FaabForm({
   const cost = faabKeeperCost(bid, league)
 
   return (
-    <div className="grid gap-3 border-b border-arc-ink px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
+    <div className="grid gap-3 border-b border-arc-line px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
       <label className="lg:col-span-2">
         <span className="label">Manager</span>
         <select
@@ -647,7 +647,7 @@ function CashForm({
   const [busy, setBusy] = useState(false)
 
   return (
-    <div className="grid gap-3 border-b border-arc-ink px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
+    <div className="grid gap-3 border-b border-arc-line px-5 py-5 sm:grid-cols-2 lg:grid-cols-6">
       <label className="lg:col-span-2">
         <span className="label">Manager</span>
         <select

@@ -31,7 +31,7 @@ export default function ChampionsWall() {
           <Link
             key={season.year}
             to={`/managers/${season.champion}`}
-            className="hover-wiggle mb-2 flex items-center gap-3 border-[3px] border-arc-ink bg-arc-panel px-3 py-2 no-underline shadow-hard-sm last:mb-0"
+            className="hover-wiggle mb-2 flex items-center gap-3 border-[3px] border-arc-line bg-arc-panel px-3 py-2 no-underline shadow-hard-sm last:mb-0"
           >
             <span className="arcade w-11 shrink-0 text-[10px] text-arc-ink-soft">
               {season.year}
@@ -53,7 +53,7 @@ export default function ChampionsWall() {
             </span>
             {nth > 1 && (
               <span
-                className="arcade shrink-0 border-2 border-arc-ink px-1.5 py-1 text-[8px]"
+                className="arcade shrink-0 border-2 border-arc-line px-1.5 py-1 text-[8px]"
                 style={{ background: 'var(--color-arc-yellow)' }}
                 title={`Title number ${nth} for this manager`}
               >

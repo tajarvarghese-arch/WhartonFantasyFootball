@@ -145,7 +145,7 @@ export default function Keepers() {
                   </tbody>
                 </table>
 
-                <dl className="mt-4 grid grid-cols-3 gap-3 border-t border-arc-ink pt-4 text-[12px]">
+                <dl className="mt-4 grid grid-cols-3 gap-3 border-t border-arc-line pt-4 text-[12px]">
                   <div>
                     <dt className="text-arc-ink-faint">Base</dt>
                     <dd className="tnum mt-0.5 text-arc-ink-soft">
@@ -184,7 +184,7 @@ export default function Keepers() {
               </div>
 
               {open && (
-                <div className="border-t border-arc-ink">
+                <div className="border-t border-arc-line">
                   <table className="out">
                     <thead>
                       <tr>
