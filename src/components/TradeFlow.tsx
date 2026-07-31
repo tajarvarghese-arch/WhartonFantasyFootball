@@ -117,22 +117,34 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
 
         {/* A ball runs each of the focused manager's arcs, seller to buyer, so
             the direction of the deal is visible rather than implied. */}
-        {focus && !reduceMotion && (
+        {!reduceMotion && (
           <g>
-            {links
-              .filter((link) => link.from === focus || link.to === focus)
-              .map((link) => {
+            {(focus
+              ? links.filter((link) => link.from === focus || link.to === focus)
+              : // Untouched, run the heaviest arcs so the diagram is alive on a
+                // phone, where there is no hover to trigger anything.
+                [...links].sort((a, b) => b.dollars - a.dollars).slice(0, 8)
+            ).map((link, ballIndex) => {
                 const a = positions.get(link.from)
                 const b = positions.get(link.to)
                 if (!a || !b) return null
                 const mx = cx + (a.x + b.x - 2 * cx) * 0.12
                 const my = cy + (a.y + b.y - 2 * cy) * 0.12
                 const d = `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`
+                const lit = !focus || link.from === focus || link.to === focus
                 return (
                   <g key={`ball-${link.from}-${link.to}`}>
-                    <ellipse rx="5.4" ry="3.4" fill="#c98d5f" stroke="#04030a" strokeWidth="1.2">
+                    <ellipse
+                      rx="5.4"
+                      ry="3.4"
+                      fill="#c98d5f"
+                      stroke="#04030a"
+                      strokeWidth="1.2"
+                      opacity={lit ? 1 : 0.25}
+                    >
                       <animateMotion
-                        dur="1.8s"
+                        dur="2.6s"
+                        begin={`${(ballIndex * 0.32).toFixed(2)}s`}
                         repeatCount="indefinite"
                         rotate="auto"
                         path={d}
@@ -157,6 +169,7 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
                 key={id}
                 onMouseEnter={() => setFocus(id)}
                 onMouseLeave={() => setFocus(null)}
+                onClick={() => setFocus((current) => (current === id ? null : id))}
                 style={{ cursor: 'pointer' }}
               >
                 <circle
@@ -202,7 +215,7 @@ export default function TradeFlow({ trades }: { trades: Trade[] }) {
             exchanged
           </>
         ) : (
-          'Hover a manager to follow the ball through their trades'
+          'Tap or hover a manager to follow the ball through their trades'
         )}
       </p>
     </div>
