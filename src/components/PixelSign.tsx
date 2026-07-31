@@ -22,6 +22,8 @@ interface Props {
   words: Word[]
   /** chunkiness: display pixels per rendered pixel */
   pixel?: number
+  /** lean, in degrees. Baked into the canvas so no CSS transform can lose it. */
+  tilt?: number
   className?: string
 }
 
@@ -31,7 +33,7 @@ const BANDS: Record<'pink' | 'gold', string[]> = {
 }
 const DEPTHS = ['#2e9de8', '#2790da', '#1f7cc6', '#1a6ab0', '#155a98']
 
-export default function PixelSign({ words, pixel = 4, className = '' }: Props) {
+export default function PixelSign({ words, pixel = 4, tilt = -5, className = '' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -63,13 +65,23 @@ export default function PixelSign({ words, pixel = 4, className = '' }: Props) {
       width += pad * 2.6
 
       // ---- render each word at its own grain, then composite -------------
+      // The lean is drawn, not styled: rotate the whole composition inside
+      // the canvas and size the canvas to the rotated bounding box.
+      const rad = (tilt * Math.PI) / 180
+      const cos = Math.abs(Math.cos(rad))
+      const sin = Math.abs(Math.sin(rad))
+      const outW = Math.ceil(width * cos + height * sin)
+      const outH = Math.ceil(width * sin + height * cos)
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas.width = width * dpr
-      canvas.height = height * dpr
-      canvas.style.width = `${width}px`
-      canvas.style.height = `${height}px`
+      canvas.width = outW * dpr
+      canvas.height = outH * dpr
+      canvas.style.width = `${outW}px`
+      canvas.style.height = `${outH}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      ctx.clearRect(0, 0, width, height)
+      ctx.clearRect(0, 0, outW, outH)
+      ctx.translate(outW / 2, outH / 2)
+      ctx.rotate(rad)
+      ctx.translate(-width / 2, -height / 2)
       ctx.imageSmoothingEnabled = false
 
       const blits: { img: HTMLCanvasElement; x: number; y: number; w: number; h: number }[] = []
@@ -162,7 +174,7 @@ export default function PixelSign({ words, pixel = 4, className = '' }: Props) {
     return () => {
       cancelled = true
     }
-  }, [words, pixel])
+  }, [words, pixel, tilt])
 
   return (
     <canvas

@@ -32,7 +32,7 @@ export default function Dashboard() {
       {/* The big sign — desktop gets it in the sidebar, phones get it here.
           Pure CSS, so it shows even when animations are switched off. */}
       <div className="mb-6 flex justify-center lg:hidden">
-        <div className="retro relative inline-block text-center">
+        <div className="relative inline-block text-center">
           <PixelSign
             words={[
               { text: 'WACL', palette: 'pink', size: 52 },

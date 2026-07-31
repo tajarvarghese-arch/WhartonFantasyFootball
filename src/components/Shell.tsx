@@ -123,7 +123,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       {/* Mobile top bar */}
       <div className="sticky top-0 z-40 flex items-center justify-between gap-2 border-b-[3px] border-arc-line bg-arc-panel px-3 py-2 lg:hidden">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="retro relative -my-1 shrink-0">
+          <div className="relative -my-1 shrink-0">
             <PixelSign
               words={[
                 { text: 'WACL', palette: 'pink', size: 21 },
@@ -183,7 +183,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       {/* Desktop sidebar */}
       <aside className="hidden border-r-[3px] border-arc-line bg-arc-bg-deep lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col">
         <div className="border-b-[3px] border-arc-line bg-arc-bg-deep px-4 py-5 text-center">
-          <div className="retro relative inline-block">
+          <div className="relative inline-block">
             <PixelSign
               words={[
                 { text: 'WACL', palette: 'pink', size: 34 },

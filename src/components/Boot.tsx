@@ -42,7 +42,7 @@ export default function Boot({
         {/* pop-in and the tilt must live on different elements: the entrance
             animation's fill retains transform:none and would erase the lean */}
         <div className="pop-in inline-block">
-          <div className="retro relative">
+          <div className="relative">
             <PixelSign
               words={[
                 { text: 'WACL', palette: 'pink', size: 64 },
