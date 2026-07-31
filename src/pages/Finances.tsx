@@ -151,13 +151,16 @@ function AuctionBook() {
 /* ------------------------------------------------------------------ */
 
 function FaabBook({ season }: { season: number }) {
-  const { league, managers, faab, waivers } = useLeagueData()
+  const { league, managers, faab, waivers, live } = useLeagueData()
   const { commissioner, save } = useLeague()
   const positions = useFaab(season)
   const [adding, setAdding] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const seasonEntries = faab.entries.filter((entry) => entry.season === season)
+  // Claims Yahoo already knows about. Shown read-only so the sync and the
+  // commissioner's own entries never fight over the same record.
+  const synced = (live?.claims ?? []).filter((claim) => claim.player)
   const history = waivers.filter((claim) => claim.season === season - 1)
   const spent = positions.reduce((total, row) => total + row.spent, 0)
 
@@ -260,6 +263,44 @@ function FaabBook({ season }: { season: number }) {
                   </td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+        </Panel>
+      )}
+
+      {synced.length > 0 && (
+        <Panel
+          title={`synced from yahoo · ${live?.season ?? season}`}
+          subtitle="Waiver adds pulled from the league's transaction log. Keeper cost is computed from the same sliding scale."
+        >
+          <table className="out">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Manager</th>
+                <th className="n">Bid</th>
+                <th className="n">% of budget</th>
+                <th className="n">Keeper cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...synced]
+                .sort((a, b) => b.bid - a.bid)
+                .map((claim, index) => (
+                  <tr key={`${claim.player}-${index}`}>
+                    <td>{claim.player}</td>
+                    <td className="text-term-dim">
+                      {claim.manager ? managerName(managers, claim.manager) : (claim.teamName ?? '—')}
+                    </td>
+                    <td className="n">{money(claim.bid)}</td>
+                    <td className="n text-term-faint">
+                      {pct(claim.bid / league.baseFaabBudget, 0)}
+                    </td>
+                    <td className="n text-term-green">
+                      {money(faabKeeperCost(claim.bid, league))}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </Panel>

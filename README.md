@@ -60,29 +60,39 @@ The token stays in that browser. To revoke access, delete the token on GitHub �
 redeploy needed. Because writes are commits, GitHub Pages republishes a minute or
 two later; until it does, the app holds your edits locally so the numbers stay right.
 
-## Yahoo sync (optional)
+## Yahoo sync
 
-Standings are pulled weekly and committed as `public/data/live.json`. Until the
-first successful run the app simply doesn't show the live panel.
+The scheduled action pulls standings **and waiver transactions** into
+`public/data/live.json`. Until the first successful run the app simply omits the
+live panels. FAAB bids that arrive this way are shown read-only on Finances, with
+keeper cost already computed from the sliding scale.
 
-1. Create an app at <https://developer.yahoo.com/apps/create/> with **Fantasy
-   Sports → Read** permission.
-2. Get a refresh token:
+### One-time setup
+
+1. Create an app at <https://developer.yahoo.com/apps/create/> with
+   **Fantasy Sports → Read** permission. Note the Client ID and Client Secret.
+
+2. Run the auth helper. It prints the refresh token **and lists your league keys**,
+   so there is nothing to look up by hand:
 
 ```bash
 YAHOO_CLIENT_ID=xxx YAHOO_CLIENT_SECRET=yyy node scripts/yahoo-auth.mjs
 ```
 
-3. Add four **repository secrets** (Settings → Secrets and variables → Actions):
+3. Add four [repository secrets](https://github.com/tajarvarghese-arch/WhartonFantasyFootball/settings/secrets/actions):
    `YAHOO_CLIENT_ID`, `YAHOO_CLIENT_SECRET`, `YAHOO_REFRESH_TOKEN`, `YAHOO_LEAGUE_KEY`.
-4. Map Yahoo teams to managers in `public/data/yahoo-map.json`:
 
-```json
-{ "461.l.123456.t.1": "waldman", "461.l.123456.t.2": "varghese" }
+4. Run **Actions → Yahoo standings sync → Run workflow** once by hand.
+
+`public/data/yahoo-map.json` is pre-seeded with the 2026 team names, so teams
+resolve to managers on the first run. If a team was renamed on Yahoo, the run log
+and the dashboard both name it; add its Yahoo team key to that file.
+
+### Checking the parser without credentials
+
+```bash
+node scripts/yahoo-sync.mjs --fixture scripts/fixtures/yahoo-standings.json
 ```
-
-Run the workflow once by hand (**Actions → Yahoo standings sync → Run workflow**);
-any unmapped team is listed in the log and on the dashboard.
 
 ## Notable views
 

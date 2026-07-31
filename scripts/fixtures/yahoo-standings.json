@@ -1,0 +1,131 @@
+{
+  "standings": {
+    "fantasy_content": {
+      "league": [
+        {
+          "league_key": "461.l.123456",
+          "name": "Wharton Alum Champions League",
+          "season": "2026",
+          "current_week": "7"
+        },
+        {
+          "standings": [
+            {
+              "teams": {
+                "count": 2,
+                "0": {
+                  "team": [
+                    [
+                      { "team_key": "461.l.123456.t.1" },
+                      { "team_id": "1" },
+                      { "name": "I Must Break You" }
+                    ],
+                    {
+                      "team_standings": {
+                        "rank": "1",
+                        "outcome_totals": { "wins": "5", "losses": "1", "ties": "0" },
+                        "points_for": "742.18",
+                        "points_against": "610.44"
+                      }
+                    }
+                  ]
+                },
+                "1": {
+                  "team": [
+                    [
+                      { "team_key": "461.l.123456.t.2" },
+                      { "team_id": "2" },
+                      { "name": "Malikety Split" }
+                    ],
+                    {
+                      "team_standings": {
+                        "rank": "2",
+                        "outcome_totals": { "wins": "4", "losses": "2", "ties": "0" },
+                        "points_for": "700.02",
+                        "points_against": "655.10"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "transactions": {
+    "fantasy_content": {
+      "league": [
+        { "league_key": "461.l.123456" },
+        {
+          "transactions": {
+            "count": 2,
+            "0": {
+              "transaction": [
+                {
+                  "transaction_key": "461.l.123456.tr.11",
+                  "type": "add/drop",
+                  "status": "successful",
+                  "timestamp": "1760000000",
+                  "faab_bid": "35"
+                },
+                {
+                  "players": {
+                    "count": 1,
+                    "0": {
+                      "player": [
+                        [
+                          { "player_key": "461.p.9001" },
+                          { "name": { "full": "Kimani Vidal" } }
+                        ],
+                        {
+                          "transaction_data": [
+                            {
+                              "type": "add",
+                              "source_type": "waivers",
+                              "destination_team_key": "461.l.123456.t.1",
+                              "destination_team_name": "I Must Break You"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "1": {
+              "transaction": [
+                {
+                  "transaction_key": "461.l.123456.tr.12",
+                  "type": "add",
+                  "status": "successful",
+                  "timestamp": "1760100000"
+                },
+                {
+                  "players": {
+                    "count": 1,
+                    "0": {
+                      "player": [
+                        [{ "player_key": "461.p.9002" }, { "name": { "full": "Free Agent Guy" } }],
+                        {
+                          "transaction_data": {
+                            "type": "add",
+                            "source_type": "freeagents",
+                            "destination_team_key": "461.l.123456.t.2",
+                            "destination_team_name": "Malikety Split"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

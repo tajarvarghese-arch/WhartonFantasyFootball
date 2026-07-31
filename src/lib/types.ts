@@ -178,6 +178,15 @@ export interface LiveTeam {
   avgPointsAgainst: number | null
 }
 
+export interface LiveClaim {
+  player: string | null
+  bid: number
+  teamKey: string | null
+  teamName: string | null
+  timestamp: number | null
+  manager: ManagerId | null
+}
+
 /** Written by the Yahoo sync action; absent until the first successful run. */
 export interface LiveStandings {
   season: number | null
@@ -187,6 +196,8 @@ export interface LiveStandings {
   updatedAt: string
   unmapped: string[]
   teams: LiveTeam[]
+  /** Waiver adds carrying a FAAB bid. Older live.json files may omit this. */
+  claims?: LiveClaim[]
 }
 
 export interface LeagueData {

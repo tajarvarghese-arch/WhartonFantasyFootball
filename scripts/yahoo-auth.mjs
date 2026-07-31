@@ -1,10 +1,12 @@
 /**
- * One-time helper to obtain a Yahoo refresh token for the sync action.
+ * One-time helper: exchanges a Yahoo authorisation code for a refresh token,
+ * then lists the fantasy football leagues that account can see so the league
+ * key can be copied straight out rather than hunted for.
  *
  *   YAHOO_CLIENT_ID=… YAHOO_CLIENT_SECRET=… node scripts/yahoo-auth.mjs
  *
- * Yahoo refresh tokens are long-lived, so this is run once by hand and the
- * result is stored as the YAHOO_REFRESH_TOKEN repository secret.
+ * Refresh tokens are long-lived, so this is run once by hand and the result is
+ * stored as the YAHOO_REFRESH_TOKEN repository secret.
  */
 
 import { createInterface } from 'node:readline/promises'
@@ -16,7 +18,8 @@ const CLIENT_SECRET = process.env.YAHOO_CLIENT_SECRET
 const REDIRECT_URI = process.env.YAHOO_REDIRECT_URI ?? 'oob'
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
-  console.error('Set YAHOO_CLIENT_ID and YAHOO_CLIENT_SECRET first.')
+  console.error('Set YAHOO_CLIENT_ID and YAHOO_CLIENT_SECRET first.\n')
+  console.error('  YAHOO_CLIENT_ID=xxx YAHOO_CLIENT_SECRET=yyy node scripts/yahoo-auth.mjs')
   process.exit(1)
 }
 
@@ -58,8 +61,46 @@ if (!response.ok) {
 }
 
 const tokens = await response.json()
-console.log('\nSuccess. Add this as the YAHOO_REFRESH_TOKEN repository secret:\n')
-console.log(`   ${tokens.refresh_token}\n`)
-console.log('You will also need YAHOO_LEAGUE_KEY, which looks like "461.l.123456".')
-console.log('Find it at: https://football.fantasysports.yahoo.com — the league id is in the URL,')
-console.log('and the game key for the season prefixes it.\n')
+
+console.log('\n' + '='.repeat(64))
+console.log('YAHOO_REFRESH_TOKEN')
+console.log('='.repeat(64))
+console.log(tokens.refresh_token)
+
+// Look up the account's leagues so the league key does not have to be guessed.
+try {
+  const leagues = await fetch(
+    'https://fantasysports.yahooapis.com/fantasy/v2/users;use_login=1/games;game_codes=nfl/leagues?format=json',
+    { headers: { Authorization: `Bearer ${tokens.access_token}` } },
+  )
+  if (!leagues.ok) throw new Error(`status ${leagues.status}`)
+  const body = await leagues.json()
+
+  const found = []
+  const walk = (node) => {
+    if (Array.isArray(node)) return node.forEach(walk)
+    if (!node || typeof node !== 'object') return
+    if (node.league_key && node.name) {
+      found.push({ key: node.league_key, name: node.name, season: node.season })
+    }
+    Object.values(node).forEach(walk)
+  }
+  walk(body)
+
+  console.log('\n' + '='.repeat(64))
+  console.log('YAHOO_LEAGUE_KEY  — pick the row for this season')
+  console.log('='.repeat(64))
+  if (found.length === 0) {
+    console.log('No NFL leagues found on this account.')
+  } else {
+    for (const league of found) {
+      console.log(`${String(league.season ?? '?').padEnd(6)} ${league.key.padEnd(18)} ${league.name}`)
+    }
+  }
+} catch (error) {
+  console.log('\nCould not list leagues automatically:', error.message)
+  console.log('Find the id in your league URL — the key is "<gameKey>.l.<leagueId>".')
+}
+
+console.log('\nAdd both values as repository secrets:')
+console.log('  https://github.com/tajarvarghese-arch/WhartonFantasyFootball/settings/secrets/actions\n')
