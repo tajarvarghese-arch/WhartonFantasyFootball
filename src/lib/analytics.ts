@@ -1,4 +1,4 @@
-import type { KeeperBlock, LeagueData, ManagerId, Season } from './types'
+import type { LeagueData, ManagerId, Season } from './types'
 
 /*
  * The Lab: every analysis computable from 22 seasons of standings and 12
@@ -240,29 +240,53 @@ export interface ContractRun {
   player: string
   years: number[]
   salaries: number[]
-  /** Sum over kept years of (that year's median keeper salary − salary). */
-  valueVsMedian: number
+  /** Standard fantasy points scored across the kept seasons (nflverse). */
+  totalPoints: number
+  totalPaid: number
+  /** The metric: points scored per auction dollar spent on the contract. */
+  pointsPerDollar: number
 }
 
-export function contractRuns(keepers: LeagueData['keepers']): {
-  steals: ContractRun[]
-  overpays: ContractRun[]
-} {
-  const runs = new Map<string, ContractRun>()
-  for (const [yearKey, blocks] of Object.entries(keepers)) {
-    const year = Number(yearKey)
-    const salaries = blocks
-      .flatMap((block: KeeperBlock) => block.keepers.map((pick) => pick.salary))
-      .filter((salary): salary is number => salary !== null)
-      .sort((a, b) => a - b)
-    if (!salaries.length) continue
-    const median = salaries[Math.floor(salaries.length / 2)]
+const NAME_SUFFIXES = new Set(['jr', 'sr', 'ii', 'iii', 'iv', 'v'])
 
+/** Must mirror scripts/player_points.py exactly, or the join silently misses. */
+export function normalizePlayer(name: string): string {
+  const tokens = name
+    .toLowerCase()
+    .replace(/\./g, ' ')
+    .replace(/[^a-z0-9 ]/g, '')
+    .split(/\s+/)
+    .filter(Boolean)
+  while (tokens.length && NAME_SUFFIXES.has(tokens[tokens.length - 1])) tokens.pop()
+  return tokens.join('')
+}
+
+/**
+ * Contract value the way a GM would compute it: fantasy points produced per
+ * auction dollar spent, summed over the whole keeper run. Only seasons with a
+ * points record count toward the ratio (2026 hasn't been played; team DEFs
+ * have no player line), and the paid total is restricted to the same seasons
+ * so the ratio never divides apples by oranges.
+ */
+export function contractRuns(
+  keepers: LeagueData['keepers'],
+  playerPoints: LeagueData['playerPoints'],
+): { steals: ContractRun[]; overpays: ContractRun[]; unmatched: number } {
+  const runs = new Map<string, ContractRun>()
+  let unmatched = 0
+
+  for (const [yearKey, blocks] of Object.entries(keepers)) {
+    const seasonPoints = playerPoints?.[yearKey]
     for (const block of blocks) {
       if (!block.manager) continue
       for (const pick of block.keepers) {
         if (pick.salary === null) continue
-        const key = `${block.manager}|${pick.player.toLowerCase()}`
+        const points = seasonPoints?.[normalizePlayer(pick.player)]
+        if (points === undefined) {
+          if (seasonPoints) unmatched += 1
+          continue
+        }
+        const key = `${block.manager}|${normalizePlayer(pick.player)}`
         const run =
           runs.get(key) ??
           ({
@@ -270,19 +294,37 @@ export function contractRuns(keepers: LeagueData['keepers']): {
             player: pick.player,
             years: [],
             salaries: [],
-            valueVsMedian: 0,
+            totalPoints: 0,
+            totalPaid: 0,
+            pointsPerDollar: 0,
           } as ContractRun)
-        run.years.push(year)
+        run.years.push(Number(yearKey))
         run.salaries.push(pick.salary)
-        run.valueVsMedian += median - pick.salary
+        run.totalPoints += points
+        run.totalPaid += Math.max(pick.salary, 1) // $0 keepers still cost a slot
         runs.set(key, run)
       }
     }
   }
+
   const all = [...runs.values()]
+  for (const run of all) {
+    run.years.sort((a, b) => a - b)
+    run.pointsPerDollar = run.totalPoints / Math.max(run.totalPaid, 1)
+  }
+
   return {
-    steals: [...all].sort((a, b) => b.valueVsMedian - a.valueVsMedian).slice(0, 12),
-    overpays: [...all].sort((a, b) => a.valueVsMedian - b.valueVsMedian).slice(0, 12),
+    // Steals need real production, not an injured $1 flyer with 12 points.
+    steals: all
+      .filter((run) => run.totalPoints >= 80)
+      .sort((a, b) => b.pointsPerDollar - a.pointsPerDollar)
+      .slice(0, 12),
+    // Overpays need real money on the table.
+    overpays: all
+      .filter((run) => run.totalPaid >= 25)
+      .sort((a, b) => a.pointsPerDollar - b.pointsPerDollar)
+      .slice(0, 12),
+    unmatched,
   }
 }
 

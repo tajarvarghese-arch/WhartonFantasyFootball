@@ -200,6 +200,9 @@ export interface LiveStandings {
   claims?: LiveClaim[]
 }
 
+/** year -> normalised player name -> standard fantasy points (nflverse). */
+export type PlayerPoints = Record<string, Record<string, number>>
+
 export interface LeagueData {
   league: League
   managers: Manager[]
@@ -214,4 +217,6 @@ export interface LeagueData {
   faab: FaabFile
   tradeQueue: TradeQueueFile
   live: LiveStandings | null
+  /** Absent until scripts/player_points.py has been run. */
+  playerPoints: PlayerPoints | null
 }

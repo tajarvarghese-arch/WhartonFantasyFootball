@@ -39,7 +39,10 @@ export default function Lab() {
     () => tortureBoard(seasons, league.currentSeason).filter((row) => activeIds.includes(row.manager)),
     [seasons, league.currentSeason, activeIds],
   )
-  const contracts = useMemo(() => contractRuns(keepers), [keepers])
+  const contracts = useMemo(
+    () => contractRuns(keepers, data.playerPoints),
+    [keepers, data.playerPoints],
+  )
   const odds = useMemo(() => vegasBoard(seasons, activeIds), [seasons, activeIds])
 
   const eloRows = useMemo(
@@ -329,11 +332,14 @@ export default function Lab() {
       <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-2">
         <Panel
           title="best contracts ever"
-          subtitle="Keeper runs valued against each season's median keeper salary. The all-time bargain bin."
+          subtitle="Fantasy points produced per auction dollar, summed over the whole keeper run. Minimum 80 points scored."
         >
           <ContractTable rows={contracts.steals} positive />
         </Panel>
-        <Panel title="worst contracts ever" subtitle="The same math, pointed the other way.">
+        <Panel
+          title="worst contracts ever"
+          subtitle="The same maths, pointed the other way. Minimum $25 committed."
+        >
           <ContractTable rows={contracts.overpays} positive={false} />
         </Panel>
       </div>
@@ -342,7 +348,8 @@ export default function Lab() {
         Methods: luck is wins minus Pythagorean expected wins (exponent 2.37) from season points
         for/against. GOAT is the sum of within-season scoring z-scores. Elo updates once per season
         on win% against the field's average rating (K=6/game, +14 for a title). Odds resample
-        keeper-era scoring with noise; they know nothing about 2026 rosters.
+        keeper-era scoring with noise; they know nothing about 2026 rosters. Contract value
+        is standard-scoring fantasy points (nflverse) per auction dollar across the kept years.
       </p>
     </>
   )
@@ -352,9 +359,24 @@ function ContractTable({
   rows,
   positive,
 }: {
-  rows: { manager: string; player: string; years: number[]; salaries: number[]; valueVsMedian: number }[]
+  rows: {
+    manager: string
+    player: string
+    years: number[]
+    salaries: number[]
+    totalPoints: number
+    totalPaid: number
+    pointsPerDollar: number
+  }[]
   positive: boolean
 }) {
+  if (!rows.length) {
+    return (
+      <div className="px-4 py-8 text-center text-[13px] text-arc-ink-faint">
+        Run scripts/player_points.py to load historical player scoring.
+      </div>
+    )
+  }
   return (
     <table className="out">
       <thead>
@@ -363,7 +385,8 @@ function ContractTable({
           <th>Manager</th>
           <th className="n">Years</th>
           <th className="n">Paid</th>
-          <th className="n">Value</th>
+          <th className="n">Pts</th>
+          <th className="n">Pts/$</th>
         </tr>
       </thead>
       <tbody>
@@ -377,13 +400,13 @@ function ContractTable({
               {row.years[0]}
               {row.years.length > 1 ? `–${String(row.years[row.years.length - 1]).slice(2)}` : ''}
             </td>
-            <td className="n text-arc-ink-faint">{row.salaries.map((s) => money(s)).join(' ')}</td>
+            <td className="n text-arc-ink-faint">{money(row.totalPaid)}</td>
+            <td className="n">{num(row.totalPoints, 0)}</td>
             <td
-              className="n"
+              className="n font-bold"
               style={{ color: positive ? 'var(--color-arc-green)' : 'var(--color-arc-red)' }}
             >
-              {row.valueVsMedian > 0 ? '+' : ''}
-              {money(row.valueVsMedian)}
+              {num(row.pointsPerDollar, 1)}
             </td>
           </tr>
         ))}
