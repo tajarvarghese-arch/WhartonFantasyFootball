@@ -283,6 +283,39 @@
     }
   }
 
+  /* Header rule: a row of LED dots with a wave rolling through it. Each dot
+     shares one pulse animation; staggered delays turn the pulse into a crest
+     that travels left to right, endlessly. */
+  .dot-wave {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 12px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 55%, transparent 100%);
+    mask-image: linear-gradient(90deg, #000 0%, #000 55%, transparent 100%);
+  }
+  .dot-wave span {
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: dot-crest 2.2s ease-in-out infinite;
+  }
+  @keyframes dot-crest {
+    0%,
+    100% {
+      transform: scale(0.5);
+      opacity: 0.3;
+    }
+    50% {
+      transform: scale(1.25);
+      opacity: 1;
+      box-shadow: 0 0 6px currentColor;
+    }
+  }
+
   /* Replaces the rainbow rule: a two-row LED dot matrix that fades out. */
   .dotbar {
     height: 12px;
@@ -905,6 +938,7 @@
     :root:not([data-motion='on']) .sprite-a,
     :root:not([data-motion='on']) .sprite-b,
     :root:not([data-motion='on']) .kickball,
+    :root:not([data-motion='on']) .dot-wave span,
     :root:not([data-motion='on']) .god-drop,
     :root:not([data-motion='on']) .neon-3d,
     :root:not([data-motion='on']) .sparkle,
