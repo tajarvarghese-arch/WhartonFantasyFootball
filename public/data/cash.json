@@ -59,6 +59,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msutxh2j-6dsvm",
+      "season": 2026,
+      "date": "2026-08-15T20:29:31.435Z",
+      "manager": "velamoor",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
