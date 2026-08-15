@@ -79,6 +79,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msutyk5u-7wcer",
+      "season": 2026,
+      "date": "2026-08-15T20:30:22.098Z",
+      "manager": "snyder",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
