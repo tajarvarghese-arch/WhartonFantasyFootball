@@ -4,10 +4,10 @@
   WACL ARCADE — dark cabinet.
 
   Deep violet-black cabinet interior, saturated LED accents, chunky outlines
-  and hard offset shadows. Type sits on a finer pixel grid than before:
-  DotGothic16 (16px matrix) carries the arcade voice on headings and labels;
-  body and every number sit in IBM Plex Mono, because Pixelify's digits were
-  ambiguous — a 5 read as an S — and this is a site made of numbers.
+  and hard offset shadows. The arcade voice now lives in the colour, motion,
+  and hardware chrome rather than pixel type: Space Grotesk carries headings
+  and labels, Inter carries body copy with tabular figures for the numbers,
+  and IBM Plex Mono is reserved for chart axes and keyboard chrome.
   Every manager owns a colour and keeps it everywhere.
 */
 
@@ -34,8 +34,9 @@
   --color-arc-brown: #c98d5f;
   --color-arc-navy: #6b7dff;
 
-  --font-display: 'DotGothic16', ui-monospace, monospace;
-  --font-body: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   --shadow-hard: 4px 4px 0 #04030a;
   --shadow-hard-sm: 2px 2px 0 #04030a;
@@ -100,16 +101,19 @@
 
   .arcade {
     font-family: var(--font-display);
-    letter-spacing: 0.04em;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     line-height: 1.3;
   }
 
   /* Lit like a segment display: a coloured glow behind a hard offset. */
   .hero-num {
     font-family: var(--font-display);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
     font-size: clamp(2.6rem, 11vw, 5rem);
     line-height: 1;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     color: var(--color-arc-cyan);
     text-shadow:
       3px 3px 0 #04030a,
@@ -118,14 +122,16 @@
 
   .display {
     font-family: var(--font-display);
+    font-weight: 700;
     font-size: clamp(1.4rem, 5vw, 2.2rem);
-    line-height: 1.2;
-    letter-spacing: 0.03em;
+    line-height: 1.15;
+    letter-spacing: 0.005em;
     color: var(--color-arc-ink);
   }
 
   .label {
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -150,7 +156,7 @@
   .retro-word {
     position: relative;
     display: inline-block;
-    font-family: 'Titan One', var(--font-display);
+    font-family: 'Archivo Black', var(--font-display);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     line-height: 1;
@@ -358,6 +364,7 @@
   .out thead th {
     padding: 9px 12px;
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -405,6 +412,7 @@
     min-height: 42px;
     padding: 8px 16px;
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -477,6 +485,7 @@
     align-items: center;
     padding: 3px 8px;
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 10px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -490,7 +499,8 @@
     display: inline-flex;
     align-items: center;
     padding: 2px 6px;
-    font-family: var(--font-display);
+    font-family: var(--font-mono);
+    font-weight: 500;
     font-size: 10px;
     color: var(--color-arc-ink-soft);
     background: var(--color-arc-bg-deep);
@@ -506,6 +516,7 @@
     flex-shrink: 0;
     font-family: var(--font-display);
     font-size: 11px;
+    font-variant-numeric: tabular-nums;
     color: #06040d;
     border: 2px solid rgba(4, 3, 10, 0.65);
     font-weight: 700;

@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 /**
  * The retro-neon wordmark, rendered with a deliberate pixel grain: every layer
  * (blue 3D extrusion, banded sunset fill, white neon tube, glow) is drawn to a
- * low-resolution canvas and upscaled with smoothing off, so the smooth Titan
+ * low-resolution canvas and upscaled with smoothing off, so the smooth Archivo
  * One glyphs come out chunky — same DNA as the heap sprites.
  */
 
@@ -53,7 +53,7 @@ export default function PixelSign({ words, pixel = 4, tilt = -5, className = '' 
       let width = 0
       let height = pad
       const lines = words.map((word) => {
-        measure.font = `${word.size}px "Titan One"`
+        measure.font = `${word.size}px "Archivo Black"`
         const spacing = (word.tracking ?? 0.04) * word.size
         const w = measure.measureText(word.text).width + spacing * (word.text.length - 1)
         width = Math.max(width, w)
@@ -99,7 +99,7 @@ export default function PixelSign({ words, pixel = 4, tilt = -5, className = '' 
         const lctx = low.getContext('2d')!
         lctx.textAlign = 'center'
         lctx.textBaseline = 'alphabetic'
-        lctx.font = `${line.size / p}px "Titan One"`
+        lctx.font = `${line.size / p}px "Archivo Black"`
 
         const spacing = ((line.tracking ?? 0.04) * line.size) / p
         const widths = [...line.text].map((ch) => lctx.measureText(ch).width)
@@ -161,8 +161,8 @@ export default function PixelSign({ words, pixel = 4, tilt = -5, className = '' 
       ctx.shadowBlur = 0
     }
 
-    // Titan One must be resident or the canvas draws a fallback face.
-    const sized = words.map((w) => `${w.size}px "Titan One"`)
+    // Archivo Black must be resident or the canvas draws a fallback face.
+    const sized = words.map((w) => `${w.size}px "Archivo Black"`)
     Promise.all(sized.map((f) => document.fonts.load(f)))
       .then(() => {
         if (!cancelled) render()
