@@ -1,3 +1,28 @@
 {
-  "proposals": []
+  "proposals": [
+    {
+      "id": "t-msuqrjyi-cdnp3",
+      "batch": "2026 Preseason",
+      "season": 2026,
+      "preseason": true,
+      "seller": "velamoor",
+      "buyer": "buzik",
+      "players": "Tyler Warren",
+      "terms": "$9 in 2026; $6 in 2027",
+      "totalDollars": 15,
+      "obligations": [
+        {
+          "year": 2026,
+          "amount": 9
+        },
+        {
+          "year": 2027,
+          "amount": 6
+        }
+      ],
+      "status": "pending",
+      "source": "app",
+      "proposedAt": "2026-08-15T19:00:56.394Z"
+    }
+  ]
 }
