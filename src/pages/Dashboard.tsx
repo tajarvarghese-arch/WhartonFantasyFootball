@@ -4,6 +4,7 @@ import Ticker from '../components/Ticker'
 import PixelSign from '../components/PixelSign'
 import { Confetti, FieldGoalStrip, FieldStripes, Sparkles } from '../components/effects'
 import { managerColor } from '../lib/identity'
+import { animationsDisabled } from '../lib/motion'
 import { Bar, Chip, Empty, Hero, Panel, PageHeader, Stat } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
 import { useBudgets, useCash, useObligationHorizon, usePendingTrades, useTrades } from '../lib/derive'
@@ -70,6 +71,30 @@ export default function Dashboard() {
           </div>
           <FieldGoalStrip championColor={managerColor(champion)} />
         </div>
+
+        {/* The champion's film room — sits directly above the Defending champ
+            card. Muted loop so phones allow inline autoplay; tap for sound. */}
+        <div className="win mx-auto w-full max-w-xl">
+          <div className="win-head">
+            <span className="label">Championship tape</span>
+            <span className="label">
+              {managerName(managers, champion)}
+              {lastSeason ? ` · ${lastSeason.year}` : ''}
+            </span>
+          </div>
+          <video
+            className="block max-h-[62vh] w-full bg-black object-contain"
+            src={`${import.meta.env.BASE_URL}media/stu-2025.mp4`}
+            autoPlay={!animationsDisabled()}
+            muted
+            loop
+            playsInline
+            controls
+            preload="metadata"
+            aria-label={`Video of ${managerName(managers, champion)}, the defending champion`}
+          />
+        </div>
+
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
           <Stat
             label="Awaiting ruling"
