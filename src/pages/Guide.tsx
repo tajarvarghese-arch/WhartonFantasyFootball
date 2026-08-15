@@ -134,10 +134,12 @@ export default function Guide() {
               press <B>✎ Edit keepers</B>.
             </Step>
             <Step n={2}>
-              Use <B>+ Add from roster…</B> to pick a player — the salary and contract year fill
-              in from the league rules by themselves. Press <B>×</B> to drop one, or edit any
-              name, dollar amount, or contract letter directly. <B>Blank row</B> is for the rare
-              player the roster list doesn't know about.
+              Use <B>+ Add from roster…</B> to pick a player, or press <B>×</B> to drop one. You
+              only ever choose the players — every salary and contract year is computed from the
+              league rules (draft value, or the waiver sliding scale for pickups) and can't be
+              typed over. The text box below the list is for the rare player the roster doesn't
+              know about; a waiver pickup prices off its bid automatically, anyone else is the $5
+              free-agent floor.
             </Step>
             <Step n={3}>
               Press <B>Save keepers</B>. Draft budgets, the contract board, and the war room all
