@@ -1,3 +1,14 @@
 {
-  "entries": []
+  "entries": [
+    {
+      "id": "cash-msuswpha-dem61",
+      "season": 2026,
+      "date": "2026-08-15T20:00:56.062Z",
+      "manager": "varghese",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
+    }
+  ]
 }
