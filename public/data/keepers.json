@@ -15031,22 +15031,22 @@
           "contractYear": "B"
         },
         {
-          "player": "CeeDee Lamb",
-          "salary": 70,
+          "player": "Terry McLaurin",
+          "salary": 21,
+          "contractYear": "C"
+        },
+        {
+          "player": "Tyler Warren",
+          "salary": 7,
           "contractYear": "B"
         },
         {
-          "player": "Kimani Vidal",
-          "salary": 10,
-          "contractYear": "B"
-        },
-        {
-          "player": "Jacory Croskey-Merritt",
-          "salary": 4,
+          "player": "Bhayshul Tuten",
+          "salary": 1,
           "contractYear": "B"
         }
       ],
-      "keeperSalary": -86,
+      "keeperSalary": 31,
       "cashTraded": 36,
       "draftBudget": 150
     },
