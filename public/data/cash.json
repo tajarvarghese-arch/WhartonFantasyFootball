@@ -19,6 +19,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msutveep-dzyyr",
+      "season": 2026,
+      "date": "2026-08-15T20:27:54.673Z",
+      "manager": "tollinche",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
