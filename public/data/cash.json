@@ -39,6 +39,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msutwslf-uz5ta",
+      "season": 2026,
+      "date": "2026-08-15T20:28:59.715Z",
+      "manager": "bernstein",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
