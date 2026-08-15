@@ -6,6 +6,7 @@ import { useLeague } from './lib/data'
 import { managerColor } from './lib/identity'
 import Dashboard from './pages/Dashboard'
 import Finances from './pages/Finances'
+import Guide from './pages/Guide'
 import Keepers from './pages/Keepers'
 import Lab from './pages/Lab'
 import Almanac from './pages/Almanac'
@@ -73,6 +74,7 @@ export default function App() {
         <Route path="/lab" element={<Lab />} />
         <Route path="/almanac" element={<Almanac />} />
         <Route path="/rules" element={<Rules />} />
+        <Route path="/guide" element={<Guide />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Shell>

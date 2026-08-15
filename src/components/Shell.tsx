@@ -24,6 +24,7 @@ const NAV = [
   { to: '/lab', label: 'The Lab', color: 'var(--color-arc-navy)' },
   { to: '/almanac', label: 'Almanac', color: 'var(--color-arc-brown)' },
   { to: '/rules', label: 'Rules', color: 'var(--color-arc-teal)' },
+  { to: '/guide', label: 'Manual', color: 'var(--color-arc-yellow)' },
 ]
 
 function Clock() {
@@ -210,7 +211,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               }}
               className="btn mt-5 w-full"
             >
-              {commissioner ? '● Commissioner' : '○ Unlock Commish'}
+              {commissioner ? '● Commissioner — signed in' : '○ Commissioner sign-in'}
             </button>
           </div>
         </div>
@@ -260,7 +261,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               background: commissioner ? 'var(--color-arc-lime)' : 'var(--color-arc-ink-faint)',
             }}
           />
-          {commissioner ? 'COMMISH' : 'READ ONLY'}
+          {commissioner ? 'COMMISH ✓' : 'COMMISH SIGN-IN'}
         </button>
       </aside>
 

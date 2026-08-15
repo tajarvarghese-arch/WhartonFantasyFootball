@@ -22,6 +22,7 @@ export const PAGES: { title: string; subtitle: string; to: string }[] = [
   { title: 'The Lab', subtitle: 'Luck index, GOAT index, Elo, title odds, contracts', to: '/lab' },
   { title: 'Almanac', subtitle: 'The written record, one entry per season', to: '/almanac' },
   { title: 'Rules', subtitle: 'League constitution', to: '/rules' },
+  { title: 'Manual', subtitle: "Commissioner's guide — how to run the league here", to: '/guide' },
 ]
 
 export function playerSlug(name: string): string {

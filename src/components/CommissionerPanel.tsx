@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { clearOverlay, useLeague } from '../lib/data'
 import {
   commitUrl,
@@ -21,6 +22,7 @@ import type { CommissionerVault } from '../lib/types'
  */
 export default function CommissionerPanel({ onClose }: { onClose: () => void }) {
   const { data, setCommissioner, reload, save } = useLeague()
+  const navigate = useNavigate()
   const vault = data?.vault ?? null
   const active = isCommissioner()
 
@@ -277,13 +279,25 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
                   {busy ? 'Unlocking…' : 'Unlock'}
                 </button>
               </div>
-              <button
-                type="button"
-                className="text-[12px] text-arc-ink-faint underline underline-offset-2"
-                onClick={() => setShowTokenFlow(true)}
-              >
-                Use a GitHub token instead
-              </button>
+              <div className="flex flex-wrap gap-x-5 gap-y-2">
+                <button
+                  type="button"
+                  className="text-[12px] text-arc-ink-faint underline underline-offset-2"
+                  onClick={() => {
+                    onClose()
+                    navigate('/guide')
+                  }}
+                >
+                  New commissioner? Read the manual
+                </button>
+                <button
+                  type="button"
+                  className="text-[12px] text-arc-ink-faint underline underline-offset-2"
+                  onClick={() => setShowTokenFlow(true)}
+                >
+                  Use a GitHub token instead
+                </button>
+              </div>
             </>
           ) : (
             <>
