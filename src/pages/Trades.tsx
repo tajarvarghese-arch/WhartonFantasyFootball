@@ -88,9 +88,11 @@ export default function Trades() {
         title="Trades"
         lede="Auction dollars move forward in time. Every proposal is checked against the anti-dumping rule before it reaches the books."
         action={
-          <button type="button" className="btn btn-primary" onClick={() => setComposing(true)}>
-            New trade
-          </button>
+          commissioner ? (
+            <button type="button" className="btn btn-primary" onClick={() => setComposing(true)}>
+              New trade
+            </button>
+          ) : undefined
         }
       />
 
@@ -128,7 +130,7 @@ export default function Trades() {
         </p>
       )}
 
-      {composing && (
+      {composing && commissioner && (
         <div className="mb-6">
           <Panel title="Record a trade" subtitle="The seller gives up the player; the buyer pays.">
             <TradeForm

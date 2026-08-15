@@ -34,10 +34,11 @@ const FILES = {
   live: 'live.json',
   playerPoints: 'player-points.json',
   playerPositions: 'player-positions.json',
+  vault: 'auth.json',
 } as const
 
 /** Files the commissioner edits in-app. Writes go to GitHub *and* to this cache. */
-export type WritableFile = 'cash.json' | 'faab.json' | 'trade-queue.json'
+export type WritableFile = 'cash.json' | 'faab.json' | 'trade-queue.json' | 'auth.json'
 
 const OVERLAY_KEY = 'wacl.overlay'
 
@@ -128,6 +129,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         live,
         playerPoints,
         playerPositions,
+        vault,
       ] = await Promise.all([
         loadJson<LeagueData['league']>(FILES.league),
         loadJson<LeagueData['managers']>(FILES.managers),
@@ -144,6 +146,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         loadOptionalJson<LiveStandings>(FILES.live),
         loadOptionalJson<import('./types').PlayerPoints>(FILES.playerPoints),
         loadOptionalJson<import('./types').PlayerPositions>(FILES.playerPositions),
+        loadOptionalJson<import('./types').CommissionerVault>(FILES.vault),
       ])
 
       const overlay = readOverlay()
@@ -163,6 +166,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
         live,
         playerPoints,
         playerPositions,
+        // vault may legitimately be overlaid with null (password removed),
+        // so presence-check rather than ??
+        vault: 'auth.json' in overlay
+          ? (overlay['auth.json'] as import('./types').CommissionerVault | null)
+          : vault,
       }
 
       // Drop overlay entries the deployed site has caught up on.
@@ -171,6 +179,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         'cash.json': cash,
         'faab.json': faab,
         'trade-queue.json': tradeQueue,
+        'auth.json': vault,
       }
       for (const [file, value] of Object.entries(overlay) as [WritableFile, unknown][]) {
         if (JSON.stringify(served[file]) !== JSON.stringify(value)) pruned[file] = value
@@ -198,6 +207,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (!current) return current
       if (file === 'cash.json') return { ...current, cash: next as CashFile }
       if (file === 'faab.json') return { ...current, faab: next as FaabFile }
+      if (file === 'auth.json')
+        return { ...current, vault: next as import('./types').CommissionerVault | null }
       return { ...current, tradeQueue: next as TradeQueueFile }
     })
   }, [])

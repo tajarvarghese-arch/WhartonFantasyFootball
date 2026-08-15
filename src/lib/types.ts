@@ -206,6 +206,15 @@ export type PlayerPoints = Record<string, Record<string, [number, string]>>
 /** normalised player name -> position, for everyone the league ever rostered. */
 export type PlayerPositions = Record<string, string>
 
+export interface CommissionerVault {
+  v: 1
+  kdf: 'PBKDF2-SHA256'
+  iter: number
+  salt: string
+  iv: string
+  ct: string
+}
+
 export interface LeagueData {
   league: League
   managers: Manager[]
@@ -224,4 +233,6 @@ export interface LeagueData {
   playerPoints: PlayerPoints | null
   /** Absent until scripts/player_positions.py has been run. */
   playerPositions: PlayerPositions | null
+  /** The password-sealed commissioner token; null until a password is set. */
+  vault: CommissionerVault | null
 }
