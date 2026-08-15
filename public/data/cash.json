@@ -49,6 +49,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msutx4um-g002e",
+      "season": 2026,
+      "date": "2026-08-15T20:29:15.598Z",
+      "manager": "baugh",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
