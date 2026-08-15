@@ -99,6 +99,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msutzawu-3ufj0",
+      "season": 2026,
+      "date": "2026-08-15T20:30:56.766Z",
+      "manager": "konciak",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
