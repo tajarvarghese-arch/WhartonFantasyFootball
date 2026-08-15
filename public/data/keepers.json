@@ -15843,12 +15843,12 @@
           "contractYear": "B"
         },
         {
-          "player": "Brian Robinson",
-          "salary": 3,
+          "player": "Juwan Johnson",
+          "salary": 5,
           "contractYear": "B"
         }
       ],
-      "keeperSalary": -66,
+      "keeperSalary": 68,
       "cashTraded": 32,
       "draftBudget": 166
     },
