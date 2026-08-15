@@ -89,6 +89,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msutyzli-yqfhm",
+      "season": 2026,
+      "date": "2026-08-15T20:30:42.102Z",
+      "manager": "incognito",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
