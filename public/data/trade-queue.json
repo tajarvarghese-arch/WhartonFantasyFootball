@@ -91,9 +91,10 @@
           "amount": 2
         }
       ],
-      "status": "pending",
+      "status": "approved",
       "source": "app",
-      "proposedAt": "2026-08-15T19:52:10.257Z"
+      "proposedAt": "2026-08-15T19:52:10.257Z",
+      "decidedAt": "2026-08-15T19:52:16.958Z"
     }
   ]
 }
