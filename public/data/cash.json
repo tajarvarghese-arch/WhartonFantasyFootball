@@ -9,6 +9,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msuth68w-5kg4o",
+      "season": 2026,
+      "date": "2026-08-15T20:16:50.912Z",
+      "manager": "waldman",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
