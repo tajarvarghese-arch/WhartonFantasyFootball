@@ -109,6 +109,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msutzm1s-weawb",
+      "season": 2026,
+      "date": "2026-08-15T20:31:11.200Z",
+      "manager": "lalwani",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
