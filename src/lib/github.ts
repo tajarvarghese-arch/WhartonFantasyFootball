@@ -135,6 +135,15 @@ export async function commitFile<T>(
   }
   if (!response.ok) {
     const detail = (await response.json().catch(() => null)) as { message?: string } | null
+    // GitHub reports the account's rights, not the token's, so a read-only
+    // token sails through verifyToken and only fails here.
+    if (detail?.message?.includes('Resource not accessible')) {
+      throw new Error(
+        'Your token can read the repo but not write to it. On GitHub → Settings → ' +
+          `Personal access tokens, edit the token: Repository access must be "Only select ` +
+          `repositories" → ${REPO_NAME}, and Contents must be "Read and write". Then retry.`,
+      )
+    }
     throw new Error(detail?.message ?? `GitHub rejected the write (${response.status}).`)
   }
   return next
