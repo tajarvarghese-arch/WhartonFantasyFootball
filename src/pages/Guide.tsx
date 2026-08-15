@@ -74,8 +74,10 @@ export default function Guide() {
               <B>Hold 24h for market check</B>, which starts the timer automatically.
             </Step>
             <Step n={4}>
-              Done. Budgets everywhere on the site update instantly, and the decision is recorded
-              permanently with your name on it. To enter a brand-new trade yourself, use{' '}
+              Done. Budgets everywhere update instantly, and the players named in the trade walk
+              over to the buyer's roster on the Keepers page by themselves — a green note under
+              the tabs confirms each move (and tells you if a name couldn't be matched). The
+              decision is recorded permanently with your name on it. To enter a brand-new trade yourself, use{' '}
               <B>New trade</B> on the same page — pick the two managers, type the players, enter
               the dollars per year, and it reads the trade back to you in a sentence before you
               save.

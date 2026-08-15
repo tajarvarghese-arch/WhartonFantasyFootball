@@ -14474,7 +14474,7 @@
       "draftBudget": 150.0
     },
     {
-      "team": "Karma’s L-Ah-Ma-tized",
+      "team": "Karma\u2019s L-Ah-Ma-tized",
       "manager": "mukheja",
       "endingRoster": [
         {
@@ -15012,6 +15012,16 @@
           "player": "Kyler Murray",
           "cost": 1.0,
           "contractYear": "C"
+        },
+        {
+          "player": "Tyler Warren",
+          "cost": 7.0,
+          "contractYear": "A"
+        },
+        {
+          "player": "Bhayshul Tuten",
+          "cost": 1.0,
+          "contractYear": "A"
         }
       ],
       "keepers": [
@@ -15128,6 +15138,11 @@
           "player": "Malik Nabers",
           "cost": 32.0,
           "contractYear": "B"
+        },
+        {
+          "player": "Bijan Robinson",
+          "cost": 70.0,
+          "contractYear": "C"
         }
       ],
       "keepers": [
@@ -15189,11 +15204,6 @@
           "player": "Ja'Marr Chase",
           "cost": 81.0,
           "contractYear": "A"
-        },
-        {
-          "player": "Bijan Robinson",
-          "cost": 70.0,
-          "contractYear": "C"
         },
         {
           "player": "Brock Bowers",
@@ -15587,6 +15597,11 @@
           "player": "Jaguars",
           "cost": 5.0,
           "contractYear": "A"
+        },
+        {
+          "player": "Jameson Williams",
+          "cost": 4.0,
+          "contractYear": "B"
         }
       ],
       "keepers": [
@@ -15645,11 +15660,6 @@
           "contractYear": "A"
         },
         {
-          "player": "Jameson Williams",
-          "cost": 4.0,
-          "contractYear": "B"
-        },
-        {
           "player": "Kenny Gainwell",
           "cost": 5.0,
           "contractYear": "A"
@@ -15682,11 +15692,6 @@
         {
           "player": "Trevor Lawrence",
           "cost": 2.0,
-          "contractYear": "A"
-        },
-        {
-          "player": "Bhayshul Tuten",
-          "cost": 1.0,
           "contractYear": "A"
         },
         {
@@ -15848,7 +15853,7 @@
       "draftBudget": 166.0
     },
     {
-      "team": "Karma’s L-Ah-Ma-tized",
+      "team": "Karma\u2019s L-Ah-Ma-tized",
       "manager": "mukheja",
       "endingRoster": [
         {
@@ -16000,11 +16005,6 @@
         {
           "player": "Rico Dowdle",
           "cost": 1.0,
-          "contractYear": "A"
-        },
-        {
-          "player": "Tyler Warren",
-          "cost": 7.0,
           "contractYear": "A"
         },
         {

@@ -8,7 +8,8 @@ import { managerName, useLeague, useLeagueData } from '../lib/data'
 import { useTrades } from '../lib/derive'
 import { countdown, money, shortDate } from '../lib/format'
 import { antiDumpingCheck, marketCheckDeadline, tradeImpact } from '../lib/rules'
-import type { Trade, TradeQueueFile, TradeStatus } from '../lib/types'
+import { applyTradeRoster } from '../lib/roster'
+import type { LeagueData, Trade, TradeQueueFile, TradeStatus } from '../lib/types'
 
 type Tab = 'queue' | 'ledger' | 'archive'
 
@@ -23,6 +24,7 @@ export default function Trades() {
   const [busyId, setBusyId] = useState<string | null>(null)
   const [moment, setMoment] = useState<MomentKind | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
   const [seasonFilter, setSeasonFilter] = useState<'all' | number>('all')
 
   const pending = trades.filter(
@@ -42,6 +44,7 @@ export default function Trades() {
   async function rule(trade: Trade, status: TradeStatus, extra: Partial<Trade> = {}) {
     setBusyId(trade.id)
     setError(null)
+    setNotice(null)
     try {
       const updated: Trade = {
         ...trade,
@@ -59,6 +62,30 @@ export default function Trades() {
         },
         `Trade ${trade.id}: ${status} (${managerName(managers, trade.seller)} → ${managerName(managers, trade.buyer)})`,
       )
+
+      // Approval moves the named players between the season's keeper blocks,
+      // so the buyer's roster (and the war room) reflect the deal immediately.
+      if (status === 'approved') {
+        const preview = applyTradeRoster(data.keepers, updated)
+        if (preview.moved.length > 0) {
+          await save<LeagueData['keepers']>(
+            'keepers.json',
+            (current) => applyTradeRoster(current, updated).keepers,
+            `Trade ${trade.id}: roster moves (${preview.moved
+              .map((move) => `${move.player} → ${managerName(managers, move.to)}`)
+              .join(', ')})`,
+          )
+        }
+        const movedLine = preview.moved
+          .map((move) => `${move.player} → ${managerName(managers, move.to)}'s roster`)
+          .join(' · ')
+        const unmatchedLine =
+          preview.unmatched.length > 0
+            ? `Couldn't find ${preview.unmatched.join(', ')} on either roster — fix via Keepers → Edit keepers if a move is owed.`
+            : ''
+        setNotice([movedLine, unmatchedLine].filter(Boolean).join('  ') || null)
+      }
+
       play(status === 'approved' ? 'roar' : status === 'rejected' ? 'trombone' : 'whistle')
       if (!animationsDisabled()) {
         setMoment(status === 'approved' ? 'td' : status === 'rejected' ? 'flag' : 'review')
@@ -127,6 +154,11 @@ export default function Trades() {
       {error && (
         <p className="mb-5 border-l-2 border-[var(--color-arc-red)] pl-3 text-[12px] text-[var(--color-arc-red)]">
           {error}
+        </p>
+      )}
+      {notice && (
+        <p className="mb-5 border-l-2 border-[var(--color-arc-green)] pl-3 text-[12px] text-arc-ink-soft">
+          {notice}
         </p>
       )}
 
