@@ -49,6 +49,26 @@
       "source": "app",
       "proposedAt": "2026-08-15T19:37:32.465Z",
       "decidedAt": "2026-08-15T19:37:37.896Z"
+    },
+    {
+      "id": "t-msusk1yy-of1db",
+      "batch": "2026 Preseason",
+      "season": 2026,
+      "preseason": true,
+      "seller": "bernstein",
+      "buyer": "incognito",
+      "players": "Jameson Williams",
+      "terms": "$5 in 2026",
+      "totalDollars": 5,
+      "obligations": [
+        {
+          "year": 2026,
+          "amount": 5
+        }
+      ],
+      "status": "pending",
+      "source": "app",
+      "proposedAt": "2026-08-15T19:51:05.722Z"
     }
   ]
 }
