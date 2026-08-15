@@ -12,14 +12,14 @@
 */
 
 @theme {
-  --color-arc-bg: #0d0a17;
-  --color-arc-bg-deep: #08060f;
-  --color-arc-panel: #171128;
-  --color-arc-raised: #221a3a;
-  --color-arc-ink: #efeafb;
-  --color-arc-ink-soft: #a79cc4;
-  --color-arc-ink-faint: #6b6089;
-  --color-arc-line: #3a2f5c;
+  --color-arc-bg: #140f3c;
+  --color-arc-bg-deep: #0b0824;
+  --color-arc-panel: #1c1550;
+  --color-arc-raised: #2a1f6e;
+  --color-arc-ink: #f1edfd;
+  --color-arc-ink-soft: #b3a8d8;
+  --color-arc-ink-faint: #7d71a8;
+  --color-arc-line: #473994;
 
   --color-arc-red: #ff5f52;
   --color-arc-orange: #ffa92e;
@@ -54,7 +54,7 @@
   body {
     background-color: var(--color-arc-bg);
     /* Fine dot matrix, the texture of a lit cabinet panel. */
-    background-image: radial-gradient(rgba(176, 124, 255, 0.07) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(186, 140, 255, 0.09) 1px, transparent 1px);
     background-size: 6px 6px;
     color: var(--color-arc-ink);
     font-family: var(--font-body);
@@ -63,6 +63,21 @@
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+  }
+
+  /* Ambient neon spill from off-screen signage: magenta over the top-left,
+     cyan off the right edge, violet rising from the floor. A fixed layer so
+     the glow holds still while the page scrolls past it. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(110vmax 70vmax at 12% -12%, rgba(255, 95, 178, 0.17), transparent 58%),
+      radial-gradient(90vmax 65vmax at 108% 22%, rgba(63, 224, 245, 0.13), transparent 55%),
+      radial-gradient(100vmax 60vmax at 50% 118%, rgba(140, 92, 255, 0.22), transparent 62%);
   }
 
   ::selection {
