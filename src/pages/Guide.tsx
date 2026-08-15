@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { Panel, PageHeader } from '../components/ui'
-import { useLeagueData } from '../lib/data'
 
 /**
  * The Commissioner's Manual — written for a commissioner who did not build
@@ -25,7 +24,6 @@ function B({ children }: { children: ReactNode }) {
 }
 
 export default function Guide() {
-  const { league } = useLeagueData()
 
   return (
     <>
@@ -86,26 +84,7 @@ export default function Guide() {
         </Panel>
 
         <Panel
-          title="3 · logging a waiver claim (faab)"
-          subtitle="Type the bid; the site does the keeper math."
-        >
-          <ol className="space-y-3 px-5 py-5">
-            <Step n={1}>
-              Go to <B>Finances</B>, tap the <B>FAAB</B> tab, press <B>Log claim</B>.
-            </Step>
-            <Step n={2}>
-              Pick the manager, type the player and the bid amount. The{' '}
-              <B>keeper cost appears by itself</B> — the ${league.baseFaabBudget} budget sliding
-              scale is built in, so there is nothing to calculate.
-            </Step>
-            <Step n={3}>
-              Press <B>Record claim</B>. Budgets update for everyone.
-            </Step>
-          </ol>
-        </Panel>
-
-        <Panel
-          title="4 · money between humans"
+          title="3 · money between humans"
           subtitle="Dues, payouts, side bets — the who-owes-who ledger."
         >
           <ol className="space-y-3 px-5 py-5">
@@ -125,7 +104,7 @@ export default function Guide() {
         </Panel>
 
         <Panel
-          title="5 · updating a keeper list"
+          title="4 · updating a keeper list"
           subtitle="After draft night, or to fix a mistake in any season."
         >
           <ol className="space-y-3 px-5 py-5">
@@ -150,8 +129,8 @@ export default function Guide() {
         </Panel>
 
         <Panel
-          title="6 · things that need no work at all"
-          subtitle="Most of the site runs itself."
+          title="5 · things that need no work at all"
+          subtitle="Most of the site runs itself. Weekly waivers live entirely in Yahoo."
         >
           <div className="space-y-2.5 px-5 py-5 text-[14px] leading-relaxed text-arc-ink-soft">
             <p>
@@ -172,7 +151,7 @@ export default function Guide() {
           </div>
         </Panel>
 
-        <Panel title="7 · if something looks wrong" subtitle="The two-step fix, then the human.">
+        <Panel title="6 · if something looks wrong" subtitle="The two-step fix, then the human.">
           <ol className="space-y-3 px-5 py-5">
             <Step n={1}>
               Refresh the page. Changes take a minute or two to show up on other devices — yours

@@ -206,8 +206,8 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
           {active ? (
             <>
               <p>
-                Commissioner mode is <span className="text-arc-green">on</span>. Trades, FAAB, and
-                cash entries commit straight to{' '}
+                Commissioner mode is <span className="text-arc-green">on</span>. Trades, keepers,
+                and cash entries commit straight to{' '}
                 <code className="text-arc-green">
                   {REPO_OWNER}/{REPO_NAME}
                 </code>{' '}

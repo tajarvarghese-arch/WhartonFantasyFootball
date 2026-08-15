@@ -27,7 +27,11 @@ export default function Rules() {
           hint="Years A → D, since 2018"
         />
         <Stat label="Auction budget" value={money(league.baseDraftBudget)} hint="Less keeper salaries" />
-        <Stat label="FAAB budget" value={money(league.baseFaabBudget)} hint="Per team per season" />
+        <Stat
+          label="Waiver budget"
+          value={money(league.baseFaabBudget)}
+          hint="Per team per season, tracked in Yahoo"
+        />
       </div>
 
       <div className="grid min-w-0 gap-6 lg:grid-cols-2">
@@ -56,14 +60,14 @@ export default function Rules() {
 
         <div className="space-y-6">
           <Panel
-            title="FAAB keeper scale"
-            subtitle="Applied automatically to every waiver claim recorded in Finances."
+            title="Waiver-pickup keeper scale"
+            subtitle="Weekly waivers run in Yahoo; this scale sets what a pickup costs to keep next season."
             delay={100}
           >
             <table className="out">
               <thead>
                 <tr>
-                  <th>% of FAAB budget spent</th>
+                  <th>% of waiver budget spent</th>
                   <th className="n">Keeper cost</th>
                 </tr>
               </thead>

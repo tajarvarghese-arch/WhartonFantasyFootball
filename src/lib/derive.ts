@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { useLeagueData } from './data'
-import { buildLedger, draftBudgets, faabPositions, type DraftBudget } from './rules'
-import type { FaabPosition } from './rules'
+import { buildLedger, draftBudgets, type DraftBudget } from './rules'
 import type { ManagerId, Trade } from './types'
 
 /**
@@ -43,14 +42,6 @@ export function useBudgets(year: number): DraftBudget[] {
     () => draftBudgets(league, keepers[String(year)], ledger, year),
     [league, keepers, ledger, year],
   )
-}
-
-export function useFaab(season: number): FaabPosition[] {
-  const { league, managers, faab } = useLeagueData()
-  return useMemo(() => {
-    const active = managers.filter((manager) => manager.active).map((manager) => manager.id)
-    return faabPositions(league, faab.entries, season, active)
-  }, [league, managers, faab, season])
 }
 
 export interface CashPosition {
