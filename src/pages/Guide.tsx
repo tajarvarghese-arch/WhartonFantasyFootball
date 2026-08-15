@@ -123,7 +123,30 @@ export default function Guide() {
         </Panel>
 
         <Panel
-          title="5 · things that need no work at all"
+          title="5 · updating a keeper list"
+          subtitle="After draft night, or to fix a mistake in any season."
+        >
+          <ol className="space-y-3 px-5 py-5">
+            <Step n={1}>
+              Go to <B>Keepers</B>, pick the season from the dropdown, find the team's card, and
+              press <B>✎ Edit keepers</B>.
+            </Step>
+            <Step n={2}>
+              Use <B>+ Add from roster…</B> to pick a player — the salary and contract year fill
+              in from the league rules by themselves. Press <B>×</B> to drop one, or edit any
+              name, dollar amount, or contract letter directly. <B>Blank row</B> is for the rare
+              player the roster list doesn't know about.
+            </Step>
+            <Step n={3}>
+              Press <B>Save keepers</B>. Draft budgets, the contract board, and the war room all
+              update everywhere, instantly. The counter above the rows warns you if a team is
+              over the keeper limit.
+            </Step>
+          </ol>
+        </Panel>
+
+        <Panel
+          title="6 · things that need no work at all"
           subtitle="Most of the site runs itself."
         >
           <div className="space-y-2.5 px-5 py-5 text-[14px] leading-relaxed text-arc-ink-soft">
@@ -145,7 +168,7 @@ export default function Guide() {
           </div>
         </Panel>
 
-        <Panel title="6 · if something looks wrong" subtitle="The two-step fix, then the human.">
+        <Panel title="7 · if something looks wrong" subtitle="The two-step fix, then the human.">
           <ol className="space-y-3 px-5 py-5">
             <Step n={1}>
               Refresh the page. Changes take a minute or two to show up on other devices — yours

@@ -38,7 +38,12 @@ const FILES = {
 } as const
 
 /** Files the commissioner edits in-app. Writes go to GitHub *and* to this cache. */
-export type WritableFile = 'cash.json' | 'faab.json' | 'trade-queue.json' | 'auth.json'
+export type WritableFile =
+  | 'cash.json'
+  | 'faab.json'
+  | 'trade-queue.json'
+  | 'auth.json'
+  | 'keepers.json'
 
 const OVERLAY_KEY = 'wacl.overlay'
 
@@ -154,7 +159,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         league,
         managers,
         seasons,
-        keepers,
+        keepers: (overlay['keepers.json'] as LeagueData['keepers']) ?? keepers,
         trades,
         tradeLedger,
         waivers,
@@ -180,6 +185,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         'faab.json': faab,
         'trade-queue.json': tradeQueue,
         'auth.json': vault,
+        'keepers.json': keepers,
       }
       for (const [file, value] of Object.entries(overlay) as [WritableFile, unknown][]) {
         if (JSON.stringify(served[file]) !== JSON.stringify(value)) pruned[file] = value
@@ -209,6 +215,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
       if (file === 'faab.json') return { ...current, faab: next as FaabFile }
       if (file === 'auth.json')
         return { ...current, vault: next as import('./types').CommissionerVault | null }
+      if (file === 'keepers.json')
+        return { ...current, keepers: next as LeagueData['keepers'] }
       return { ...current, tradeQueue: next as TradeQueueFile }
     })
   }, [])

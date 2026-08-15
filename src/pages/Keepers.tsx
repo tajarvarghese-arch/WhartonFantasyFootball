@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ContractBoard from '../components/ContractBoard'
+import KeeperEditor from '../components/KeeperEditor'
 import WarRoom from '../components/WarRoom'
 import { Chip, Empty, Panel, PageHeader } from '../components/ui'
-import { managerName, useLeagueData } from '../lib/data'
+import { managerName, useLeague, useLeagueData } from '../lib/data'
 import { useBudgets } from '../lib/derive'
 import { money } from '../lib/format'
 import { contractYearsRemaining, keeperEligibility } from '../lib/rules'
@@ -19,6 +20,7 @@ const CONTRACT_TONE: Record<ContractYear, string> = {
 
 export default function Keepers() {
   const { league, managers, keepers } = useLeagueData()
+  const { commissioner } = useLeague()
   const years = useMemo(
     () =>
       Object.keys(keepers)
@@ -28,6 +30,7 @@ export default function Keepers() {
   )
   const [year, setYear] = useState(years[0] ?? league.currentSeason)
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [editing, setEditing] = useState<string | null>(null)
 
   const blocks = keepers[String(year)] ?? []
   const budgets = useBudgets(year)
@@ -45,7 +48,10 @@ export default function Keepers() {
           <select
             className="field w-auto"
             value={year}
-            onChange={(event) => setYear(Number(event.target.value))}
+            onChange={(event) => {
+              setYear(Number(event.target.value))
+              setEditing(null)
+            }}
             aria-label="Keeper season"
           >
             {years.map((option) => (
@@ -115,45 +121,54 @@ export default function Keepers() {
                   </div>
                 </div>
 
-                <table className="out mt-4">
-                  <thead>
-                    <tr>
-                      <th>Keeper</th>
-                      <th className="n">Salary</th>
-                      <th className="n">Contract</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {block.keepers.length === 0 ? (
+                {editing === block.team ? (
+                  <KeeperEditor
+                    key={`${year}-${block.team}`}
+                    year={year}
+                    block={block}
+                    onDone={() => setEditing(null)}
+                  />
+                ) : (
+                  <table className="out mt-4">
+                    <thead>
                       <tr>
-                        <td colSpan={3} className="text-arc-ink-faint italic">
-                          No keepers selected.
-                        </td>
+                        <th>Keeper</th>
+                        <th className="n">Salary</th>
+                        <th className="n">Contract</th>
                       </tr>
-                    ) : (
-                      block.keepers.map((pick) => (
-                        <tr key={`${pick.player}-${pick.salary}`}>
-                          <td>{pick.player}</td>
-                          <td className="n text-arc-ink-soft">{money(pick.salary)}</td>
-                          <td className="n">
-                            <span
-                              className={
-                                pick.contractYear ? CONTRACT_TONE[pick.contractYear] : undefined
-                              }
-                            >
-                              {pick.contractYear ?? '—'}
-                            </span>
-                            <span className="ml-2 text-[11px] text-arc-ink-faint">
-                              {contractYearsRemaining(pick.contractYear) === 0
-                                ? 'final year'
-                                : `${contractYearsRemaining(pick.contractYear)} left`}
-                            </span>
+                    </thead>
+                    <tbody>
+                      {block.keepers.length === 0 ? (
+                        <tr>
+                          <td colSpan={3} className="text-arc-ink-faint italic">
+                            No keepers selected.
                           </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
+                      ) : (
+                        block.keepers.map((pick) => (
+                          <tr key={`${pick.player}-${pick.salary}`}>
+                            <td>{pick.player}</td>
+                            <td className="n text-arc-ink-soft">{money(pick.salary)}</td>
+                            <td className="n">
+                              <span
+                                className={
+                                  pick.contractYear ? CONTRACT_TONE[pick.contractYear] : undefined
+                                }
+                              >
+                                {pick.contractYear ?? '—'}
+                              </span>
+                              <span className="ml-2 text-[11px] text-arc-ink-faint">
+                                {contractYearsRemaining(pick.contractYear) === 0
+                                  ? 'final year'
+                                  : `${contractYearsRemaining(pick.contractYear)} left`}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                )}
 
                 <dl className="mt-4 grid grid-cols-3 gap-3 border-t border-arc-line pt-4 text-[12px]">
                   <div>
@@ -184,13 +199,21 @@ export default function Keepers() {
                   </div>
                 </dl>
 
-                <button
-                  type="button"
-                  className="btn mt-4 w-full sm:w-auto"
-                  onClick={() => setExpanded(open ? null : block.team)}
-                >
-                  {open ? '− Hide' : '+ Show'} {year - 1} ending roster ({block.endingRoster.length})
-                </button>
+                <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => setExpanded(open ? null : block.team)}
+                  >
+                    {open ? '− Hide' : '+ Show'} {year - 1} ending roster (
+                    {block.endingRoster.length})
+                  </button>
+                  {commissioner && editing !== block.team && (
+                    <button type="button" className="btn" onClick={() => setEditing(block.team)}>
+                      ✎ Edit keepers
+                    </button>
+                  )}
+                </div>
               </div>
 
               {open && (
