@@ -24,6 +24,30 @@
       "source": "app",
       "proposedAt": "2026-08-15T19:00:56.394Z",
       "decidedAt": "2026-08-15T19:35:20.894Z"
+    },
+    {
+      "id": "t-msus2mgh-bkzv9",
+      "batch": "2026 Preseason",
+      "season": 2026,
+      "preseason": true,
+      "seller": "bernstein",
+      "buyer": "buzik",
+      "players": "Bhayshul Tuten",
+      "terms": "$18 in 2026; $10 in 2027",
+      "totalDollars": 28,
+      "obligations": [
+        {
+          "year": 2026,
+          "amount": 18
+        },
+        {
+          "year": 2027,
+          "amount": 10
+        }
+      ],
+      "status": "pending",
+      "source": "app",
+      "proposedAt": "2026-08-15T19:37:32.465Z"
     }
   ]
 }
