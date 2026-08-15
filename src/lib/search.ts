@@ -15,6 +15,7 @@ export const PAGES: { title: string; subtitle: string; to: string }[] = [
   { title: 'Ledger', subtitle: 'Season overview and draft budgets', to: '/' },
   { title: 'Trades', subtitle: 'Approval queue and trade history', to: '/trades' },
   { title: 'Keepers', subtitle: 'Rosters, contracts, and the contract board', to: '/keepers' },
+  { title: 'Draft Board', subtitle: 'Top-ranked players still available at auction', to: '/draft' },
   { title: 'Finances', subtitle: 'Auction dollars and cash', to: '/finances' },
   { title: 'Standings', subtitle: '22 seasons of final tables', to: '/standings' },
   { title: 'Managers', subtitle: 'Career records', to: '/managers' },

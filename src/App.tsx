@@ -5,6 +5,7 @@ import Shell from './components/Shell'
 import { useLeague } from './lib/data'
 import { managerColor } from './lib/identity'
 import Dashboard from './pages/Dashboard'
+import Draft from './pages/Draft'
 import Finances from './pages/Finances'
 import Guide from './pages/Guide'
 import Keepers from './pages/Keepers'
@@ -65,6 +66,7 @@ export default function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/trades" element={<Trades />} />
         <Route path="/keepers" element={<Keepers />} />
+        <Route path="/draft" element={<Draft />} />
         <Route path="/finances" element={<Finances />} />
         <Route path="/standings" element={<Standings />} />
         <Route path="/managers" element={<Managers />} />

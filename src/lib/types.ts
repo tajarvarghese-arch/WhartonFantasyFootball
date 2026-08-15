@@ -206,6 +206,29 @@ export type PlayerPoints = Record<string, Record<string, [number, string]>>
 /** normalised player name -> position, for everyone the league ever rostered. */
 export type PlayerPositions = Record<string, string>
 
+export interface DraftPoolPlayer {
+  rank: number
+  player: string
+  pos: string
+  posRank: string
+  team: string
+  bye: string
+  tier: number
+}
+
+/** Third-party consensus rankings snapshot; regenerate with scripts/draft_pool.py. */
+export interface DraftPool {
+  source: string
+  sourceUrl: string
+  scoring: string
+  season: string
+  experts: number
+  sourceUpdated: string
+  retrieved: string
+  rookiesExcluded: boolean
+  players: DraftPoolPlayer[]
+}
+
 export interface CommissionerVault {
   v: 1
   kdf: 'PBKDF2-SHA256'
@@ -235,4 +258,6 @@ export interface LeagueData {
   playerPositions: PlayerPositions | null
   /** The password-sealed commissioner token; null until a password is set. */
   vault: CommissionerVault | null
+  /** Absent until scripts/draft_pool.py has been run. */
+  draftPool: DraftPool | null
 }
