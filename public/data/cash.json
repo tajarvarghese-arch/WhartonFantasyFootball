@@ -29,6 +29,16 @@
       "amount": -200,
       "description": "Dues",
       "settled": false
+    },
+    {
+      "id": "cash-msutwg4b-r2qkj",
+      "season": 2026,
+      "date": "2026-08-15T20:28:43.547Z",
+      "manager": "buzik",
+      "type": "dues",
+      "amount": -200,
+      "description": "Dues",
+      "settled": false
     }
   ]
 }
