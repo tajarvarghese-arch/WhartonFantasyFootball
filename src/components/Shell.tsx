@@ -129,7 +129,7 @@ export default function Shell({ children }: { children: ReactNode }) {
         >
           {({ isActive }) => (
             <span
-              className="arcade flex min-h-[44px] items-center justify-between gap-2 border-[3px] border-arc-line px-3 py-2 text-[13px]"
+              className="arcade flex min-h-[44px] items-center justify-between gap-2 rounded-lg border border-arc-line px-3.5 py-2 text-[15px]"
               style={{
                 background: isActive ? item.color : 'var(--color-arc-panel)',
                 color: isActive ? 'var(--color-arc-panel)' : 'var(--color-arc-ink)',
@@ -164,7 +164,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             <PixelSign
               words={[
                 { text: 'WACL', palette: 'pink', size: 21 },
-                { text: 'ARCADE', palette: 'gold', size: 8, tracking: 0.24, pixel: 2 },
+                { text: 'LEAGUE HQ', palette: 'gold', size: 8, tracking: 0.14, pixel: 2 },
               ]}
               pixel={2}
             />
@@ -224,7 +224,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             <PixelSign
               words={[
                 { text: 'WACL', palette: 'pink', size: 34 },
-                { text: 'ARCADE', palette: 'gold', size: 14, tracking: 0.2, pixel: 2 },
+                { text: 'LEAGUE HQ', palette: 'gold', size: 14, tracking: 0.12, pixel: 2 },
               ]}
               pixel={3}
             />

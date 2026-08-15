@@ -36,7 +36,7 @@ export default function Dashboard() {
           <PixelSign
             words={[
               { text: 'WACL', palette: 'pink', size: 52 },
-              { text: 'ARCADE', palette: 'gold', size: 24, tracking: 0.18, pixel: 2 },
+              { text: 'LEAGUE HQ', palette: 'gold', size: 24, tracking: 0.12, pixel: 2 },
             ]}
             pixel={4}
           />

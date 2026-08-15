@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 /**
  * The retro-neon wordmark, rendered with a deliberate pixel grain: every layer
  * (blue 3D extrusion, banded sunset fill, white neon tube, glow) is drawn to a
- * low-resolution canvas and upscaled with smoothing off, so the smooth Archivo
+ * low-resolution canvas and upscaled with smoothing off, so the smooth Barlow
  * One glyphs come out chunky — same DNA as the heap sprites.
  */
 
@@ -27,11 +27,13 @@ interface Props {
   className?: string
 }
 
+// 'pink' is the money-green primary, 'gold' the amber favourite line — the
+// palette keys are legacy names shared with every call site.
 const BANDS: Record<'pink' | 'gold', string[]> = {
-  pink: ['#ffeaf4', '#ffc9de', '#ff8fb3', '#ff5f7e', '#f43d6b'],
-  gold: ['#fff6cf', '#ffe98f', '#ffd84d', '#ffa92e', '#ff7a3c'],
+  pink: ['#eaffdf', '#b8f795', '#84e95e', '#53d337', '#33a81f'],
+  gold: ['#fff3d6', '#ffe3a1', '#ffcb62', '#ffb636', '#ff921f'],
 }
-const DEPTHS = ['#2e9de8', '#2790da', '#1f7cc6', '#1a6ab0', '#155a98']
+const DEPTHS = ['#3d4855', '#353f4c', '#2c3542', '#242c38', '#1c232d']
 
 export default function PixelSign({ words, pixel = 4, tilt = -5, className = '' }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -53,7 +55,7 @@ export default function PixelSign({ words, pixel = 4, tilt = -5, className = '' 
       let width = 0
       let height = pad
       const lines = words.map((word) => {
-        measure.font = `${word.size}px "Archivo Black"`
+        measure.font = `italic 800 ${word.size}px "Barlow Condensed"`
         const spacing = (word.tracking ?? 0.04) * word.size
         const w = measure.measureText(word.text).width + spacing * (word.text.length - 1)
         width = Math.max(width, w)
@@ -99,7 +101,7 @@ export default function PixelSign({ words, pixel = 4, tilt = -5, className = '' 
         const lctx = low.getContext('2d')!
         lctx.textAlign = 'center'
         lctx.textBaseline = 'alphabetic'
-        lctx.font = `${line.size / p}px "Archivo Black"`
+        lctx.font = `italic 800 ${line.size / p}px "Barlow Condensed"`
 
         const spacing = ((line.tracking ?? 0.04) * line.size) / p
         const widths = [...line.text].map((ch) => lctx.measureText(ch).width)
@@ -150,8 +152,8 @@ export default function PixelSign({ words, pixel = 4, tilt = -5, className = '' 
       // glow halo from the pixel art itself, then the crisp pass on top
       const heroSize = Math.max(...words.map((w) => w.size))
       for (const pass of [
-        { color: 'rgba(255,93,162,0.55)', blur: heroSize * 0.28 },
-        { color: 'rgba(63,224,245,0.4)', blur: heroSize * 0.5 },
+        { color: 'rgba(83,211,55,0.5)', blur: heroSize * 0.28 },
+        { color: 'rgba(255,182,54,0.32)', blur: heroSize * 0.5 },
         { color: 'transparent', blur: 0 },
       ]) {
         ctx.shadowColor = pass.color
@@ -161,8 +163,8 @@ export default function PixelSign({ words, pixel = 4, tilt = -5, className = '' 
       ctx.shadowBlur = 0
     }
 
-    // Archivo Black must be resident or the canvas draws a fallback face.
-    const sized = words.map((w) => `${w.size}px "Archivo Black"`)
+    // Barlow Condensed must be resident or the canvas draws a fallback face.
+    const sized = words.map((w) => `italic 800 ${w.size}px "Barlow Condensed"`)
     Promise.all(sized.map((f) => document.fonts.load(f)))
       .then(() => {
         if (!cancelled) render()

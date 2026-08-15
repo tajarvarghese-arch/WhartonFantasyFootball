@@ -1,31 +1,31 @@
 @import 'tailwindcss';
 
 /*
-  WACL ARCADE — dark cabinet.
+  WACL LEAGUE HQ — the book.
 
-  Deep violet-black cabinet interior, saturated LED accents, chunky outlines
-  and hard offset shadows. The arcade voice now lives in the colour, motion,
-  and hardware chrome rather than pixel type: Space Grotesk carries headings
-  and labels, Inter carries body copy with tabular figures for the numbers,
-  and IBM Plex Mono is reserved for chart axes and keyboard chrome.
+  Sportsbook slate: graphite-charcoal surfaces, one signature green that
+  means money, amber for the favourite, condensed italic display type that
+  makes every number read like a live line. Barlow Condensed carries the
+  board voice; Inter carries body copy with tabular figures; IBM Plex Mono
+  is reserved for chart axes and keyboard chrome.
   Every manager owns a colour and keeps it everywhere.
 */
 
 @theme {
-  --color-arc-bg: #140f3c;
-  --color-arc-bg-deep: #0b0824;
-  --color-arc-panel: #1c1550;
-  --color-arc-raised: #2a1f6e;
-  --color-arc-ink: #f1edfd;
-  --color-arc-ink-soft: #b3a8d8;
-  --color-arc-ink-faint: #7d71a8;
-  --color-arc-line: #473994;
+  --color-arc-bg: #0b0e12;
+  --color-arc-bg-deep: #07090c;
+  --color-arc-panel: #12161c;
+  --color-arc-raised: #1a2028;
+  --color-arc-ink: #eef1f6;
+  --color-arc-ink-soft: #98a1b3;
+  --color-arc-ink-faint: #67707f;
+  --color-arc-line: #27303c;
 
-  --color-arc-red: #ff5f52;
-  --color-arc-orange: #ffa92e;
-  --color-arc-yellow: #ffd84d;
+  --color-arc-red: #ff5252;
+  --color-arc-orange: #ff9f1a;
+  --color-arc-yellow: #ffb636;
   --color-arc-lime: #8be356;
-  --color-arc-green: #2ad68a;
+  --color-arc-green: #53d337;
   --color-arc-cyan: #3fe0f5;
   --color-arc-blue: #5a83ff;
   --color-arc-purple: #b07cff;
@@ -34,12 +34,12 @@
   --color-arc-brown: #c98d5f;
   --color-arc-navy: #6b7dff;
 
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-display: 'Barlow Condensed', 'Inter', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
-  --shadow-hard: 4px 4px 0 #04030a;
-  --shadow-hard-sm: 2px 2px 0 #04030a;
+  --shadow-hard: 0 12px 28px rgba(0, 0, 0, 0.5);
+  --shadow-hard-sm: 0 4px 12px rgba(0, 0, 0, 0.45);
 }
 
 @layer base {
@@ -53,8 +53,8 @@
 
   body {
     background-color: var(--color-arc-bg);
-    /* Fine dot matrix, the texture of a lit cabinet panel. */
-    background-image: radial-gradient(rgba(186, 140, 255, 0.09) 1px, transparent 1px);
+    /* Fine dot matrix, the texture of a lit board. */
+    background-image: radial-gradient(rgba(180, 200, 220, 0.045) 1px, transparent 1px);
     background-size: 6px 6px;
     color: var(--color-arc-ink);
     font-family: var(--font-body);
@@ -65,9 +65,9 @@
     overflow-x: hidden;
   }
 
-  /* Ambient neon spill from off-screen signage: magenta over the top-left,
-     cyan off the right edge, violet rising from the floor. A fixed layer so
-     the glow holds still while the page scrolls past it. */
+  /* Ambient light off the board: signature green over the top-right, a
+     faint amber wash low-left. A fixed layer so the glow holds still while
+     the page scrolls past it. */
   body::before {
     content: '';
     position: fixed;
@@ -75,14 +75,13 @@
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(110vmax 70vmax at 12% -12%, rgba(255, 95, 178, 0.17), transparent 58%),
-      radial-gradient(90vmax 65vmax at 108% 22%, rgba(63, 224, 245, 0.13), transparent 55%),
-      radial-gradient(100vmax 60vmax at 50% 118%, rgba(140, 92, 255, 0.22), transparent 62%);
+      radial-gradient(95vmax 60vmax at 88% -14%, rgba(83, 211, 55, 0.12), transparent 55%),
+      radial-gradient(85vmax 55vmax at -8% 110%, rgba(255, 182, 54, 0.06), transparent 55%);
   }
 
   ::selection {
-    background: var(--color-arc-cyan);
-    color: var(--color-arc-bg);
+    background: var(--color-arc-green);
+    color: #06210a;
   }
 
   ::-webkit-scrollbar {
@@ -93,7 +92,7 @@
     background: var(--color-arc-bg-deep);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-arc-purple);
+    background: #2a3340;
     border: 2px solid var(--color-arc-bg-deep);
   }
 
@@ -106,7 +105,7 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-arc-cyan);
+    outline: 3px solid var(--color-arc-green);
     outline-offset: 2px;
   }
 }
@@ -116,38 +115,41 @@
 
   .arcade {
     font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     line-height: 1.3;
   }
 
-  /* Lit like a segment display: a coloured glow behind a hard offset. */
+  /* The live line: condensed italic lean, money-green, soft board glow. */
   .hero-num {
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 800;
+    font-style: italic;
     font-variant-numeric: tabular-nums;
-    font-size: clamp(2.6rem, 11vw, 5rem);
+    font-size: clamp(2.8rem, 11vw, 5.2rem);
     line-height: 1;
     letter-spacing: 0.01em;
-    color: var(--color-arc-cyan);
-    text-shadow:
-      3px 3px 0 #04030a,
-      0 0 26px rgba(63, 224, 245, 0.5);
+    padding-right: 0.08em;
+    color: var(--color-arc-green);
+    text-shadow: 0 0 30px rgba(83, 211, 55, 0.4);
   }
 
   .display {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(1.4rem, 5vw, 2.2rem);
-    line-height: 1.15;
-    letter-spacing: 0.005em;
+    font-style: italic;
+    text-transform: uppercase;
+    font-size: clamp(1.7rem, 5.5vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: 0.025em;
+    padding-right: 0.08em;
     color: var(--color-arc-ink);
   }
 
   .label {
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 11px;
+    font-weight: 700;
+    font-size: 12px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-arc-ink-faint);
@@ -171,7 +173,9 @@
   .retro-word {
     position: relative;
     display: inline-block;
-    font-family: 'Archivo Black', var(--font-display);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-style: italic;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     line-height: 1;
@@ -179,10 +183,10 @@
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 0.08em #ff5da2)
-      drop-shadow(0 0 0.28em rgba(176, 124, 255, 0.75));
+    filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 0.08em rgba(83, 211, 55, 0.8))
+      drop-shadow(0 0 0.28em rgba(255, 182, 54, 0.6));
   }
-  /* the blue block depth, offset down-right like the reference */
+  /* the slate block depth, offset down-right like the reference */
   .retro-word::before {
     content: attr(data-text);
     position: absolute;
@@ -190,83 +194,83 @@
     z-index: -1;
     -webkit-text-stroke: 0;
     background: none;
-    color: #2e9de8;
+    color: #3d4855;
     text-shadow:
-      0.02em 0.03em 0 #2e9de8,
-      0.045em 0.065em 0 #2790da,
-      0.07em 0.1em 0 #1f7cc6,
-      0.095em 0.135em 0 #1a6ab0,
-      0.12em 0.17em 0 #155a98,
-      0.2em 0.3em 0.35em rgba(4, 3, 10, 0.6);
+      0.02em 0.03em 0 #3d4855,
+      0.045em 0.065em 0 #353f4c,
+      0.07em 0.1em 0 #2c3542,
+      0.095em 0.135em 0 #242c38,
+      0.12em 0.17em 0 #1c232d,
+      0.2em 0.3em 0.35em rgba(4, 6, 9, 0.6);
     transform: translate(0.02em, 0.03em);
   }
   .retro-pink {
     background-image: linear-gradient(
       180deg,
-      #ffeaf4 0%,
-      #ffc9de 26%,
-      #ffc9de 26%,
-      #ff8fb3 27%,
-      #ff8fb3 52%,
-      #ff5f7e 53%,
-      #ff5f7e 78%,
-      #f43d6b 79%,
-      #f43d6b 100%
+      #eaffdf 0%,
+      #b8f795 26%,
+      #b8f795 26%,
+      #84e95e 27%,
+      #84e95e 52%,
+      #53d337 53%,
+      #53d337 78%,
+      #33a81f 79%,
+      #33a81f 100%
     );
   }
   .retro-gold {
     background-image: linear-gradient(
       180deg,
-      #fff6cf 0%,
-      #ffe98f 26%,
-      #ffe98f 26%,
-      #ffd84d 27%,
-      #ffd84d 52%,
-      #ffa92e 53%,
-      #ffa92e 78%,
-      #ff7a3c 79%,
-      #ff7a3c 100%
+      #fff3d6 0%,
+      #ffe3a1 26%,
+      #ffe3a1 26%,
+      #ffcb62 27%,
+      #ffcb62 52%,
+      #ffb636 53%,
+      #ffb636 78%,
+      #ff921f 79%,
+      #ff921f 100%
     );
   }
 
   /* 3D neon sign: stacked em-based extrusion so it scales with font size,
-     under a two-tone cyan/pink glow that slowly breathes. */
+     under a two-tone green/amber glow that slowly breathes. */
   .neon-3d {
-    color: var(--color-arc-cyan);
+    color: var(--color-arc-green);
     animation: neon-pulse 2.8s ease-in-out infinite;
   }
   @keyframes neon-pulse {
     0%,
     100% {
       text-shadow:
-        0 0.035em 0 #0b7f91,
-        0 0.07em 0 #095e6b,
-        0 0.105em 0 #073f47,
-        0 0.14em 0 #04030a,
+        0 0.035em 0 #2c8a1c,
+        0 0.07em 0 #216915,
+        0 0.105em 0 #17490e,
+        0 0.14em 0 #04070a,
         0 0.2em 0.35em rgba(0, 0, 0, 0.65),
-        0 0 0.28em rgba(63, 224, 245, 0.9),
-        0 0 0.7em rgba(63, 224, 245, 0.55),
-        0 0.05em 1.4em rgba(255, 111, 179, 0.4);
+        0 0 0.28em rgba(83, 211, 55, 0.9),
+        0 0 0.7em rgba(83, 211, 55, 0.55),
+        0 0.05em 1.4em rgba(255, 182, 54, 0.4);
     }
     50% {
       text-shadow:
-        0 0.035em 0 #0b7f91,
-        0 0.07em 0 #095e6b,
-        0 0.105em 0 #073f47,
-        0 0.14em 0 #04030a,
+        0 0.035em 0 #2c8a1c,
+        0 0.07em 0 #216915,
+        0 0.105em 0 #17490e,
+        0 0.14em 0 #04070a,
         0 0.2em 0.35em rgba(0, 0, 0, 0.65),
-        0 0 0.2em rgba(63, 224, 245, 0.65),
-        0 0 0.5em rgba(63, 224, 245, 0.35),
-        0 0.05em 1em rgba(255, 111, 179, 0.22);
+        0 0 0.2em rgba(83, 211, 55, 0.65),
+        0 0 0.5em rgba(83, 211, 55, 0.35),
+        0 0.05em 1em rgba(255, 182, 54, 0.22);
     }
   }
 
   /* Softer neon for page titles: shallow extrusion, quiet glow, no pulse. */
   .neon-soft {
     text-shadow:
-      0 0.06em 0 #04030a,
-      0 0 0.45em rgba(63, 224, 245, 0.35),
-      0 0.04em 0.9em rgba(176, 124, 255, 0.25);
+      0 0.06em 0 #04070a,
+      0 0 0.45em rgba(83, 211, 55, 0.3),
+      0 0.04em 0.9em rgba(255, 182, 54, 0.2);
   }
 
   .sparkle {
@@ -290,7 +294,7 @@
   .cursor::after {
     content: '_';
     margin-left: 2px;
-    color: var(--color-arc-cyan);
+    color: var(--color-arc-green);
     animation: blink 0.9s steps(1) infinite;
   }
   @keyframes blink {
@@ -351,8 +355,10 @@
   .win {
     min-width: 0;
     position: relative;
-    background: var(--color-arc-panel);
-    border: 3px solid var(--color-arc-line);
+    background: linear-gradient(180deg, #151a21, var(--color-arc-panel));
+    border: 1px solid var(--color-arc-line);
+    border-radius: 10px;
+    overflow: hidden;
     box-shadow: var(--shadow-hard);
   }
 
@@ -363,7 +369,7 @@
     gap: 12px;
     padding: 10px 14px;
     background: var(--color-arc-raised);
-    border-bottom: 3px solid var(--color-arc-line);
+    border-bottom: 1px solid var(--color-arc-line);
   }
 
   /* ---- tables ---------------------------------------------------------- */
@@ -379,14 +385,14 @@
   .out thead th {
     padding: 9px 12px;
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 11px;
+    font-weight: 700;
+    font-size: 12.5px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-align: left;
     color: var(--color-arc-ink-soft);
     background: var(--color-arc-bg-deep);
-    border-bottom: 3px solid var(--color-arc-line);
+    border-bottom: 2px solid var(--color-arc-line);
     white-space: nowrap;
   }
   .out tbody td {
@@ -394,7 +400,7 @@
     font-size: 13.5px;
     font-weight: 500;
     color: var(--color-arc-ink);
-    border-bottom: 2px solid rgba(58, 47, 92, 0.5);
+    border-bottom: 1px solid rgba(39, 48, 60, 0.75);
     white-space: nowrap;
   }
   .out tbody tr:last-child td {
@@ -404,7 +410,7 @@
     background: rgba(255, 255, 255, 0.028);
   }
   .out tbody tr:hover td {
-    background: rgba(90, 131, 255, 0.16);
+    background: rgba(83, 211, 55, 0.08);
   }
   .out .n {
     text-align: right;
@@ -425,15 +431,16 @@
     justify-content: center;
     gap: 7px;
     min-height: 42px;
-    padding: 8px 16px;
+    padding: 8px 18px;
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.08em;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
     color: var(--color-arc-ink);
     background: var(--color-arc-raised);
-    border: 3px solid var(--color-arc-line);
+    border: 1px solid #313b49;
+    border-radius: 8px;
     box-shadow: var(--shadow-hard-sm);
     cursor: pointer;
     transition:
@@ -444,8 +451,8 @@
   }
   .btn:hover:not(:disabled) {
     background: var(--color-arc-panel);
-    border-color: var(--color-arc-cyan);
-    color: var(--color-arc-cyan);
+    border-color: var(--color-arc-green);
+    color: var(--color-arc-green);
   }
   .btn:active:not(:disabled) {
     transform: translate(2px, 2px);
@@ -458,12 +465,12 @@
   .btn-primary {
     background: var(--color-arc-green);
     border-color: var(--color-arc-green);
-    color: #04120b;
+    color: #06210a;
   }
   .btn-primary:hover:not(:disabled) {
-    background: #4ff0a4;
-    border-color: #4ff0a4;
-    color: #04120b;
+    background: #72e854;
+    border-color: #72e854;
+    color: #06210a;
   }
   .btn-danger {
     background: var(--color-arc-red);
@@ -479,16 +486,17 @@
   .field {
     width: 100%;
     min-height: 42px;
-    padding: 9px 11px;
+    padding: 9px 12px;
     background: var(--color-arc-bg-deep);
-    border: 3px solid var(--color-arc-line);
+    border: 1px solid #313b49;
+    border-radius: 8px;
     color: var(--color-arc-ink);
     font-size: 14px;
     outline: none;
     transition: border-color 0.12s;
   }
   .field:focus {
-    border-color: var(--color-arc-cyan);
+    border-color: var(--color-arc-green);
     outline: none;
   }
   .field::placeholder {
@@ -498,15 +506,16 @@
   .tag {
     display: inline-flex;
     align-items: center;
-    padding: 3px 8px;
+    padding: 3px 9px;
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 10px;
+    font-weight: 700;
+    font-size: 11.5px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-arc-bg);
     background: var(--color-arc-ink-soft);
-    border: 2px solid rgba(4, 3, 10, 0.6);
+    border: none;
+    border-radius: 5px;
     white-space: nowrap;
   }
 
@@ -519,7 +528,8 @@
     font-size: 10px;
     color: var(--color-arc-ink-soft);
     background: var(--color-arc-bg-deep);
-    border: 2px solid var(--color-arc-line);
+    border: 1px solid var(--color-arc-line);
+    border-radius: 5px;
   }
 
   .badge {
@@ -530,10 +540,11 @@
     height: 26px;
     flex-shrink: 0;
     font-family: var(--font-display);
-    font-size: 11px;
+    font-size: 12.5px;
     font-variant-numeric: tabular-nums;
-    color: #06040d;
-    border: 2px solid rgba(4, 3, 10, 0.65);
+    color: #06090d;
+    border: none;
+    border-radius: 6px;
     font-weight: 700;
   }
 }

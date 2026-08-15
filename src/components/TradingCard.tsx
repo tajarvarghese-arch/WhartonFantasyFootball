@@ -31,7 +31,7 @@ export default function TradingCard({ id }: { id: ManagerId }) {
 
       // Make sure the pixel faces are actually loaded before drawing with them.
       await Promise.all([
-        document.fonts.load('700 26px "Space Grotesk"'),
+        document.fonts.load('italic 800 26px "Barlow Condensed"'),
         document.fonts.load('600 20px "IBM Plex Mono"'),
       ]).catch(() => undefined)
 
@@ -56,9 +56,9 @@ export default function TradingCard({ id }: { id: ManagerId }) {
       ctx.fillStyle = color
       ctx.fillRect(20, 20, W - 40, 96)
       ctx.fillStyle = '#06040d'
-      ctx.font = '700 34px "Space Grotesk", sans-serif'
+      ctx.font = 'italic 700 36px "Barlow Condensed", sans-serif'
       ctx.fillText(manager.displayName.toUpperCase(), 44, 80)
-      ctx.font = '600 16px "Space Grotesk", sans-serif'
+      ctx.font = '700 17px "Barlow Condensed", sans-serif'
       ctx.fillText('WACL · EST. 2004', 44, 104)
 
       // badge
@@ -68,7 +68,7 @@ export default function TradingCard({ id }: { id: ManagerId }) {
       ctx.lineWidth = 6
       ctx.strokeRect(W / 2 - 90, 160, 180, 180)
       ctx.fillStyle = '#06040d'
-      ctx.font = '700 64px "Space Grotesk", sans-serif'
+      ctx.font = 'italic 800 68px "Barlow Condensed", sans-serif'
       ctx.textAlign = 'center'
       ctx.fillText(managerInitials(manager, id), W / 2, 262)
       ctx.textAlign = 'left'
@@ -92,7 +92,7 @@ export default function TradingCard({ id }: { id: ManagerId }) {
       let y = 452
       for (const [label, value] of stats) {
         ctx.fillStyle = '#6b6089'
-        ctx.font = '600 15px "Space Grotesk", sans-serif'
+        ctx.font = '700 16px "Barlow Condensed", sans-serif'
         ctx.fillText(label, 60, y)
         ctx.fillStyle = label === 'TITLES' && line.titles ? '#ffd84d' : '#efeafb'
         ctx.font = '600 24px "IBM Plex Mono", monospace'
@@ -110,7 +110,7 @@ export default function TradingCard({ id }: { id: ManagerId }) {
 
       // win% sparkline
       ctx.fillStyle = '#6b6089'
-      ctx.font = '600 14px "Space Grotesk", sans-serif'
+      ctx.font = '700 15px "Barlow Condensed", sans-serif'
       ctx.fillText('FORM', 60, y + 8)
       const chartX = 60
       const chartW = W - 120
@@ -142,7 +142,7 @@ export default function TradingCard({ id }: { id: ManagerId }) {
 
       // footer
       ctx.fillStyle = '#6b6089'
-      ctx.font = '600 13px "Space Grotesk", sans-serif'
+      ctx.font = '700 14px "Barlow Condensed", sans-serif'
       ctx.textAlign = 'center'
       ctx.fillText('WACL ARCADE · COMMISSIONER SERIES', W / 2, H - 44)
       ctx.textAlign = 'left'
