@@ -11,6 +11,7 @@ import CommissionerPanel from './CommissionerPanel'
 import { ReplayWipe } from './effects'
 import { animationsDisabled, motionForcedOn, setMotionForcedOn, systemPrefersReduced } from '../lib/motion'
 import { play, setSfxOn, sfxOn } from '../lib/sfx'
+import { setMusicOn } from '../lib/music'
 
 // Each destination owns a colour, so the nav reads as a row of cabinet buttons.
 const NAV = [
@@ -47,6 +48,7 @@ export default function Shell({ children }: { children: ReactNode }) {
   // animations the commissioner asked for are one tap away.
   const [fxOn, setFxOn] = useState(motionForcedOn)
   const [sfx, setSfx] = useState(sfxOn)
+  const [music, setMusic] = useState(false)
   const [godMode, setGodMode] = useState(false)
   const reducedByOS = systemPrefersReduced()
   const location = useLocation()
@@ -284,6 +286,22 @@ export default function Shell({ children }: { children: ReactNode }) {
           )}
         </span>
         <span className="flex shrink-0 items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => {
+              const next = !music
+              setMusicOn(next)
+              setMusic(next)
+            }}
+            className="border-2 border-arc-line px-1.5 py-0.5 transition-colors"
+            style={{
+              background: music ? 'var(--color-arc-pink)' : 'transparent',
+              color: music ? '#04120b' : 'var(--color-arc-ink-faint)',
+            }}
+            title="The WACL Theme — original league music, 90-second loop"
+          >
+            ♪ {music ? 'ON' : 'OFF'}
+          </button>
           <button
             type="button"
             onClick={() => {
