@@ -7,8 +7,8 @@
  * never committed, and never sent anywhere except api.github.com.
  */
 
-export const REPO_OWNER = 'tajarvarghese-arch'
-export const REPO_NAME = 'WhartonFantasyFootball'
+export const REPO_OWNER = 'waclhq'
+export const REPO_NAME = 'waclhq.github.io'
 export const REPO_BRANCH = 'main'
 /** Data files live here in the repo and are served from /data/ once deployed. */
 export const DATA_DIR = 'public/data'

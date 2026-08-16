@@ -47,7 +47,7 @@ npm run dev
 In the repository: **Settings → Pages → Build and deployment → Source: GitHub Actions.**
 
 Push to `main` and the deploy workflow publishes to
-`https://tajarvarghese-arch.github.io/WhartonFantasyFootball/`.
+`https://waclhq.github.io/`.
 
 ### 4. Unlock commissioner mode
 
@@ -93,7 +93,7 @@ keeper cost already computed from the sliding scale.
 YAHOO_CLIENT_ID=xxx YAHOO_CLIENT_SECRET=yyy node scripts/yahoo-auth.mjs
 ```
 
-3. Add four [repository secrets](https://github.com/tajarvarghese-arch/WhartonFantasyFootball/settings/secrets/actions):
+3. Add four [repository secrets](https://github.com/waclhq/waclhq.github.io/settings/secrets/actions):
    `YAHOO_CLIENT_ID`, `YAHOO_CLIENT_SECRET`, `YAHOO_REFRESH_TOKEN`, `YAHOO_LEAGUE_KEY`.
 
 4. Run **Actions → Yahoo standings sync → Run workflow** once by hand.

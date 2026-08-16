@@ -3,9 +3,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-// Served from https://<user>.github.io/WhartonFantasyFootball/
+// Served from https://waclhq.github.io/ (org root site — base is /)
 export default defineConfig({
-  base: '/WhartonFantasyFootball/',
+  base: '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },

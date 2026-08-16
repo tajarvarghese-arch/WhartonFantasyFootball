@@ -115,4 +115,4 @@ try {
 }
 
 console.log('\nAdd both values as repository secrets:')
-console.log('  https://github.com/tajarvarghese-arch/WhartonFantasyFootball/settings/secrets/actions\n')
+console.log('  https://github.com/waclhq/waclhq.github.io/settings/secrets/actions\n')

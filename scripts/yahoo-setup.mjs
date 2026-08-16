@@ -12,7 +12,7 @@
 import { createInterface } from 'node:readline/promises'
 import { stdin, stdout } from 'node:process'
 
-const DEFAULT_REDIRECT = 'https://tajarvarghese-arch.github.io/WhartonFantasyFootball/'
+const DEFAULT_REDIRECT = 'https://waclhq.github.io/'
 
 /*
  * Yahoo rejects an explicit scope unless it exactly matches what the app was
@@ -175,7 +175,7 @@ console.log('')
 rule('═')
 console.log('PASTE THESE INTO GITHUB REPOSITORY SECRETS')
 rule('═')
-console.log('https://github.com/tajarvarghese-arch/WhartonFantasyFootball/settings/secrets/actions')
+console.log('https://github.com/waclhq/waclhq.github.io/settings/secrets/actions')
 console.log('')
 console.log('Click "New repository secret" once per row. Name on the left,')
 console.log('value on the right. Names must match exactly.\n')
