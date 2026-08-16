@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Boot, { shouldBoot } from './components/Boot'
 import Shell from './components/Shell'
 import { useLeague } from './lib/data'
+import { musicOn, start as startMusic } from './lib/music'
 import { managerColor } from './lib/identity'
 import Dashboard from './pages/Dashboard'
 import Draft from './pages/Draft'
@@ -22,6 +23,26 @@ import Trades from './pages/Trades'
 export default function App() {
   const { data, loading, error } = useLeague()
   const [booting, setBooting] = useState(shouldBoot)
+
+  // Arm the music autostart at the root, not in the Shell: the Shell doesn't
+  // mount until the boot screen ends, and the tap that skips the boot is most
+  // visitors' first gesture — it must count, or "on" sits silent until the
+  // next interaction. Both listeners disarm together; the preference is
+  // re-checked at fire time so a toggle-off in between is respected.
+  useEffect(() => {
+    if (!musicOn()) return
+    const kick = () => {
+      disarm()
+      if (musicOn()) void startMusic()
+    }
+    const disarm = () => {
+      window.removeEventListener('pointerdown', kick)
+      window.removeEventListener('keydown', kick)
+    }
+    window.addEventListener('pointerdown', kick)
+    window.addEventListener('keydown', kick)
+    return disarm
+  }, [])
 
   if (booting)
     return (

@@ -11,7 +11,14 @@ import CommissionerPanel from './CommissionerPanel'
 import { ReplayWipe } from './effects'
 import { animationsDisabled, motionForcedOn, setMotionForcedOn, systemPrefersReduced } from '../lib/motion'
 import { play, setSfxOn, sfxOn } from '../lib/sfx'
-import { musicOn, setMusicOn, start as startMusic } from '../lib/music'
+import { musicOn, setMusicOn } from '../lib/music'
+
+// iPhones and iPads mute web audio while the ring/silent switch is silent —
+// worth a nudge right next to the music toggle, but only where it applies.
+const IS_IOS =
+  typeof navigator !== 'undefined' &&
+  (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1))
 
 // Each destination owns a colour, so the nav reads as a row of cabinet buttons.
 const NAV = [
@@ -50,26 +57,6 @@ export default function Shell({ children }: { children: ReactNode }) {
   const [sfx, setSfx] = useState(sfxOn)
   const [music, setMusic] = useState(musicOn)
 
-  // Music defaults on, but no browser lets a page make sound before the
-  // visitor's first interaction — so arm listeners and let the first
-  // tap/click/keypress anywhere (the boot screen included) start it. Both
-  // listeners disarm together, and the preference is re-checked at fire
-  // time so a toggle-off between arming and firing is respected.
-  useEffect(() => {
-    if (!musicOn()) return
-    const kick = () => {
-      disarm()
-      if (musicOn()) void startMusic()
-    }
-    const disarm = () => {
-      window.removeEventListener('pointerdown', kick)
-      window.removeEventListener('keydown', kick)
-    }
-    window.addEventListener('pointerdown', kick)
-    window.addEventListener('keydown', kick)
-    return disarm
-  }, [])
-
   const toggleMusic = () => {
     const next = !music
     setMusicOn(next)
@@ -77,20 +64,27 @@ export default function Shell({ children }: { children: ReactNode }) {
   }
 
   const musicButton = (compact: boolean) => (
-    <button
-      type="button"
-      onClick={toggleMusic}
-      className={compact ? 'btn min-h-[36px] px-2.5 py-1' : 'btn shrink-0 px-3'}
-      style={
-        music
-          ? { background: 'var(--color-arc-pink)', borderColor: 'var(--color-arc-pink)', color: '#1a0512' }
-          : undefined
-      }
-      title="The WACL Theme — original league music, 90-second loop"
-      aria-pressed={music}
-    >
-      ♪ {music ? 'ON' : 'OFF'}
-    </button>
+    <span className={compact ? 'flex items-center gap-1.5' : 'flex flex-col items-stretch gap-1'}>
+      <button
+        type="button"
+        onClick={toggleMusic}
+        className={compact ? 'btn min-h-[36px] px-2.5 py-1' : 'btn shrink-0 px-3'}
+        style={
+          music
+            ? { background: 'var(--color-arc-pink)', borderColor: 'var(--color-arc-pink)', color: '#1a0512' }
+            : undefined
+        }
+        title="The WACL Theme — original league music, 90-second loop"
+        aria-pressed={music}
+      >
+        ♪ {music ? 'ON' : 'OFF'}
+      </button>
+      {music && IS_IOS && (
+        <span className="max-w-[76px] text-[9px] leading-tight text-arc-yellow">
+          Turn off silent mode
+        </span>
+      )}
+    </span>
   )
   const [godMode, setGodMode] = useState(false)
   const reducedByOS = systemPrefersReduced()
