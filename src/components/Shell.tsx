@@ -51,17 +51,23 @@ export default function Shell({ children }: { children: ReactNode }) {
   const [music, setMusic] = useState(musicOn)
 
   // Music defaults on, but no browser lets a page make sound before the
-  // visitor's first interaction — so arm a one-time listener and let the
-  // first tap/click/keypress anywhere (the boot screen included) start it.
+  // visitor's first interaction — so arm listeners and let the first
+  // tap/click/keypress anywhere (the boot screen included) start it. Both
+  // listeners disarm together, and the preference is re-checked at fire
+  // time so a toggle-off between arming and firing is respected.
   useEffect(() => {
     if (!musicOn()) return
-    const kick = () => void startMusic()
-    window.addEventListener('pointerdown', kick, { once: true })
-    window.addEventListener('keydown', kick, { once: true })
-    return () => {
+    const kick = () => {
+      disarm()
+      if (musicOn()) void startMusic()
+    }
+    const disarm = () => {
       window.removeEventListener('pointerdown', kick)
       window.removeEventListener('keydown', kick)
     }
+    window.addEventListener('pointerdown', kick)
+    window.addEventListener('keydown', kick)
+    return disarm
   }, [])
 
   const toggleMusic = () => {

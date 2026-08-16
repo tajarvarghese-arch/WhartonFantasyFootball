@@ -138,6 +138,8 @@ let master: GainNode | null = null
 let noiseBuffer: AudioBuffer | null = null
 let piece: Piece | null = null
 let timer: number | null = null
+/** Bumped by stop() so an in-flight start() aborts instead of playing on. */
+let generation = 0
 
 function noise(context: AudioContext): AudioBuffer {
   if (noiseBuffer) return noiseBuffer
@@ -280,6 +282,7 @@ async function loadPiece(): Promise<Piece> {
 
 export async function start(): Promise<void> {
   if (timer !== null) return
+  const myGeneration = ++generation
   // Autoplay policy: the context must be created and resumed synchronously
   // inside the user's gesture — an await first breaks the activation chain
   // and the context comes up suspended (i.e. silent) forever.
@@ -288,7 +291,8 @@ export async function start(): Promise<void> {
 
   const theme = await loadPiece().catch(() => null)
   if (!theme || theme.notes.length === 0) return
-  if (!ctx || timer !== null) return // stopped or double-started while loading
+  // stop() ran, or another start() won, while the MIDI was loading
+  if (myGeneration !== generation || !ctx || timer !== null) return
 
   master = ctx.createGain()
   master.gain.value = 0.9
@@ -332,16 +336,22 @@ export async function start(): Promise<void> {
 }
 
 export function stop(): void {
+  generation += 1 // aborts any start() still awaiting its fetch
   if (timer !== null) {
     clearInterval(timer)
     timer = null
   }
-  if (ctx && master) {
-    master.gain.setTargetAtTime(0, ctx.currentTime, 0.06)
+  if (ctx) {
     const dying = ctx
-    window.setTimeout(() => void dying.close(), 400)
-    ctx = null
-    master = null
-    noiseBuffer = null
+    if (master) {
+      // fade, then close; a context with no master yet just closes
+      master.gain.setTargetAtTime(0, dying.currentTime, 0.06)
+      window.setTimeout(() => void dying.close().catch(() => undefined), 400)
+    } else {
+      void dying.close().catch(() => undefined)
+    }
   }
+  ctx = null
+  master = null
+  noiseBuffer = null
 }
