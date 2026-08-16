@@ -11,7 +11,7 @@ import CommissionerPanel from './CommissionerPanel'
 import { ReplayWipe } from './effects'
 import { animationsDisabled, motionForcedOn, setMotionForcedOn, systemPrefersReduced } from '../lib/motion'
 import { play, setSfxOn, sfxOn } from '../lib/sfx'
-import { setMusicOn } from '../lib/music'
+import { musicOn, setMusicOn, start as startMusic } from '../lib/music'
 
 // Each destination owns a colour, so the nav reads as a row of cabinet buttons.
 const NAV = [
@@ -48,7 +48,44 @@ export default function Shell({ children }: { children: ReactNode }) {
   // animations the commissioner asked for are one tap away.
   const [fxOn, setFxOn] = useState(motionForcedOn)
   const [sfx, setSfx] = useState(sfxOn)
-  const [music, setMusic] = useState(false)
+  const [music, setMusic] = useState(musicOn)
+
+  // Music defaults on, but no browser lets a page make sound before the
+  // visitor's first interaction — so arm a one-time listener and let the
+  // first tap/click/keypress anywhere (the boot screen included) start it.
+  useEffect(() => {
+    if (!musicOn()) return
+    const kick = () => void startMusic()
+    window.addEventListener('pointerdown', kick, { once: true })
+    window.addEventListener('keydown', kick, { once: true })
+    return () => {
+      window.removeEventListener('pointerdown', kick)
+      window.removeEventListener('keydown', kick)
+    }
+  }, [])
+
+  const toggleMusic = () => {
+    const next = !music
+    setMusicOn(next)
+    setMusic(next)
+  }
+
+  const musicButton = (compact: boolean) => (
+    <button
+      type="button"
+      onClick={toggleMusic}
+      className={compact ? 'btn min-h-[36px] px-2.5 py-1' : 'btn shrink-0 px-3'}
+      style={
+        music
+          ? { background: 'var(--color-arc-pink)', borderColor: 'var(--color-arc-pink)', color: '#1a0512' }
+          : undefined
+      }
+      title="The WACL Theme — original league music, 90-second loop"
+      aria-pressed={music}
+    >
+      ♪ {music ? 'ON' : 'OFF'}
+    </button>
+  )
   const [godMode, setGodMode] = useState(false)
   const reducedByOS = systemPrefersReduced()
   const location = useLocation()
@@ -177,6 +214,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           </span>
         </div>
         <div className="flex shrink-0 items-center gap-2">
+          {musicButton(true)}
           <button
             type="button"
             onClick={() => setPaletteOpen(true)}
@@ -241,14 +279,17 @@ export default function Shell({ children }: { children: ReactNode }) {
           <div className="arcade mt-2 text-[10px] text-arc-yellow">EST. 2004</div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setPaletteOpen(true)}
-          className="btn mx-3 mt-3 justify-between"
-        >
-          <span>Find</span>
-          <kbd>⌘K</kbd>
-        </button>
+        <div className="mx-3 mt-3 flex gap-2">
+          <button
+            type="button"
+            onClick={() => setPaletteOpen(true)}
+            className="btn flex-1 justify-between"
+          >
+            <span>Find</span>
+            <kbd>⌘K</kbd>
+          </button>
+          {musicButton(false)}
+        </div>
 
         <div className="flex-1 overflow-y-auto p-3">{navList}</div>
 
@@ -286,22 +327,6 @@ export default function Shell({ children }: { children: ReactNode }) {
           )}
         </span>
         <span className="flex shrink-0 items-center gap-2.5">
-          <button
-            type="button"
-            onClick={() => {
-              const next = !music
-              setMusicOn(next)
-              setMusic(next)
-            }}
-            className="border-2 border-arc-line px-1.5 py-0.5 transition-colors"
-            style={{
-              background: music ? 'var(--color-arc-pink)' : 'transparent',
-              color: music ? '#04120b' : 'var(--color-arc-ink-faint)',
-            }}
-            title="The WACL Theme — original league music, 90-second loop"
-          >
-            ♪ {music ? 'ON' : 'OFF'}
-          </button>
           <button
             type="button"
             onClick={() => {

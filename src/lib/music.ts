@@ -23,11 +23,12 @@ interface Piece {
   length: number
 }
 
+/** Music defaults ON; only an explicit toggle-off is remembered as off. */
 export function musicOn(): boolean {
   try {
-    return localStorage.getItem(STORE_KEY) === 'on'
+    return localStorage.getItem(STORE_KEY) !== 'off'
   } catch {
-    return false
+    return true
   }
 }
 
@@ -121,7 +122,11 @@ function parseMidi(buffer: ArrayBuffer): Piece {
     note.dur *= secPerTick
   }
   notes.sort((a, b) => a.t - b.t)
-  return { notes, length: maxTick * secPerTick }
+  // Round the loop length up to a whole bar so early note-offs can't shave
+  // milliseconds off the wrap point.
+  const ticksPerBar = ppq * 4
+  const totalTicks = Math.ceil(maxTick / ticksPerBar) * ticksPerBar
+  return { notes, length: totalTicks * secPerTick }
 }
 
 /* ------------------------------------------------------------------ *
@@ -275,11 +280,16 @@ async function loadPiece(): Promise<Piece> {
 
 export async function start(): Promise<void> {
   if (timer !== null) return
+  // Autoplay policy: the context must be created and resumed synchronously
+  // inside the user's gesture — an await first breaks the activation chain
+  // and the context comes up suspended (i.e. silent) forever.
+  ctx = ctx ?? new AudioContext()
+  if (ctx.state === 'suspended') void ctx.resume()
+
   const theme = await loadPiece().catch(() => null)
   if (!theme || theme.notes.length === 0) return
+  if (!ctx || timer !== null) return // stopped or double-started while loading
 
-  ctx = ctx ?? new AudioContext()
-  if (ctx.state === 'suspended') await ctx.resume()
   master = ctx.createGain()
   master.gain.value = 0.9
   const glue = ctx.createDynamicsCompressor()
@@ -290,6 +300,15 @@ export async function start(): Promise<void> {
   const startAt = ctx.currentTime + 0.1
   let index = 0
   let loop = 0
+  let scheduled = 0
+
+  // Tiny console-inspectable health probe: state must read 'running' and
+  // time must advance, or the context is suspended and nothing is audible.
+  ;(window as unknown as Record<string, unknown>).__waclMusic = {
+    state: () => ctx?.state,
+    time: () => ctx?.currentTime,
+    scheduled: () => scheduled,
+  }
 
   const pump = () => {
     if (!ctx || !master) return
@@ -303,6 +322,7 @@ export async function start(): Promise<void> {
       const when = startAt + loop * theme.length + note.t
       if (when > horizon) break
       playNote(ctx, master, note, when)
+      scheduled += 1
       index += 1
     }
   }
