@@ -15379,22 +15379,22 @@
           "contractYear": "C"
         },
         {
-          "player": "Drake London",
-          "salary": 61,
-          "contractYear": "B"
-        },
-        {
-          "player": "Brock Purdy",
-          "salary": 5,
-          "contractYear": "B"
-        },
-        {
           "player": "Christian Watson",
           "salary": 5,
           "contractYear": "B"
+        },
+        {
+          "player": "Tony Pollard",
+          "salary": 34,
+          "contractYear": "B"
+        },
+        {
+          "player": "Tucker Kraft",
+          "salary": 6,
+          "contractYear": "B"
         }
       ],
-      "keeperSalary": -73,
+      "keeperSalary": 47,
       "cashTraded": 25,
       "draftBudget": 152
     },
