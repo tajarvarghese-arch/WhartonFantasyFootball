@@ -16282,11 +16282,6 @@
           "contractYear": "C"
         },
         {
-          "player": "DK Metcalf",
-          "salary": 24,
-          "contractYear": "B"
-        },
-        {
           "player": "David Montgomery",
           "salary": 28,
           "contractYear": "B"
@@ -16295,9 +16290,14 @@
           "player": "Breece Hall",
           "salary": 24,
           "contractYear": "B"
+        },
+        {
+          "player": "Tyrone Tracy Jr.",
+          "salary": 5,
+          "contractYear": "C"
         }
       ],
-      "keeperSalary": 87,
+      "keeperSalary": 68,
       "cashTraded": 0,
       "draftBudget": 132
     }
