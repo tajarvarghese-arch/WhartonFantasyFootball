@@ -17,28 +17,55 @@ export interface LuckRow {
   year: number
   wins: number
   losses: number
+  /** Wins the points deserved against a NEUTRAL schedule (see luckRows). */
   expectedWins: number
-  /** Positive = won more than the points said they should. */
+  /** wins − expectedWins. Positive = won more than the points said they should. */
   luck: number
+  /** Component: realized opponents ran cold (+) or hot (−) vs the neutral pool. */
+  scheduleLuck: number
+  /** Component: how the win/loss chips fell given the points that landed. */
+  pairingLuck: number
 }
 
+/**
+ * Fantasy points-against is exogenous — an opponent's score doesn't depend on
+ * who they face. So the fair baseline is each manager's points against a
+ * NEUTRAL schedule: the per-game average of the other teams that season,
+ * SELF EXCLUDED. A top scorer's opponent pool is genuinely weaker for
+ * lacking them (and a bottom scorer's genuinely stronger), and this baseline
+ * prices that in instead of crediting or debiting it as luck.
+ */
 export function luckRows(seasons: Season[]): LuckRow[] {
   const rows: LuckRow[] = []
   for (const season of seasons) {
-    for (const team of season.teams) {
-      if (team.pointsFor === null || team.pointsAgainst === null) continue
+    const teams = season.teams.filter(
+      (team) =>
+        team.pointsFor !== null && team.pointsAgainst !== null && team.wins + team.losses > 0,
+    )
+    const leaguePF = teams.reduce((sum, team) => sum + (team.pointsFor ?? 0), 0)
+    const leagueGames = teams.reduce((sum, team) => sum + team.wins + team.losses, 0)
+
+    for (const team of teams) {
       const games = team.wins + team.losses
-      if (!games) continue
-      const pf = Math.pow(team.pointsFor, PYTHAG_EXP)
-      const pa = Math.pow(team.pointsAgainst, PYTHAG_EXP)
-      const expected = (games * pf) / (pf + pa)
+      const pointsFor = team.pointsFor ?? 0
+      const pointsAgainst = team.pointsAgainst ?? 0
+      if (leagueGames - games <= 0) continue
+      const neutralPA =
+        games * ((leaguePF - pointsFor) / (leagueGames - games))
+
+      const pf = Math.pow(pointsFor, PYTHAG_EXP)
+      const expectedRealized = (games * pf) / (pf + Math.pow(pointsAgainst, PYTHAG_EXP))
+      const expectedNeutral = (games * pf) / (pf + Math.pow(neutralPA, PYTHAG_EXP))
+
       rows.push({
         manager: team.manager,
         year: season.year,
         wins: team.wins,
         losses: team.losses,
-        expectedWins: expected,
-        luck: team.wins - expected,
+        expectedWins: expectedNeutral,
+        luck: team.wins - expectedNeutral,
+        scheduleLuck: expectedRealized - expectedNeutral,
+        pairingLuck: team.wins - expectedRealized,
       })
     }
   }
@@ -49,6 +76,8 @@ export interface CareerLuck {
   manager: ManagerId
   seasons: number
   totalLuck: number
+  totalSchedule: number
+  totalPairing: number
   luckiestYear: LuckRow
   unluckiestYear: LuckRow
 }
@@ -65,6 +94,8 @@ export function careerLuck(rows: LuckRow[]): CareerLuck[] {
       manager,
       seasons: list.length,
       totalLuck: list.reduce((total, row) => total + row.luck, 0),
+      totalSchedule: list.reduce((total, row) => total + row.scheduleLuck, 0),
+      totalPairing: list.reduce((total, row) => total + row.pairingLuck, 0),
       luckiestYear: list.reduce((best, row) => (row.luck > best.luck ? row : best)),
       unluckiestYear: list.reduce((worst, row) => (row.luck < worst.luck ? row : worst)),
     }))

@@ -161,13 +161,15 @@ export default function Lab() {
       <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-2">
         <Panel
           title="the luck index"
-          subtitle="Pythagorean expectation: how many wins the points earned vs how many arrived. Positive = the schedule loved you."
+          subtitle="Wins earned vs a neutral schedule that excludes each manager from their own opponent pool — a top scorer's opponents really are weaker for lacking them, and that's priced in, not called luck. Draw = opponents ran cold/hot against you; Pairing = how the chips fell."
         >
           <table className="out">
             <thead>
               <tr>
                 <th>Manager</th>
                 <th className="n">Seasons</th>
+                <th className="n">Draw</th>
+                <th className="n">Pairing</th>
                 <th className="n">Career luck</th>
                 <th className="n">Peak fortune</th>
               </tr>
@@ -181,6 +183,14 @@ export default function Lab() {
                       <ManagerTag id={row.manager} size={22} />
                     </td>
                     <td className="n text-arc-ink-faint">{row.seasons}</td>
+                    <td className="n text-arc-ink-soft">
+                      {row.totalSchedule > 0 ? '+' : ''}
+                      {num(row.totalSchedule, 1)}
+                    </td>
+                    <td className="n text-arc-ink-soft">
+                      {row.totalPairing > 0 ? '+' : ''}
+                      {num(row.totalPairing, 1)}
+                    </td>
                     <td
                       className="n"
                       style={{
@@ -345,8 +355,11 @@ export default function Lab() {
       </div>
 
       <p className="mt-6 text-[12px] leading-relaxed text-arc-ink-faint">
-        Methods: luck is wins minus Pythagorean expected wins (exponent 2.37) from season points
-        for/against. GOAT is the sum of within-season scoring z-scores. Elo updates once per season
+        Methods: luck is wins minus Pythagorean expected wins (exponent 2.37) against a neutral
+        schedule — each manager's points versus the per-game average of the other teams that
+        season, self excluded, since nobody plays themselves. The Draw component is realized
+        opponents vs that neutral pool; Pairing is wins vs expectation at the realized points.
+        GOAT is the sum of within-season scoring z-scores. Elo updates once per season
         on win% against the field's average rating (K=6/game, +14 for a title). Odds resample
         keeper-era scoring with noise; they know nothing about 2026 rosters. Contract value
         is standard-scoring fantasy points (nflverse) minus auction dollars spent across the
