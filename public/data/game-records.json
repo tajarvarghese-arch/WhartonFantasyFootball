@@ -1,0 +1,254 @@
+{
+  "keeperEra": {
+    "highest": [
+      {
+        "manager": "tollinche",
+        "points": 187.86,
+        "year": 2014,
+        "playoff": false
+      },
+      {
+        "manager": "buzik",
+        "points": 181.7,
+        "year": 2018,
+        "playoff": false
+      },
+      {
+        "manager": "tollinche",
+        "points": 179.78,
+        "year": 2024,
+        "playoff": false
+      },
+      {
+        "manager": "bernstein",
+        "points": 178.56,
+        "year": 2018,
+        "playoff": false
+      },
+      {
+        "manager": "velamoor",
+        "points": 178.02,
+        "year": 2024,
+        "playoff": true
+      },
+      {
+        "manager": "waldman",
+        "points": 176.6,
+        "year": 2014,
+        "playoff": false
+      },
+      {
+        "manager": "incognito",
+        "points": 176.52,
+        "year": 2022,
+        "playoff": false
+      },
+      {
+        "manager": "waldman",
+        "points": 176.16,
+        "year": 2025,
+        "playoff": false
+      },
+      {
+        "manager": "varghese",
+        "points": 175.68,
+        "year": 2019,
+        "playoff": true
+      },
+      {
+        "manager": "buzik",
+        "points": 175.46,
+        "year": 2018,
+        "playoff": false
+      }
+    ],
+    "lowest": [
+      {
+        "manager": "baugh",
+        "points": 38.22,
+        "year": 2025,
+        "playoff": false
+      },
+      {
+        "manager": "bernstein",
+        "points": 41.66,
+        "year": 2014,
+        "playoff": false
+      },
+      {
+        "manager": "incognito",
+        "points": 41.8,
+        "year": 2022,
+        "playoff": false
+      },
+      {
+        "manager": "bernstein",
+        "points": 42.7,
+        "year": 2024,
+        "playoff": false
+      },
+      {
+        "manager": "baugh",
+        "points": 43.26,
+        "year": 2017,
+        "playoff": false
+      },
+      {
+        "manager": "snyder",
+        "points": 43.44,
+        "year": 2021,
+        "playoff": false
+      },
+      {
+        "manager": "buzik",
+        "points": 45.36,
+        "year": 2022,
+        "playoff": false
+      },
+      {
+        "manager": "bernstein",
+        "points": 45.76,
+        "year": 2021,
+        "playoff": false
+      },
+      {
+        "manager": "varghese",
+        "points": 45.96,
+        "year": 2022,
+        "playoff": false
+      },
+      {
+        "manager": "bernstein",
+        "points": 47.04,
+        "year": 2024,
+        "playoff": false
+      }
+    ]
+  },
+  "allTime": {
+    "highest": [
+      {
+        "manager": "banerjee",
+        "points": 195.45,
+        "year": 2007,
+        "playoff": false
+      },
+      {
+        "manager": "konciak",
+        "points": 189.19,
+        "year": 2009,
+        "playoff": true
+      },
+      {
+        "manager": "tollinche",
+        "points": 187.86,
+        "year": 2014,
+        "playoff": false
+      },
+      {
+        "manager": "buzik",
+        "points": 181.7,
+        "year": 2018,
+        "playoff": false
+      },
+      {
+        "manager": "tollinche",
+        "points": 179.78,
+        "year": 2024,
+        "playoff": false
+      },
+      {
+        "manager": "konciak",
+        "points": 178.82,
+        "year": 2007,
+        "playoff": false
+      },
+      {
+        "manager": "bernstein",
+        "points": 178.56,
+        "year": 2018,
+        "playoff": false
+      },
+      {
+        "manager": "velamoor",
+        "points": 178.02,
+        "year": 2024,
+        "playoff": true
+      },
+      {
+        "manager": "waldman",
+        "points": 176.6,
+        "year": 2014,
+        "playoff": false
+      },
+      {
+        "manager": "incognito",
+        "points": 176.52,
+        "year": 2022,
+        "playoff": false
+      }
+    ],
+    "lowest": [
+      {
+        "manager": "konciak",
+        "points": 33.2,
+        "year": 2010,
+        "playoff": false
+      },
+      {
+        "manager": "snyder",
+        "points": 37.74,
+        "year": 2008,
+        "playoff": false
+      },
+      {
+        "manager": "baugh",
+        "points": 38.22,
+        "year": 2025,
+        "playoff": false
+      },
+      {
+        "manager": "bernstein",
+        "points": 41.66,
+        "year": 2014,
+        "playoff": false
+      },
+      {
+        "manager": "incognito",
+        "points": 41.8,
+        "year": 2022,
+        "playoff": false
+      },
+      {
+        "manager": "bernstein",
+        "points": 42.7,
+        "year": 2024,
+        "playoff": false
+      },
+      {
+        "manager": "baugh",
+        "points": 43.26,
+        "year": 2017,
+        "playoff": false
+      },
+      {
+        "manager": "snyder",
+        "points": 43.44,
+        "year": 2021,
+        "playoff": false
+      },
+      {
+        "manager": "buzik",
+        "points": 45.36,
+        "year": 2022,
+        "playoff": false
+      },
+      {
+        "manager": "bernstein",
+        "points": 45.76,
+        "year": 2021,
+        "playoff": false
+      }
+    ]
+  }
+}

@@ -14,13 +14,18 @@ import {
   seasonExtremes,
   type CareerLine,
 } from '../lib/stats'
-import type { Manager } from '../lib/types'
+import type { GameRecordEntry, Manager } from '../lib/types'
 
 export default function Records() {
-  const { seasons, managers } = useLeagueData()
+  const { seasons, managers, gameRecords } = useLeagueData()
   const eras = eraOptions(seasons)
   const [eraId, setEraId] = useState('keeper')
   const era = eras.find((option) => option.id === eraId) ?? eras[0]
+
+  // The workbook keeps two single-game record books; All-Time shows one,
+  // every other era view shows the keeper-era book.
+  const gameEra = eraId === 'all' ? gameRecords?.allTime : gameRecords?.keeperEra
+  const gameEraLabel = eraId === 'all' ? 'All-time' : 'Keeper-era'
 
   const trades = useTrades()
   const table = careerTable(seasons, era)
@@ -60,7 +65,7 @@ export default function Records() {
         <Board
           title="Titles"
           delay={100}
-          rows={[...table].sort((a, b) => b.titles - a.titles || b.topThree - a.topThree).slice(0, 10)}
+          rows={[...table].sort((a, b) => b.titles - a.titles || b.topThree - a.topThree)}
           managers={managers}
           columns={[
             { header: 'Titles', render: (line) => line.titles },
@@ -73,7 +78,7 @@ export default function Records() {
         <Board
           title="Regular season win %"
           delay={140}
-          rows={[...table].sort((a, b) => b.winPct - a.winPct).slice(0, 10)}
+          rows={[...table].sort((a, b) => b.winPct - a.winPct)}
           managers={managers}
           columns={[
             { header: 'Record', render: (line) => record(line.wins, line.losses) },
@@ -84,7 +89,7 @@ export default function Records() {
         <Board
           title="Playoff appearances"
           delay={180}
-          rows={[...table].sort((a, b) => b.playoffRate - a.playoffRate).slice(0, 10)}
+          rows={[...table].sort((a, b) => b.playoffRate - a.playoffRate)}
           managers={managers}
           columns={[
             { header: 'Apps', render: (line) => line.playoffAppearances },
@@ -96,7 +101,7 @@ export default function Records() {
         <Board
           title="Playoff wins"
           delay={220}
-          rows={[...table].sort((a, b) => b.playoffWins - a.playoffWins).slice(0, 10)}
+          rows={[...table].sort((a, b) => b.playoffWins - a.playoffWins)}
           managers={managers}
           columns={[
             { header: 'W', render: (line) => line.playoffWins, highlight: true },
@@ -110,7 +115,7 @@ export default function Records() {
           rows={[...table]
             .filter((line) => line.avgPointsFor !== null)
             .sort((a, b) => (b.avgPointsFor ?? 0) - (a.avgPointsFor ?? 0))
-            .slice(0, 10)}
+            }
           managers={managers}
           columns={[
             { header: 'For', render: (line) => num(line.avgPointsFor, 2), highlight: true },
@@ -124,7 +129,7 @@ export default function Records() {
           rows={[...table]
             .filter((line) => line.avgPointsAgainst !== null)
             .sort((a, b) => (a.avgPointsAgainst ?? 0) - (b.avgPointsAgainst ?? 0))
-            .slice(0, 10)}
+            }
           managers={managers}
           columns={[
             { header: 'Against', render: (line) => num(line.avgPointsAgainst, 2), highlight: true },
@@ -204,7 +209,83 @@ export default function Records() {
           </table>
         </Panel>
       </div>
+
+      {gameEra && (
+        <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-2">
+          <GameBoard
+            title="Highest single-game scores"
+            subtitle={`${gameEraLabel} record book. * marks a playoff game.`}
+            delay={400}
+            rows={gameEra.highest}
+            managers={managers}
+            tone="up"
+          />
+          <GameBoard
+            title="Lowest single-game scores"
+            subtitle={`${gameEraLabel} record book. * marks a playoff game.`}
+            delay={440}
+            rows={gameEra.lowest}
+            managers={managers}
+            tone="down"
+          />
+        </div>
+      )}
     </>
+  )
+}
+
+function GameBoard({
+  title,
+  subtitle,
+  rows,
+  managers,
+  delay,
+  tone,
+}: {
+  title: string
+  subtitle: string
+  rows: GameRecordEntry[]
+  managers: Manager[]
+  delay: number
+  tone: 'up' | 'down'
+}) {
+  return (
+    <Panel title={title} subtitle={subtitle} delay={delay}>
+      <table className="out">
+        <thead>
+          <tr>
+            <th className="n">#</th>
+            <th>Manager</th>
+            <th className="n">Points</th>
+            <th className="n">Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={`${row.manager}-${row.points}`}>
+              <td className="n text-arc-ink-faint">{index + 1}</td>
+              <td>
+                <Link
+                  to={`/managers/${row.manager}`}
+                  className="transition-colors hover:text-arc-green"
+                >
+                  {managerName(managers, row.manager)}
+                </Link>
+              </td>
+              <td
+                className={`n ${tone === 'up' ? 'text-arc-green' : 'text-[var(--color-arc-red)]'}`}
+              >
+                {num(row.points, 2)}
+              </td>
+              <td className="n text-arc-ink-faint">
+                {row.year}
+                {row.playoff ? '*' : ''}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Panel>
   )
 }
 

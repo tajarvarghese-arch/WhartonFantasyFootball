@@ -206,6 +206,19 @@ export type PlayerPoints = Record<string, Record<string, [number, string]>>
 /** normalised player name -> position, for everyone the league ever rostered. */
 export type PlayerPositions = Record<string, string>
 
+export interface GameRecordEntry {
+  manager: ManagerId
+  points: number
+  year: number
+  playoff: boolean
+}
+
+/** Top-10 single-game scoring records from the workbook's Summary Stats. */
+export interface GameRecords {
+  keeperEra: { highest: GameRecordEntry[]; lowest: GameRecordEntry[] }
+  allTime: { highest: GameRecordEntry[]; lowest: GameRecordEntry[] }
+}
+
 export interface DraftPoolPlayer {
   rank: number
   player: string
@@ -260,4 +273,6 @@ export interface LeagueData {
   vault: CommissionerVault | null
   /** Absent until scripts/draft_pool.py has been run. */
   draftPool: DraftPool | null
+  /** Absent until scripts/game_records.py has been run. */
+  gameRecords: GameRecords | null
 }
