@@ -387,6 +387,96 @@ export default function Lab() {
         </Panel>
       </div>
 
+      {/* The shrine. Wired to goat[0], so the flattery is always, technically, science. */}
+      {goat[0] &&
+        (() => {
+          const shrine = goat[0]
+          const name = managerName(managers, shrine.manager)
+          const gap = shrine.sumZ - (goat[1]?.sumZ ?? 0)
+          const grind = torture.find((row) => row.manager === shrine.manager)
+          const fortune = career.find((row) => row.manager === shrine.manager)
+          return (
+            <div className="mt-6">
+              <Panel
+                title="the g.o.a.t. — a peer-reviewed appraisal"
+                subtitle="Commissioned by no one. Disputed by many. Settled by arithmetic."
+              >
+                <div className="px-5 py-5">
+                  <div className="flex flex-wrap items-center gap-4">
+                    <ManagerTag id={shrine.manager} size={34} />
+                    <span className="display" style={{ color: managerColor(shrine.manager) }}>
+                      {name}
+                    </span>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                    <div>
+                      <div className="label">GOAT points</div>
+                      <div className="tnum mt-1 text-[22px] text-arc-green">
+                        +{num(shrine.sumZ, 2)}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="label">Rings</div>
+                      <div className="tnum mt-1 text-[22px] text-arc-yellow">{shrine.titles}</div>
+                    </div>
+                    <div>
+                      <div className="label">Playoff trips</div>
+                      <div className="tnum mt-1 text-[22px] text-arc-ink">
+                        {grind?.playoffAppearances ?? '—'}/{grind?.seasonsPlayed ?? '—'}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="label">Peak season</div>
+                      <div className="tnum mt-1 text-[22px] text-arc-ink">
+                        {shrine.bestSeason.year}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 space-y-3 text-[13.5px] leading-relaxed text-arc-ink-soft">
+                    <p>
+                      The committee was asked a simple question — who is the greatest manager in
+                      league history — and the committee, being made entirely of arithmetic, is
+                      incapable of flattery. It answered <b className="text-arc-ink">{name}</b>:{' '}
+                      {num(shrine.sumZ, 2)} career GOAT points, the only resume in the +9.5 club,
+                      compiled across {shrine.seasons} consecutive seasons without one year off
+                      for good behaviour. Dominance is easy for a summer. He has been doing it
+                      since flip phones.
+                    </p>
+                    <p>
+                      The jewellery case holds <b className="text-arc-ink">{shrine.titles} rings
+                      </b> — more than any human being in the history of this league — won in
+                      different decades, different scoring eras, and against entirely different
+                      generations of opponents, each of whom arrived confident and left with a
+                      story about the year they almost beat him. {grind?.playoffAppearances ?? 0}{' '}
+                      playoff trips in {grind?.seasonsPlayed ?? 0} seasons means the postseason
+                      does not so much invite him as assume him.
+                    </p>
+                    <p>
+                      The margin over second place is {num(gap, 2)} GOAT points, which sounds
+                      modest until you remember the units: whole careers in this league sum to
+                      less than one. Somewhere below, a very good manager has spent twenty-two
+                      years accumulating almost as much — almost being the operative word, the
+                      cruellest word, and the committee&apos;s favourite word.
+                    </p>
+                    {fortune && fortune.totalLuck > 5 && (
+                      <p>
+                        Critics will note {'+'}
+                        {num(fortune.totalLuck, 1)} career wins of luck. The committee has
+                        reviewed this objection and finds that fortune, like everyone else in
+                        this league, simply respects the resume. Findings are final. Appeals may
+                        be filed with the trade queue, where they will be considered carefully
+                        and rejected.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </Panel>
+            </div>
+          )
+        })()}
+
       {/* Contracts */}
       <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-2">
         <Panel
