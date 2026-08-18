@@ -16060,22 +16060,22 @@
           "contractYear": "B"
         },
         {
-          "player": "Omarion Hampton",
-          "salary": 51,
-          "contractYear": "B"
-        },
-        {
           "player": "Trey McBride",
           "salary": 5,
           "contractYear": "D"
         },
         {
-          "player": "Jayden Daniels",
-          "salary": 16,
+          "player": "Bucky Irving",
+          "salary": 1,
           "contractYear": "C"
+        },
+        {
+          "player": "Jaylen Waddle",
+          "salary": 16,
+          "contractYear": "B"
         }
       ],
-      "keeperSalary": -141,
+      "keeperSalary": 91,
       "cashTraded": -8,
       "draftBudget": 51
     },
