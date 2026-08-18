@@ -15722,17 +15722,17 @@
           "contractYear": "C"
         },
         {
-          "player": "Emeka Egbuka",
-          "salary": 36,
-          "contractYear": "B"
-        },
-        {
           "player": "Ashton Jeanty",
           "salary": 70,
           "contractYear": "B"
+        },
+        {
+          "player": "Rashee Rice",
+          "salary": 1,
+          "contractYear": "D"
         }
       ],
-      "keeperSalary": -160,
+      "keeperSalary": 125,
       "cashTraded": 0,
       "draftBudget": 40
     },
