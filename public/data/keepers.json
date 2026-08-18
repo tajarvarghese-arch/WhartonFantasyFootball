@@ -15495,22 +15495,22 @@
           "contractYear": "B"
         },
         {
-          "player": "Marvin Harrison Jr.",
-          "salary": 38,
-          "contractYear": "B"
-        },
-        {
-          "player": "Patrick Mahomes",
-          "salary": 18,
-          "contractYear": "B"
-        },
-        {
           "player": "Rome Odunze",
           "salary": 17,
           "contractYear": "B"
+        },
+        {
+          "player": "Quinshon Judkins",
+          "salary": 4,
+          "contractYear": "B"
+        },
+        {
+          "player": "Luther Burden III",
+          "salary": 5,
+          "contractYear": "B"
         }
       ],
-      "keeperSalary": -141,
+      "keeperSalary": 94,
       "cashTraded": -8,
       "draftBudget": 51
     },
