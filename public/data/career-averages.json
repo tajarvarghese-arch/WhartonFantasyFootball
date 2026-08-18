@@ -118,5 +118,1079 @@
       "pointsFor": 95.3094,
       "pointsAgainst": 102.9405
     }
+  },
+  "seasons": {
+    "varghese": {
+      "2025": {
+        "pointsFor": 83.19,
+        "pointsAgainst": 97.3471
+      },
+      "2024": {
+        "pointsFor": 114.31,
+        "pointsAgainst": 102.3543
+      },
+      "2023": {
+        "pointsFor": 101.4129,
+        "pointsAgainst": 103.3
+      },
+      "2022": {
+        "pointsFor": 93.2829,
+        "pointsAgainst": 92.2971
+      },
+      "2021": {
+        "pointsFor": 109.6543,
+        "pointsAgainst": 105.3829
+      },
+      "2020": {
+        "pointsFor": 109.6692,
+        "pointsAgainst": 100.5508
+      },
+      "2019": {
+        "pointsFor": 113.7277,
+        "pointsAgainst": 99.5031
+      },
+      "2018": {
+        "pointsFor": 120.3862,
+        "pointsAgainst": 100.7738
+      },
+      "2017": {
+        "pointsFor": 92.8262,
+        "pointsAgainst": 107.3862
+      },
+      "2016": {
+        "pointsFor": 122.6615,
+        "pointsAgainst": 94.3385
+      },
+      "2015": {
+        "pointsFor": 95.9877,
+        "pointsAgainst": 115.22
+      },
+      "2014": {
+        "pointsFor": 108.5062,
+        "pointsAgainst": 106.7492
+      },
+      "2013": {
+        "pointsFor": 113.6308,
+        "pointsAgainst": 108.8077
+      },
+      "2012": {
+        "pointsFor": 115.1138,
+        "pointsAgainst": 108.1569
+      },
+      "2011": {
+        "pointsFor": 85.3315,
+        "pointsAgainst": 112.5569
+      },
+      "2010": {
+        "pointsFor": 107.5038,
+        "pointsAgainst": 107.2169
+      },
+      "2009": {
+        "pointsFor": 119.9592,
+        "pointsAgainst": 101.8238
+      },
+      "2008": {
+        "pointsFor": 105.1354,
+        "pointsAgainst": 110.7462
+      },
+      "2007": {
+        "pointsFor": 105.2646,
+        "pointsAgainst": 104.6269
+      },
+      "2006": {
+        "pointsFor": 117.161,
+        "pointsAgainst": 103.4542
+      },
+      "2005": {
+        "pointsFor": 123.2575,
+        "pointsAgainst": 109.0533
+      },
+      "2004": {
+        "pointsFor": 116.5295,
+        "pointsAgainst": 103.0671
+      }
+    },
+    "baugh": {
+      "2025": {
+        "pointsFor": 89.9743,
+        "pointsAgainst": 102.6343
+      },
+      "2024": {
+        "pointsFor": 108.0314,
+        "pointsAgainst": 101.2286
+      },
+      "2023": {
+        "pointsFor": 97.9171,
+        "pointsAgainst": 105.3843
+      },
+      "2022": {
+        "pointsFor": 107.0543,
+        "pointsAgainst": 104.5657
+      },
+      "2021": {
+        "pointsFor": 89.1543,
+        "pointsAgainst": 102.8286
+      },
+      "2020": {
+        "pointsFor": 88.34,
+        "pointsAgainst": 104.6154
+      },
+      "2019": {
+        "pointsFor": 103.9569,
+        "pointsAgainst": 115.56
+      },
+      "2018": {
+        "pointsFor": 99.74,
+        "pointsAgainst": 118.5646
+      },
+      "2017": {
+        "pointsFor": 84.6846,
+        "pointsAgainst": 102.9338
+      },
+      "2016": {
+        "pointsFor": 125.0462,
+        "pointsAgainst": 114.7077
+      },
+      "2015": {
+        "pointsFor": 102.8123,
+        "pointsAgainst": 106.7708
+      },
+      "2014": {
+        "pointsFor": 114.5754,
+        "pointsAgainst": 103.4292
+      },
+      "2013": {
+        "pointsFor": 110.3769,
+        "pointsAgainst": 114.5246
+      },
+      "2012": {
+        "pointsFor": 101.2262,
+        "pointsAgainst": 105.5323
+      },
+      "2011": {
+        "pointsFor": 106.0908,
+        "pointsAgainst": 119.0123
+      },
+      "2010": {
+        "pointsFor": 107.9431,
+        "pointsAgainst": 99.5662
+      },
+      "2009": {
+        "pointsFor": 97.7485,
+        "pointsAgainst": 114.8769
+      },
+      "2008": {
+        "pointsFor": 105.1462,
+        "pointsAgainst": 104.9077
+      },
+      "2007": {
+        "pointsFor": 115.0969,
+        "pointsAgainst": 107.6838
+      },
+      "2006": {
+        "pointsFor": 113.3362,
+        "pointsAgainst": 114.2367
+      },
+      "2005": {
+        "pointsFor": 104.6498,
+        "pointsAgainst": 111.0237
+      },
+      "2004": {
+        "pointsFor": 99.3841,
+        "pointsAgainst": 97.223
+      }
+    },
+    "waldman": {
+      "2025": {
+        "pointsFor": 120.7757,
+        "pointsAgainst": 91.4929
+      },
+      "2024": {
+        "pointsFor": 101.0271,
+        "pointsAgainst": 97.5186
+      },
+      "2023": {
+        "pointsFor": 86.7857,
+        "pointsAgainst": 101.6557
+      },
+      "2022": {
+        "pointsFor": 88.8743,
+        "pointsAgainst": 92.5286
+      },
+      "2021": {
+        "pointsFor": 120.2514,
+        "pointsAgainst": 106.1529
+      },
+      "2020": {
+        "pointsFor": 111.9138,
+        "pointsAgainst": 93.2308
+      },
+      "2019": {
+        "pointsFor": 120.9262,
+        "pointsAgainst": 106.4677
+      },
+      "2018": {
+        "pointsFor": 126.6662,
+        "pointsAgainst": 101.1062
+      },
+      "2017": {
+        "pointsFor": 99.7754,
+        "pointsAgainst": 101.1092
+      },
+      "2016": {
+        "pointsFor": 104.0,
+        "pointsAgainst": 104.8462
+      },
+      "2015": {
+        "pointsFor": 119.4615,
+        "pointsAgainst": 103.9446
+      },
+      "2014": {
+        "pointsFor": 130.6738,
+        "pointsAgainst": 108.0569
+      },
+      "2013": {
+        "pointsFor": 112.7938,
+        "pointsAgainst": 100.8938
+      },
+      "2012": {
+        "pointsFor": 109.4215,
+        "pointsAgainst": 101.7662
+      },
+      "2011": {
+        "pointsFor": 114.0831,
+        "pointsAgainst": 99.5877
+      },
+      "2010": {
+        "pointsFor": 114.7031,
+        "pointsAgainst": 91.1038
+      },
+      "2009": {
+        "pointsFor": 92.6492,
+        "pointsAgainst": 103.3223
+      },
+      "2008": {
+        "pointsFor": 101.02,
+        "pointsAgainst": 100.6762
+      },
+      "2007": {
+        "pointsFor": 96.0562,
+        "pointsAgainst": 107.6985
+      },
+      "2006": {
+        "pointsFor": 114.8665,
+        "pointsAgainst": 93.9205
+      },
+      "2005": {
+        "pointsFor": 103.1522,
+        "pointsAgainst": 97.4196
+      }
+    },
+    "buzik": {
+      "2025": {
+        "pointsFor": 90.89,
+        "pointsAgainst": 112.4186
+      },
+      "2024": {
+        "pointsFor": 104.91,
+        "pointsAgainst": 105.8486
+      },
+      "2023": {
+        "pointsFor": 102.3514,
+        "pointsAgainst": 99.5257
+      },
+      "2022": {
+        "pointsFor": 75.0443,
+        "pointsAgainst": 109.87
+      },
+      "2021": {
+        "pointsFor": 87.6929,
+        "pointsAgainst": 90.1229
+      },
+      "2020": {
+        "pointsFor": 100.3554,
+        "pointsAgainst": 93.6554
+      },
+      "2019": {
+        "pointsFor": 108.0831,
+        "pointsAgainst": 99.6277
+      },
+      "2018": {
+        "pointsFor": 138.9569,
+        "pointsAgainst": 113.6154
+      },
+      "2017": {
+        "pointsFor": 127.8708,
+        "pointsAgainst": 95.9877
+      },
+      "2016": {
+        "pointsFor": 107.6692,
+        "pointsAgainst": 114.1923
+      },
+      "2015": {
+        "pointsFor": 115.4538,
+        "pointsAgainst": 105.3508
+      },
+      "2014": {
+        "pointsFor": 114.0492,
+        "pointsAgainst": 109.1
+      },
+      "2013": {
+        "pointsFor": 113.2246,
+        "pointsAgainst": 115.7246
+      },
+      "2012": {
+        "pointsFor": 105.2954,
+        "pointsAgainst": 110.8692
+      },
+      "2011": {
+        "pointsFor": 108.1038,
+        "pointsAgainst": 109.3715
+      },
+      "2010": {
+        "pointsFor": 126.0423,
+        "pointsAgainst": 108.9715
+      },
+      "2009": {
+        "pointsFor": 114.7138,
+        "pointsAgainst": 106.8377
+      },
+      "2008": {
+        "pointsFor": 108.4562,
+        "pointsAgainst": 101.7477
+      },
+      "2007": {
+        "pointsFor": 102.8854,
+        "pointsAgainst": 108.5992
+      },
+      "2006": {
+        "pointsFor": 108.1734,
+        "pointsAgainst": 109.6876
+      },
+      "2005": {
+        "pointsFor": 96.8505,
+        "pointsAgainst": 109.9972
+      },
+      "2004": {
+        "pointsFor": 97.4124,
+        "pointsAgainst": 111.2215
+      }
+    },
+    "bernstein": {
+      "2025": {
+        "pointsFor": 96.2271,
+        "pointsAgainst": 98.6071
+      },
+      "2024": {
+        "pointsFor": 79.7614,
+        "pointsAgainst": 106.8129
+      },
+      "2023": {
+        "pointsFor": 113.9486,
+        "pointsAgainst": 99.9214
+      },
+      "2022": {
+        "pointsFor": 112.2143,
+        "pointsAgainst": 94.9614
+      },
+      "2021": {
+        "pointsFor": 110.3171,
+        "pointsAgainst": 104.6414
+      },
+      "2020": {
+        "pointsFor": 95.5738,
+        "pointsAgainst": 99.0615
+      },
+      "2019": {
+        "pointsFor": 107.6615,
+        "pointsAgainst": 109.2908
+      },
+      "2018": {
+        "pointsFor": 136.0246,
+        "pointsAgainst": 111.9062
+      },
+      "2017": {
+        "pointsFor": 107.3631,
+        "pointsAgainst": 88.5308
+      },
+      "2016": {
+        "pointsFor": 98.6538,
+        "pointsAgainst": 109.5231
+      },
+      "2015": {
+        "pointsFor": 111.46,
+        "pointsAgainst": 93.3477
+      },
+      "2014": {
+        "pointsFor": 88.0923,
+        "pointsAgainst": 107.2431
+      },
+      "2013": {
+        "pointsFor": 109.0415,
+        "pointsAgainst": 106.4677
+      },
+      "2012": {
+        "pointsFor": 97.1723,
+        "pointsAgainst": 107.4677
+      },
+      "2011": {
+        "pointsFor": 117.4354,
+        "pointsAgainst": 111.0362
+      },
+      "2010": {
+        "pointsFor": 94.1654,
+        "pointsAgainst": 110.0323
+      },
+      "2009": {
+        "pointsFor": 108.9,
+        "pointsAgainst": 108.4323
+      }
+    },
+    "konciak": {
+      "2025": {
+        "pointsFor": 86.2429,
+        "pointsAgainst": 95.4014
+      },
+      "2024": {
+        "pointsFor": 98.4271,
+        "pointsAgainst": 99.7614
+      },
+      "2023": {
+        "pointsFor": 87.1014,
+        "pointsAgainst": 100.2857
+      },
+      "2022": {
+        "pointsFor": 99.8914,
+        "pointsAgainst": 100.1971
+      },
+      "2021": {
+        "pointsFor": 95.3371,
+        "pointsAgainst": 101.1943
+      },
+      "2020": {
+        "pointsFor": 92.6215,
+        "pointsAgainst": 105.86
+      },
+      "2019": {
+        "pointsFor": 108.2138,
+        "pointsAgainst": 109.5846
+      },
+      "2018": {
+        "pointsFor": 83.22,
+        "pointsAgainst": 120.4431
+      },
+      "2017": {
+        "pointsFor": 77.4738,
+        "pointsAgainst": 100.8062
+      },
+      "2016": {
+        "pointsFor": 93.2308,
+        "pointsAgainst": 105.9769
+      },
+      "2015": {
+        "pointsFor": 90.4538,
+        "pointsAgainst": 110.4738
+      },
+      "2014": {
+        "pointsFor": 116.4138,
+        "pointsAgainst": 109.7246
+      },
+      "2013": {
+        "pointsFor": 104.0354,
+        "pointsAgainst": 115.6015
+      },
+      "2012": {
+        "pointsFor": 97.0646,
+        "pointsAgainst": 103.3523
+      },
+      "2011": {
+        "pointsFor": 100.5931,
+        "pointsAgainst": 116.0246
+      },
+      "2010": {
+        "pointsFor": 90.0054,
+        "pointsAgainst": 116.9508
+      },
+      "2009": {
+        "pointsFor": 108.5831,
+        "pointsAgainst": 113.6938
+      },
+      "2008": {
+        "pointsFor": 105.6677,
+        "pointsAgainst": 92.9838
+      },
+      "2007": {
+        "pointsFor": 117.3923,
+        "pointsAgainst": 102.3046
+      },
+      "2006": {
+        "pointsFor": 85.6909,
+        "pointsAgainst": 107.5588
+      },
+      "2005": {
+        "pointsFor": 108.2107,
+        "pointsAgainst": 101.6184
+      },
+      "2004": {
+        "pointsFor": 119.7909,
+        "pointsAgainst": 102.0369
+      }
+    },
+    "tollinche": {
+      "2025": {
+        "pointsFor": 110.1643,
+        "pointsAgainst": 96.3686
+      },
+      "2024": {
+        "pointsFor": 113.2657,
+        "pointsAgainst": 99.0986
+      },
+      "2023": {
+        "pointsFor": 107.8586,
+        "pointsAgainst": 95.5457
+      },
+      "2022": {
+        "pointsFor": 91.9343,
+        "pointsAgainst": 95.8157
+      },
+      "2021": {
+        "pointsFor": 113.3743,
+        "pointsAgainst": 103.7529
+      },
+      "2020": {
+        "pointsFor": 107.0185,
+        "pointsAgainst": 98.0246
+      },
+      "2019": {
+        "pointsFor": 106.9369,
+        "pointsAgainst": 106.1415
+      },
+      "2018": {
+        "pointsFor": 120.2,
+        "pointsAgainst": 115.7585
+      },
+      "2017": {
+        "pointsFor": 109.1169,
+        "pointsAgainst": 92.5277
+      },
+      "2016": {
+        "pointsFor": 105.8846,
+        "pointsAgainst": 103.1615
+      },
+      "2015": {
+        "pointsFor": 119.5246,
+        "pointsAgainst": 98.0246
+      },
+      "2014": {
+        "pointsFor": 124.8154,
+        "pointsAgainst": 103.3846
+      },
+      "2013": {
+        "pointsFor": 111.9815,
+        "pointsAgainst": 101.7985
+      },
+      "2012": {
+        "pointsFor": 112.6754,
+        "pointsAgainst": 110.1892
+      },
+      "2011": {
+        "pointsFor": 96.1285,
+        "pointsAgainst": 103.4538
+      },
+      "2010": {
+        "pointsFor": 101.0077,
+        "pointsAgainst": 106.1292
+      },
+      "2009": {
+        "pointsFor": 104.8369,
+        "pointsAgainst": 100.7992
+      },
+      "2008": {
+        "pointsFor": 101.5,
+        "pointsAgainst": 102.8308
+      },
+      "2007": {
+        "pointsFor": 101.41,
+        "pointsAgainst": 106.97
+      },
+      "2006": {
+        "pointsFor": 111.1102,
+        "pointsAgainst": 113.6301
+      },
+      "2005": {
+        "pointsFor": 97.2012,
+        "pointsAgainst": 113.3209
+      },
+      "2004": {
+        "pointsFor": 98.704,
+        "pointsAgainst": 110.696
+      }
+    },
+    "velamoor": {
+      "2025": {
+        "pointsFor": 107.8757,
+        "pointsAgainst": 83.0543
+      },
+      "2024": {
+        "pointsFor": 108.6557,
+        "pointsAgainst": 96.1229
+      },
+      "2023": {
+        "pointsFor": 92.9314,
+        "pointsAgainst": 96.4486
+      },
+      "2022": {
+        "pointsFor": 109.1614,
+        "pointsAgainst": 91.4929
+      },
+      "2021": {
+        "pointsFor": 92.2757,
+        "pointsAgainst": 105.2086
+      },
+      "2020": {
+        "pointsFor": 83.1138,
+        "pointsAgainst": 101.8738
+      },
+      "2019": {
+        "pointsFor": 100.1523,
+        "pointsAgainst": 113.2831
+      },
+      "2018": {
+        "pointsFor": 100.44,
+        "pointsAgainst": 113.4077
+      },
+      "2017": {
+        "pointsFor": 103.4169,
+        "pointsAgainst": 103.8292
+      },
+      "2016": {
+        "pointsFor": 116.1077,
+        "pointsAgainst": 100.3769
+      },
+      "2015": {
+        "pointsFor": 112.2369,
+        "pointsAgainst": 108.66
+      },
+      "2014": {
+        "pointsFor": 107.0569,
+        "pointsAgainst": 108.4985
+      },
+      "2013": {
+        "pointsFor": 99.9154,
+        "pointsAgainst": 105.5215
+      },
+      "2012": {
+        "pointsFor": 100.32,
+        "pointsAgainst": 98.88
+      },
+      "2011": {
+        "pointsFor": 128.7823,
+        "pointsAgainst": 102.63
+      },
+      "2010": {
+        "pointsFor": 113.8146,
+        "pointsAgainst": 110.1185
+      },
+      "2009": {
+        "pointsFor": 107.8715,
+        "pointsAgainst": 112.1762
+      },
+      "2008": {
+        "pointsFor": 111.93,
+        "pointsAgainst": 102.9208
+      },
+      "2007": {
+        "pointsFor": 102.9377,
+        "pointsAgainst": 109.2946
+      },
+      "2006": {
+        "pointsFor": 98.8294,
+        "pointsAgainst": 111.1271
+      },
+      "2005": {
+        "pointsFor": 114.932,
+        "pointsAgainst": 101.3021
+      }
+    },
+    "incognito": {
+      "2025": {
+        "pointsFor": 107.8814,
+        "pointsAgainst": 102.7329
+      },
+      "2024": {
+        "pointsFor": 110.62,
+        "pointsAgainst": 111.5114
+      },
+      "2023": {
+        "pointsFor": 87.1171,
+        "pointsAgainst": 96.8914
+      },
+      "2022": {
+        "pointsFor": 94.7357,
+        "pointsAgainst": 101.2914
+      },
+      "2021": {
+        "pointsFor": 95.2443,
+        "pointsAgainst": 96.7314
+      },
+      "2020": {
+        "pointsFor": 105.2831,
+        "pointsAgainst": 96.1308
+      },
+      "2019": {
+        "pointsFor": 110.7862,
+        "pointsAgainst": 104.2323
+      },
+      "2018": {
+        "pointsFor": 116.3585,
+        "pointsAgainst": 119.2846
+      },
+      "2017": {
+        "pointsFor": 102.1646,
+        "pointsAgainst": 96.6615
+      },
+      "2016": {
+        "pointsFor": 97.0385,
+        "pointsAgainst": 111.1385
+      },
+      "2015": {
+        "pointsFor": 96.0338,
+        "pointsAgainst": 102.0492
+      },
+      "2014": {
+        "pointsFor": 102.3985,
+        "pointsAgainst": 104.0954
+      },
+      "2013": {
+        "pointsFor": 114.8169,
+        "pointsAgainst": 98.8923
+      },
+      "2012": {
+        "pointsFor": 101.5723,
+        "pointsAgainst": 116.3215
+      },
+      "2011": {
+        "pointsFor": 99.5746,
+        "pointsAgainst": 109.6862
+      },
+      "2010": {
+        "pointsFor": 112.8877,
+        "pointsAgainst": 117.4508
+      },
+      "2009": {
+        "pointsFor": 121.78,
+        "pointsAgainst": 103.2931
+      },
+      "2008": {
+        "pointsFor": 97.7131,
+        "pointsAgainst": 101.5246
+      }
+    },
+    "mukheja": {
+      "2025": {
+        "pointsFor": 100.3829,
+        "pointsAgainst": 109.4329
+      },
+      "2024": {
+        "pointsFor": 98.1486,
+        "pointsAgainst": 91.5257
+      },
+      "2023": {
+        "pointsFor": 104.3029,
+        "pointsAgainst": 94.91
+      },
+      "2022": {
+        "pointsFor": 92.9229,
+        "pointsAgainst": 93.3543
+      },
+      "2021": {
+        "pointsFor": 103.4357,
+        "pointsAgainst": 98.8771
+      },
+      "2020": {
+        "pointsFor": 110.7969,
+        "pointsAgainst": 99.3369
+      },
+      "2019": {
+        "pointsFor": 110.2569,
+        "pointsAgainst": 117.8138
+      },
+      "2018": {
+        "pointsFor": 106.9877,
+        "pointsAgainst": 114.1062
+      },
+      "2017": {
+        "pointsFor": 110.36,
+        "pointsAgainst": 107.6123
+      },
+      "2016": {
+        "pointsFor": 94.8231,
+        "pointsAgainst": 103.2692
+      },
+      "2015": {
+        "pointsFor": 100.3246,
+        "pointsAgainst": 108.1985
+      },
+      "2014": {
+        "pointsFor": 97.8769,
+        "pointsAgainst": 112.9015
+      },
+      "2013": {
+        "pointsFor": 105.3554,
+        "pointsAgainst": 103.7231
+      },
+      "2012": {
+        "pointsFor": 114.6062,
+        "pointsAgainst": 112.3969
+      },
+      "2011": {
+        "pointsFor": 103.61,
+        "pointsAgainst": 109.6238
+      },
+      "2010": {
+        "pointsFor": 92.7638,
+        "pointsAgainst": 101.7677
+      },
+      "2009": {
+        "pointsFor": 101.7554,
+        "pointsAgainst": 106.9546
+      }
+    },
+    "snyder": {
+      "2025": {
+        "pointsFor": 86.83,
+        "pointsAgainst": 96.2057
+      },
+      "2024": {
+        "pointsFor": 99.1086,
+        "pointsAgainst": 104.81
+      },
+      "2023": {
+        "pointsFor": 98.1829,
+        "pointsAgainst": 94.0029
+      },
+      "2022": {
+        "pointsFor": 116.0929,
+        "pointsAgainst": 96.3686
+      },
+      "2021": {
+        "pointsFor": 94.3814,
+        "pointsAgainst": 96.1329
+      },
+      "2020": {
+        "pointsFor": 102.3923,
+        "pointsAgainst": 108.0662
+      },
+      "2019": {
+        "pointsFor": 98.4338,
+        "pointsAgainst": 114.1262
+      },
+      "2018": {
+        "pointsFor": 102.0231,
+        "pointsAgainst": 108.1708
+      },
+      "2017": {
+        "pointsFor": 86.4354,
+        "pointsAgainst": 106.3677
+      },
+      "2016": {
+        "pointsFor": 114.0923,
+        "pointsAgainst": 109.0462
+      },
+      "2015": {
+        "pointsFor": 102.6754,
+        "pointsAgainst": 104.5462
+      },
+      "2014": {
+        "pointsFor": 94.0446,
+        "pointsAgainst": 110.2062
+      },
+      "2013": {
+        "pointsFor": 98.8938,
+        "pointsAgainst": 109.0862
+      },
+      "2012": {
+        "pointsFor": 118.7831,
+        "pointsAgainst": 105.5338
+      },
+      "2011": {
+        "pointsFor": 114.7662,
+        "pointsAgainst": 96.9631
+      },
+      "2010": {
+        "pointsFor": 94.6885,
+        "pointsAgainst": 88.3454
+      },
+      "2009": {
+        "pointsFor": 104.9023,
+        "pointsAgainst": 103.5192
+      },
+      "2008": {
+        "pointsFor": 77.15,
+        "pointsAgainst": 98.0192
+      },
+      "2007": {
+        "pointsFor": 106.4323,
+        "pointsAgainst": 104.2485
+      },
+      "2006": {
+        "pointsFor": 105.1261,
+        "pointsAgainst": 99.0895
+      },
+      "2005": {
+        "pointsFor": 113.8058,
+        "pointsAgainst": 112.9306
+      }
+    },
+    "evans": {
+      "2022": {
+        "pointsFor": 83.2371,
+        "pointsAgainst": 91.7029
+      },
+      "2021": {
+        "pointsFor": 101.9857,
+        "pointsAgainst": 102.0786
+      },
+      "2020": {
+        "pointsFor": 97.8354,
+        "pointsAgainst": 104.5015
+      },
+      "2019": {
+        "pointsFor": 114.2508,
+        "pointsAgainst": 107.7554
+      },
+      "2018": {
+        "pointsFor": 104.5508,
+        "pointsAgainst": 118.4169
+      },
+      "2017": {
+        "pointsFor": 102.9446,
+        "pointsAgainst": 100.68
+      },
+      "2016": {
+        "pointsFor": 103.8538,
+        "pointsAgainst": 112.5
+      },
+      "2015": {
+        "pointsFor": 98.9692,
+        "pointsAgainst": 108.8077
+      },
+      "2014": {
+        "pointsFor": 100.7738,
+        "pointsAgainst": 115.8877
+      },
+      "2013": {
+        "pointsFor": 105.4662,
+        "pointsAgainst": 118.4985
+      },
+      "2012": {
+        "pointsFor": 107.2738,
+        "pointsAgainst": 100.0585
+      },
+      "2011": {
+        "pointsFor": 121.4315,
+        "pointsAgainst": 105.9846
+      },
+      "2010": {
+        "pointsFor": 107.8669,
+        "pointsAgainst": 105.7392
+      },
+      "2009": {
+        "pointsFor": 107.7608,
+        "pointsAgainst": 115.7315
+      },
+      "2008": {
+        "pointsFor": 115.9123,
+        "pointsAgainst": 97.2915
+      },
+      "2007": {
+        "pointsFor": 100.8746,
+        "pointsAgainst": 106.1485
+      },
+      "2006": {
+        "pointsFor": 105.4735,
+        "pointsAgainst": 106.5353
+      },
+      "2005": {
+        "pointsFor": 107.8067,
+        "pointsAgainst": 104.7186
+      },
+      "2004": {
+        "pointsFor": 122.8421,
+        "pointsAgainst": 108.1489
+      }
+    },
+    "lalwani": {
+      "2025": {
+        "pointsFor": 108.1729,
+        "pointsAgainst": 102.9114
+      },
+      "2024": {
+        "pointsFor": 87.0986,
+        "pointsAgainst": 106.7714
+      },
+      "2023": {
+        "pointsFor": 105.99,
+        "pointsAgainst": 98.0286
+      }
+    },
+    "banerjee": {
+      "2008": {
+        "pointsFor": 103.5208,
+        "pointsAgainst": 110.3908
+      },
+      "2007": {
+        "pointsFor": 127.3169,
+        "pointsAgainst": 98.9146
+      },
+      "2006": {
+        "pointsFor": 97.2261,
+        "pointsAgainst": 105.6739
+      },
+      "2005": {
+        "pointsFor": 94.065,
+        "pointsAgainst": 103.429
+      },
+      "2004": {
+        "pointsFor": 100.3082,
+        "pointsAgainst": 109.4679
+      }
+    },
+    "kim": {
+      "2008": {
+        "pointsFor": 90.5077,
+        "pointsAgainst": 99.62
+      },
+      "2007": {
+        "pointsFor": 99.2785,
+        "pointsAgainst": 106.9385
+      },
+      "2006": {
+        "pointsFor": 102.11,
+        "pointsAgainst": 97.6296
+      },
+      "2005": {
+        "pointsFor": 113.008,
+        "pointsAgainst": 102.7894
+      }
+    },
+    "kurucz": {
+      "2007": {
+        "pointsFor": 90.8115,
+        "pointsAgainst": 102.3292
+      },
+      "2006": {
+        "pointsFor": 108.9367,
+        "pointsAgainst": 105.4967
+      },
+      "2005": {
+        "pointsFor": 91.1007,
+        "pointsAgainst": 100.4372
+      },
+      "2004": {
+        "pointsFor": 90.3887,
+        "pointsAgainst": 103.4988
+      }
+    }
   }
 }

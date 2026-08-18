@@ -16,12 +16,14 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import sys
 
 import openpyxl
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-BLOCKS = {"pointsFor": (41, 56), "pointsAgainst": (87, 102)}
+# (header_row, first_row, last_row) of the per-manager average blocks
+BLOCKS = {"pointsFor": (40, 41, 56), "pointsAgainst": (86, 87, 102)}
 COL_NAME, COL_KEEPER, COL_ALLTIME = 0, 1, 2
 
 
@@ -33,8 +35,15 @@ def main() -> None:
     rows = list(wb["Master Data"].iter_rows(values_only=True))
     managers = {m["id"] for m in json.loads((ROOT / "public/data/managers.json").read_text())}
 
-    out: dict = {"keeperEra": {}, "allTime": {}}
-    for field, (first, last) in BLOCKS.items():
+    out: dict = {"keeperEra": {}, "allTime": {}, "seasons": {}}
+    for field, (header, first, last) in BLOCKS.items():
+        # header cells read '2025', '2006 (Adj.)', ... — map column -> year
+        year_by_col = {}
+        for col, cell in enumerate(rows[header - 1]):
+            match = re.search(r"(20\d\d)", str(cell)) if cell is not None else None
+            if match:
+                year_by_col[col] = int(match.group(1))
+
         for row in rows[first - 1 : last]:
             name = row[COL_NAME]
             if not isinstance(name, str):
@@ -46,10 +55,20 @@ def main() -> None:
                 value = row[col]
                 if isinstance(value, (int, float)):
                     out[era].setdefault(who, {})[field] = round(float(value), 4)
+            for col, year in year_by_col.items():
+                value = row[col]
+                if isinstance(value, (int, float)):
+                    out["seasons"].setdefault(who, {}).setdefault(str(year), {})[field] = round(
+                        float(value), 4
+                    )
 
     target = ROOT / "public/data/career-averages.json"
     target.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
-    print({era: len(entries) for era, entries in out.items()})
+    season_cells = sum(len(years) for years in out["seasons"].values())
+    print(
+        f"keeperEra {len(out['keeperEra'])} · allTime {len(out['allTime'])} · "
+        f"season cells {season_cells}"
+    )
 
 
 if __name__ == "__main__":

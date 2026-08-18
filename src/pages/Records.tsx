@@ -10,9 +10,11 @@ import { num, pct, record } from '../lib/format'
 import {
   careerTable,
   eraOptions,
+  inEra,
   leagueScoringByYear,
   seasonExtremes,
   type CareerLine,
+  type SeasonExtreme,
 } from '../lib/stats'
 import type { GameRecordEntry, Manager } from '../lib/types'
 
@@ -45,10 +47,22 @@ export default function Records() {
       : line
   })
   const scoring = useMemo(() => leagueScoringByYear(seasons), [seasons])
-  const pointsFor = useMemo(
-    () => seasonExtremes(seasons, era, 'avgPointsFor'),
-    [seasons, era],
-  )
+  // Season extremes come from the book's adjusted matrix when it's present
+  // (the 2004–2006 raw tab averages are pre-adjustment and would wrongly
+  // dominate the bottom of the table); raw season data is the fallback.
+  const pointsFor = useMemo(() => {
+    if (!careerAverages?.seasons) return seasonExtremes(seasons, era, 'avgPointsFor')
+    const rows: SeasonExtreme[] = []
+    for (const [manager, years] of Object.entries(careerAverages.seasons)) {
+      for (const [year, values] of Object.entries(years)) {
+        if (values.pointsFor !== undefined && inEra(Number(year), era)) {
+          rows.push({ manager, year: Number(year), value: values.pointsFor })
+        }
+      }
+    }
+    const sorted = [...rows].sort((a, b) => b.value - a.value)
+    return { best: sorted.slice(0, 10), worst: [...sorted].reverse().slice(0, 10) }
+  }, [careerAverages, seasons, era])
 
   return (
     <>

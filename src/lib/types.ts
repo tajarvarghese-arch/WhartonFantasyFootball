@@ -227,6 +227,11 @@ export interface GameRecords {
 export interface CareerAverages {
   keeperEra: Record<ManagerId, { pointsFor: number; pointsAgainst: number }>
   allTime: Record<ManagerId, { pointsFor: number; pointsAgainst: number }>
+  /** Per-manager per-season averages from the same adjusted matrix. */
+  seasons: Record<
+    ManagerId,
+    Record<string, { pointsFor?: number; pointsAgainst?: number }>
+  >
 }
 
 export interface DraftPoolPlayer {
