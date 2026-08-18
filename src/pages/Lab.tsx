@@ -8,11 +8,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import GoatAvatar from '../components/GoatAvatar'
 import ManagerTag from '../components/ManagerTag'
 import { Chip, Panel, PageHeader } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
 import { managerColor } from '../lib/identity'
+import { animationsDisabled } from '../lib/motion'
 import { money, num, pct } from '../lib/format'
 import {
   careerLuck,
@@ -410,7 +410,18 @@ export default function Lab() {
                         {name}
                       </span>
                     </div>
-                    <GoatAvatar scale={4} />
+                    {/* The GOAT himself, in motion. Muted loop so it plays
+                        inline everywhere; FX off leaves it politely still. */}
+                    <video
+                      className="w-44 rounded-lg border border-arc-line bg-black sm:w-52"
+                      src={`${import.meta.env.BASE_URL}media/goat-flex.mp4`}
+                      autoPlay={!animationsDisabled()}
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      aria-label="The GOAT, flexing"
+                    />
                   </div>
 
                   <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
