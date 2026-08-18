@@ -23,6 +23,55 @@ import {
   vegasBoard,
 } from '../lib/analytics'
 
+/** Every Lab metric, translated into plain league-speak. */
+const DEFINITIONS: { term: string; plain: string }[] = [
+  {
+    term: 'The Vegas Board (title odds)',
+    plain:
+      "We take each manager's keeper-era scoring history, shake it up with random week-to-week noise, and play 5,000 pretend seasons. Your odds are how often you posted the best season. It knows your track record and nothing else — not your roster, not your draft, not your feelings.",
+  },
+  {
+    term: 'The Luck Index',
+    plain:
+      'How many wins your points deserved versus how many you actually got. "Deserved" is measured against a neutral schedule made of everyone-but-you (nobody plays themselves, so your opponent pool is the other eleven at their average). Positive means the universe owes you nothing.',
+  },
+  {
+    term: 'Draw (luck component)',
+    plain:
+      "Whether your actual opponents scored more or less against you than that neutral pool average — did the schedule feed you teams on their bad weeks or their good ones? Positive draw = soft landing.",
+  },
+  {
+    term: 'Pairing (luck component)',
+    plain:
+      'Given the points that really landed on both sides all season, did the wins and losses fall your way? This is the coin-flip part — winning the close ones, losing the blowouts by a hair.',
+  },
+  {
+    term: 'The GOAT Index',
+    plain:
+      "For every season, we measure how far above or below that year's average scoring you were, in that year's terms — so 2007 monsters and 2024 monsters compare fairly. Career GOAT points are all those seasons added up. Dominance and longevity both count; one hot year doesn't.",
+  },
+  {
+    term: 'Empires rise & fall (Elo)',
+    plain:
+      "A chess-style rating: everyone starts equal, each season your rating rises or falls based on your record against the field's average rating, and winning the title adds a bonus. The chart is 22 years of who was actually feared, drawn as one line per manager.",
+  },
+  {
+    term: 'The Torture Board',
+    plain:
+      'A ranking of suffering: seasons played without a ring, years since the last one, runner-up finishes (so close), and playoff trips that went nowhere. The top of this board has earned your respect and possibly a hug.',
+  },
+  {
+    term: 'Best contracts ever',
+    plain:
+      "Fantasy points a kept player actually scored during the keeper run, minus the auction dollars paid for him. Big positive number = highway robbery. Quarterbacks are banned from this board because cheap productive QBs grow on trees and everyone's picked one.",
+  },
+  {
+    term: 'Worst contracts ever',
+    plain:
+      'Same math, read from the bottom, minimum $25 committed so we only shame real investments. This is where the $60 running back with 6 points before the knee surgery lives forever.',
+  },
+]
+
 export default function Lab() {
   const data = useLeagueData()
   const { seasons, managers, keepers, league } = data
@@ -351,6 +400,30 @@ export default function Lab() {
           subtitle="Same metric from the bottom. Minimum $25 committed; QBs eligible here."
         >
           <ContractTable rows={contracts.overpays} positive={false} />
+        </Panel>
+      </div>
+
+      {/* Definitions, in league vernacular */}
+      <div className="mt-6">
+        <Panel
+          title="explain it like i'm alex"
+          subtitle="Every Lab stat in one sentence a fourth-rounder could follow. Tap one."
+        >
+          <div className="space-y-1 px-5 py-4">
+            {DEFINITIONS.map((item) => (
+              <details key={item.term} className="group border-b border-arc-line/50 pb-2">
+                <summary className="arcade cursor-pointer list-none py-2 text-[13.5px] text-arc-ink transition-colors hover:text-arc-green">
+                  <span className="mr-2 inline-block text-arc-ink-faint transition-transform group-open:rotate-90">
+                    ▸
+                  </span>
+                  {item.term}
+                </summary>
+                <p className="pb-2 pl-6 text-[13.5px] leading-relaxed text-arc-ink-soft">
+                  {item.plain}
+                </p>
+              </details>
+            ))}
+          </div>
         </Panel>
       </div>
 
