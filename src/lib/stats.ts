@@ -77,14 +77,16 @@ function blankLine(manager: ManagerId): CareerLine {
 /** Career records for every manager who played inside the given era. */
 export function careerTable(seasons: Season[], era: EraFilter): CareerLine[] {
   const lines = new Map<ManagerId, CareerLine>()
-  const avgForWeighted = new Map<ManagerId, { total: number; games: number }>()
-  const avgAgainstWeighted = new Map<ManagerId, { total: number; games: number }>()
+  // Career points per game is the MEAN OF SEASON AVERAGES, not a
+  // games-weighted average — that's how the league's workbook has always
+  // computed it, and the site's numbers must tie to the book.
+  const avgFor = new Map<ManagerId, { total: number; count: number }>()
+  const avgAgainst = new Map<ManagerId, { total: number; count: number }>()
 
   for (const season of seasons) {
     if (!inEra(season.year, era)) continue
     for (const team of season.teams) {
       const line = lines.get(team.manager) ?? blankLine(team.manager)
-      const games = team.wins + team.losses
 
       line.seasonsPlayed += 1
       line.wins += team.wins
@@ -101,10 +103,10 @@ export function careerTable(seasons: Season[], era: EraFilter): CareerLine[] {
       line.pointsAgainst += team.pointsAgainst ?? 0
 
       if (team.avgPointsFor !== null) {
-        const bucket = avgForWeighted.get(team.manager) ?? { total: 0, games: 0 }
-        bucket.total += team.avgPointsFor * games
-        bucket.games += games
-        avgForWeighted.set(team.manager, bucket)
+        const bucket = avgFor.get(team.manager) ?? { total: 0, count: 0 }
+        bucket.total += team.avgPointsFor
+        bucket.count += 1
+        avgFor.set(team.manager, bucket)
 
         if (!line.bestSeason || team.avgPointsFor > line.bestSeason.avg) {
           line.bestSeason = { year: season.year, avg: team.avgPointsFor }
@@ -114,10 +116,10 @@ export function careerTable(seasons: Season[], era: EraFilter): CareerLine[] {
         }
       }
       if (team.avgPointsAgainst !== null) {
-        const bucket = avgAgainstWeighted.get(team.manager) ?? { total: 0, games: 0 }
-        bucket.total += team.avgPointsAgainst * games
-        bucket.games += games
-        avgAgainstWeighted.set(team.manager, bucket)
+        const bucket = avgAgainst.get(team.manager) ?? { total: 0, count: 0 }
+        bucket.total += team.avgPointsAgainst
+        bucket.count += 1
+        avgAgainst.set(team.manager, bucket)
       }
 
       lines.set(team.manager, line)
@@ -128,10 +130,10 @@ export function careerTable(seasons: Season[], era: EraFilter): CareerLine[] {
     const games = line.wins + line.losses
     line.winPct = games ? line.wins / games : 0
     line.playoffRate = line.seasonsPlayed ? line.playoffAppearances / line.seasonsPlayed : 0
-    const forBucket = avgForWeighted.get(line.manager)
-    const againstBucket = avgAgainstWeighted.get(line.manager)
-    line.avgPointsFor = forBucket?.games ? forBucket.total / forBucket.games : null
-    line.avgPointsAgainst = againstBucket?.games ? againstBucket.total / againstBucket.games : null
+    const forBucket = avgFor.get(line.manager)
+    const againstBucket = avgAgainst.get(line.manager)
+    line.avgPointsFor = forBucket?.count ? forBucket.total / forBucket.count : null
+    line.avgPointsAgainst = againstBucket?.count ? againstBucket.total / againstBucket.count : null
     if (!Number.isFinite(line.bestFinish)) line.bestFinish = 0
   }
 
