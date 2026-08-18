@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import GoatAvatar from '../components/GoatAvatar'
 import ManagerTag from '../components/ManagerTag'
 import { Chip, Panel, PageHeader } from '../components/ui'
 import { managerName, useLeagueData } from '../lib/data'
@@ -402,11 +403,14 @@ export default function Lab() {
                 subtitle="Commissioned by no one. Disputed by many. Settled by arithmetic."
               >
                 <div className="px-5 py-5">
-                  <div className="flex flex-wrap items-center gap-4">
-                    <ManagerTag id={shrine.manager} size={34} />
-                    <span className="display" style={{ color: managerColor(shrine.manager) }}>
-                      {name}
-                    </span>
+                  <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div className="flex flex-wrap items-center gap-4">
+                      <ManagerTag id={shrine.manager} size={34} />
+                      <span className="display" style={{ color: managerColor(shrine.manager) }}>
+                        {name}
+                      </span>
+                    </div>
+                    <GoatAvatar scale={4} />
                   </div>
 
                   <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
