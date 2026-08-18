@@ -1,0 +1,122 @@
+{
+  "keeperEra": {
+    "varghese": {
+      "pointsFor": 105.4679,
+      "pointsAgainst": 102.1002
+    },
+    "baugh": {
+      "pointsFor": 100.9406,
+      "pointsAgainst": 106.9352
+    },
+    "waldman": {
+      "pointsFor": 110.9276,
+      "pointsAgainst": 100.6758
+    },
+    "buzik": {
+      "pointsFor": 106.1106,
+      "pointsAgainst": 104.1096
+    },
+    "bernstein": {
+      "pointsFor": 104.7748,
+      "pointsAgainst": 101.9873
+    },
+    "konciak": {
+      "pointsFor": 94.0523,
+      "pointsAgainst": 104.9758
+    },
+    "tollinche": {
+      "pointsFor": 110.8412,
+      "pointsAgainst": 100.6337
+    },
+    "velamoor": {
+      "pointsFor": 102.7854,
+      "pointsAgainst": 101.8547
+    },
+    "incognito": {
+      "pointsFor": 102.1385,
+      "pointsAgainst": 103.5626
+    },
+    "mukheja": {
+      "pointsFor": 102.5516,
+      "pointsAgainst": 104.2782
+    },
+    "snyder": {
+      "pointsFor": 99.5577,
+      "pointsAgainst": 104.0041
+    },
+    "evans": {
+      "pointsFor": 100.9335,
+      "pointsAgainst": 106.9256
+    },
+    "lalwani": {
+      "pointsFor": 100.4205,
+      "pointsAgainst": 102.5705
+    }
+  },
+  "allTime": {
+    "varghese": {
+      "pointsFor": 107.9319,
+      "pointsAgainst": 104.3051
+    },
+    "baugh": {
+      "pointsFor": 103.2857,
+      "pointsAgainst": 107.8096
+    },
+    "waldman": {
+      "pointsFor": 109.0418,
+      "pointsAgainst": 100.2142
+    },
+    "buzik": {
+      "pointsFor": 107.022,
+      "pointsAgainst": 106.4701
+    },
+    "bernstein": {
+      "pointsFor": 104.9419,
+      "pointsAgainst": 103.9579
+    },
+    "konciak": {
+      "pointsFor": 98.4392,
+      "pointsAgainst": 105.9925
+    },
+    "tollinche": {
+      "pointsFor": 107.575,
+      "pointsAgainst": 103.5192
+    },
+    "velamoor": {
+      "pointsFor": 105.3694,
+      "pointsAgainst": 103.6299
+    },
+    "incognito": {
+      "pointsFor": 104.1115,
+      "pointsAgainst": 104.9955
+    },
+    "mukheja": {
+      "pointsFor": 102.8653,
+      "pointsAgainst": 105.0473
+    },
+    "snyder": {
+      "pointsFor": 101.3924,
+      "pointsAgainst": 103.1326
+    },
+    "evans": {
+      "pointsFor": 105.8479,
+      "pointsAgainst": 106.9045
+    },
+    "lalwani": {
+      "pointsFor": 100.4205,
+      "pointsAgainst": 102.5705
+    },
+    "banerjee": {
+      "pointsFor": 104.4874,
+      "pointsAgainst": 105.5752
+    },
+    "kim": {
+      "pointsFor": 101.226,
+      "pointsAgainst": 101.7444
+    },
+    "kurucz": {
+      "pointsFor": 95.3094,
+      "pointsAgainst": 102.9405
+    }
+  }
+}

@@ -37,6 +37,7 @@ const FILES = {
   vault: 'auth.json',
   draftPool: 'draft-pool.json',
   gameRecords: 'game-records.json',
+  careerAverages: 'career-averages.json',
 } as const
 
 /** Files the commissioner edits in-app. Writes go to GitHub *and* to this cache. */
@@ -175,6 +176,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         vault,
         draftPool,
         gameRecords,
+        careerAverages,
       ] = await Promise.all([
         loadJson<LeagueData['league']>(FILES.league),
         loadJson<LeagueData['managers']>(FILES.managers),
@@ -194,6 +196,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         loadOptionalJson<import('./types').CommissionerVault>(FILES.vault),
         loadOptionalJson<import('./types').DraftPool>(FILES.draftPool),
         loadOptionalJson<import('./types').GameRecords>(FILES.gameRecords),
+        loadOptionalJson<import('./types').CareerAverages>(FILES.careerAverages),
       ])
 
       const { overlay, ages } = freshOverlay()
@@ -220,6 +223,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
           : vault,
         draftPool,
         gameRecords,
+        careerAverages,
       }
 
       // Drop overlay entries the deployed site has caught up on.

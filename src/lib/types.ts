@@ -219,6 +219,16 @@ export interface GameRecords {
   allTime: { highest: GameRecordEntry[]; lowest: GameRecordEntry[] }
 }
 
+/**
+ * The book's own career scoring averages per manager. Not derivable from
+ * season data: 2004–2006 feed the workbook's career math through adjusted
+ * totals, so these are lifted verbatim by scripts/career_averages.py.
+ */
+export interface CareerAverages {
+  keeperEra: Record<ManagerId, { pointsFor: number; pointsAgainst: number }>
+  allTime: Record<ManagerId, { pointsFor: number; pointsAgainst: number }>
+}
+
 export interface DraftPoolPlayer {
   rank: number
   player: string
@@ -275,4 +285,6 @@ export interface LeagueData {
   draftPool: DraftPool | null
   /** Absent until scripts/game_records.py has been run. */
   gameRecords: GameRecords | null
+  /** Absent until scripts/career_averages.py has been run. */
+  careerAverages: CareerAverages | null
 }

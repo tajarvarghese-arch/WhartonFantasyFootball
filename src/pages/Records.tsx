@@ -17,10 +17,20 @@ import {
 import type { GameRecordEntry, Manager } from '../lib/types'
 
 export default function Records() {
-  const { seasons, managers, gameRecords } = useLeagueData()
+  const { seasons, managers, gameRecords, careerAverages } = useLeagueData()
   const eras = eraOptions(seasons)
   const [eraId, setEraId] = useState('keeper')
   const era = eras.find((option) => option.id === eraId) ?? eras[0]
+
+  // For the two book eras, career scoring averages come straight from the
+  // workbook (its early seasons feed the career math through adjusted
+  // totals no season-level computation can reproduce).
+  const bookAverages =
+    eraId === 'all'
+      ? careerAverages?.allTime
+      : eraId === 'keeper'
+        ? careerAverages?.keeperEra
+        : undefined
 
   // The workbook keeps two single-game record books; All-Time shows one,
   // every other era view shows the keeper-era book.
@@ -28,7 +38,12 @@ export default function Records() {
   const gameEraLabel = eraId === 'all' ? 'All-time' : 'Keeper-era'
 
   const trades = useTrades()
-  const table = careerTable(seasons, era)
+  const table = careerTable(seasons, era).map((line) => {
+    const book = bookAverages?.[line.manager]
+    return book
+      ? { ...line, avgPointsFor: book.pointsFor, avgPointsAgainst: book.pointsAgainst }
+      : line
+  })
   const scoring = useMemo(() => leagueScoringByYear(seasons), [seasons])
   const pointsFor = useMemo(
     () => seasonExtremes(seasons, era, 'avgPointsFor'),
