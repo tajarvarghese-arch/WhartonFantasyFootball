@@ -47,13 +47,21 @@ export type WritableFile =
   | 'keepers.json'
 
 const OVERLAY_KEY = 'wacl.overlay'
+const OVERLAY_AGE_KEY = 'wacl.overlay.age'
+/** Pages redeploys in ~1–2 minutes; after this the served site wins. */
+const OVERLAY_TTL_MS = 5 * 60_000
 
 /**
  * GitHub Pages redeploys a minute or two after a commit, so a fresh fetch can
  * still return the pre-write file. This overlay keeps the UI truthful in the
- * meantime and is discarded once the served file catches up.
+ * meantime and is discarded once the served file catches up — or once it
+ * expires. The expiry matters for multi-device commissioners: an overlay from
+ * THIS device only knows how to wait for the site to catch up to it; if
+ * another device has since moved the data further, exact-match catch-up never
+ * happens and a stale overlay would otherwise mask the newer edits forever.
  */
 type Overlay = Partial<Record<WritableFile, unknown>>
+type OverlayAges = Partial<Record<WritableFile, number>>
 
 function readOverlay(): Overlay {
   try {
@@ -63,17 +71,45 @@ function readOverlay(): Overlay {
   }
 }
 
-function writeOverlay(overlay: Overlay): void {
+function readAges(): OverlayAges {
+  try {
+    return JSON.parse(localStorage.getItem(OVERLAY_AGE_KEY) ?? '{}') as OverlayAges
+  } catch {
+    return {}
+  }
+}
+
+function writeOverlay(overlay: Overlay, ages: OverlayAges): void {
   try {
     localStorage.setItem(OVERLAY_KEY, JSON.stringify(overlay))
+    localStorage.setItem(OVERLAY_AGE_KEY, JSON.stringify(ages))
   } catch {
     /* ignore quota / private mode */
   }
 }
 
+/** The overlay minus anything past its bridge-the-deploy window. */
+function freshOverlay(): { overlay: Overlay; ages: OverlayAges } {
+  const overlay = readOverlay()
+  const ages = readAges()
+  const now = Date.now()
+  let changed = false
+  for (const file of Object.keys(overlay) as WritableFile[]) {
+    const age = ages[file]
+    if (age === undefined || now - age > OVERLAY_TTL_MS) {
+      delete overlay[file]
+      delete ages[file]
+      changed = true
+    }
+  }
+  if (changed) writeOverlay(overlay, ages)
+  return { overlay, ages }
+}
+
 export function clearOverlay(): void {
   try {
     localStorage.removeItem(OVERLAY_KEY)
+    localStorage.removeItem(OVERLAY_AGE_KEY)
   } catch {
     /* ignore */
   }
@@ -157,7 +193,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         loadOptionalJson<import('./types').DraftPool>(FILES.draftPool),
       ])
 
-      const overlay = readOverlay()
+      const { overlay, ages } = freshOverlay()
       const next: LeagueData = {
         league,
         managers,
@@ -184,6 +220,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
       // Drop overlay entries the deployed site has caught up on.
       const pruned: Overlay = {}
+      const prunedAges: OverlayAges = {}
       const served: Record<WritableFile, unknown> = {
         'cash.json': cash,
         'faab.json': faab,
@@ -192,9 +229,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
         'keepers.json': keepers,
       }
       for (const [file, value] of Object.entries(overlay) as [WritableFile, unknown][]) {
-        if (JSON.stringify(served[file]) !== JSON.stringify(value)) pruned[file] = value
+        if (JSON.stringify(served[file]) !== JSON.stringify(value)) {
+          pruned[file] = value
+          prunedAges[file] = ages[file]
+        }
       }
-      writeOverlay(pruned)
+      writeOverlay(pruned, prunedAges)
 
       setData(next)
     } catch (cause) {
@@ -211,8 +251,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const save = useCallback<DataContextValue['save']>(async (file, update, message) => {
     const next = await commitFile(file, update, message)
     const overlay = readOverlay()
+    const ages = readAges()
     overlay[file] = next
-    writeOverlay(overlay)
+    ages[file] = Date.now()
+    writeOverlay(overlay, ages)
     setData((current) => {
       if (!current) return current
       if (file === 'cash.json') return { ...current, cash: next as CashFile }
