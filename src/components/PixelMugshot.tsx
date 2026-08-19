@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /**
- * A wanted-poster mugshot in the site's pixel-sprite style. Every feature —
- * skin, hair colour and cut, brow, expression, facial hair — is derived from
- * a hash of the manager id, so a manager's face is distinct from the others
- * and identical on every render. Nobody's likeness is claimed; these are
- * deliberately generic sprites.
+ * A wanted-poster mugshot. Prefers the league's own pixel portrait at
+ * public/media/portraits/<managerId>.png; when a manager has no portrait on
+ * file it falls back to a generated sprite whose every feature — skin, hair
+ * colour and cut, brow, expression, facial hair — is derived from a hash of
+ * the manager id, so the face is distinct and stable across renders.
  */
 
 const W = 24
@@ -26,8 +26,15 @@ function hash(seed: string): number {
 
 export default function PixelMugshot({ seed, scale = 3 }: { seed: string; scale?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [usePortrait, setUsePortrait] = useState(true)
+  const portraitUrl = `${import.meta.env.BASE_URL}media/portraits/${seed}.png`
 
   useEffect(() => {
+    setUsePortrait(true)
+  }, [seed])
+
+  useEffect(() => {
+    if (usePortrait) return
     const canvas = canvasRef.current
     if (!canvas) return
     canvas.width = W
@@ -65,18 +72,16 @@ export default function PixelMugshot({ seed, scale = 3 }: { seed: string; scale?
     rect(6, 6, 17, 20, skin)
     rect(5, 9, 5, 16, skin)
     rect(18, 9, 18, 16, skin)
-    // ears
     px(4, 12, skin)
     px(19, 12, skin)
-    // jaw shading
     rect(6, 20, 17, 20, '#00000018')
 
     // hair
     if (cut !== 2) rect(6, 4, 17, 7, hair)
-    else rect(8, 4, 15, 6, hair) // receding
-    if (cut === 1) rect(6, 3, 17, 3, hair) // flat top
+    else rect(8, 4, 15, 6, hair)
+    if (cut === 1) rect(6, 3, 17, 3, hair)
     if (cut === 3) {
-      rect(5, 5, 5, 11, hair) // shaggy sides
+      rect(5, 5, 5, 11, hair)
       rect(18, 5, 18, 11, hair)
     }
     rect(5, 7, 6, 8, hair)
@@ -86,12 +91,11 @@ export default function PixelMugshot({ seed, scale = 3 }: { seed: string; scale?
     rect(8, 10, 10, 10, hair)
     rect(13, 10, 15, 10, hair)
 
-    // eyes — expression drives the gaze
+    // eyes
     const eyeY = 12
     px(9, eyeY, '#1b1b1b')
     px(14, eyeY, '#1b1b1b')
     if (face === 1) {
-      // sidelong, guilty
       px(10, eyeY, '#1b1b1b')
       px(15, eyeY, '#1b1b1b')
     }
@@ -101,13 +105,14 @@ export default function PixelMugshot({ seed, scale = 3 }: { seed: string; scale?
     px(12, 15, '#00000030')
 
     // mouth
-    if (face === 0) rect(10, 17, 13, 17, '#5a3222') // flat
-    else if (face === 1) {
-      rect(10, 17, 13, 17, '#5a3222') // frown
+    if (face === 0) {
+      rect(10, 17, 13, 17, '#5a3222')
+    } else if (face === 1) {
+      rect(10, 17, 13, 17, '#5a3222')
       px(9, 16, '#5a3222')
       px(14, 16, '#5a3222')
     } else {
-      rect(10, 17, 13, 17, '#5a3222') // smirk
+      rect(10, 17, 13, 17, '#5a3222')
       px(14, 16, '#5a3222')
     }
 
@@ -119,10 +124,10 @@ export default function PixelMugshot({ seed, scale = 3 }: { seed: string; scale?
     } else if (beard === 2) {
       rect(7, 16, 16, 19, hair)
       rect(9, 15, 14, 15, hair)
-      rect(10, 17, 13, 18, '#5a3222') // mouth stays visible
+      rect(10, 17, 13, 18, '#5a3222')
     }
 
-    // poster grain: a few flecks so it sits on aged paper
+    // poster grain
     for (let i = 0; i < 14; i++) {
       const gx = (h >> (i % 12)) % W
       const gy = (h >> ((i + 5) % 13)) % H
@@ -130,13 +135,21 @@ export default function PixelMugshot({ seed, scale = 3 }: { seed: string; scale?
       px(gx, gy, i % 2 ? '#000' : PAPER)
       ctx.globalAlpha = 1
     }
-  }, [seed, scale])
+  }, [seed, scale, usePortrait])
 
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{ imageRendering: 'pixelated' }}
-      aria-hidden
-    />
-  )
+  if (usePortrait) {
+    return (
+      <img
+        src={portraitUrl}
+        alt=""
+        aria-hidden
+        width={H * scale}
+        height={H * scale}
+        style={{ imageRendering: 'pixelated', objectFit: 'cover', display: 'block' }}
+        onError={() => setUsePortrait(false)}
+      />
+    )
+  }
+
+  return <canvas ref={canvasRef} style={{ imageRendering: 'pixelated' }} aria-hidden />
 }
