@@ -56,6 +56,14 @@ export default function Draft() {
     keeper: kept.get(normalizePlayer(player.player)),
   }))
   const availableCount = rows.filter((row) => !row.keeper).length
+  // Bodies left at each position, so a filter button advertises what's actually
+  // reaching the auction instead of how deep the rankings go. ALL carries the
+  // total, so the position counts sum to it.
+  const availableByPos = new Map<string, number>()
+  for (const row of rows) {
+    if (row.keeper) continue
+    availableByPos.set(row.pos, (availableByPos.get(row.pos) ?? 0) + 1)
+  }
   const visible = rows.filter(
     (row) =>
       (position === 'ALL' || row.pos === position) && (showKept || !row.keeper),
@@ -89,7 +97,10 @@ export default function Draft() {
             <SegmentedControl<Position>
               value={position}
               onChange={setPosition}
-              options={POSITIONS.map((id) => ({ id, label: id }))}
+              options={POSITIONS.map((id) => ({
+                id,
+                label: `${id} (${id === 'ALL' ? availableCount : (availableByPos.get(id) ?? 0)})`,
+              }))}
             />
             <button type="button" className="btn" onClick={() => setShowKept((on) => !on)}>
               {showKept ? 'Hide kept' : 'Show kept'}
