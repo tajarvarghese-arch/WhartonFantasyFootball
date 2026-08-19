@@ -10,7 +10,7 @@
   {
     "id": "waldman",
     "surname": "Waldman",
-    "firstName": "Stu",
+    "firstName": "Stuart",
     "displayName": "Stu",
     "team": "I Must Break You",
     "active": true
@@ -34,7 +34,7 @@
   {
     "id": "bernstein",
     "surname": "Bernstein",
-    "firstName": "Bernstein",
+    "firstName": "Dan",
     "displayName": "Bernstein",
     "team": "Orchids of Asia",
     "active": true
@@ -42,7 +42,7 @@
   {
     "id": "baugh",
     "surname": "Baugh",
-    "firstName": "Baugh",
+    "firstName": "Chris",
     "displayName": "Baugh",
     "team": "Juggernaut",
     "active": true
@@ -50,7 +50,7 @@
   {
     "id": "velamoor",
     "surname": "Velamoor",
-    "firstName": "Velamoor",
+    "firstName": "Nik",
     "displayName": "Velamoor",
     "team": "Private Sector",
     "active": true
@@ -90,7 +90,7 @@
   {
     "id": "lalwani",
     "surname": "Lalwani",
-    "firstName": "Lalwani",
+    "firstName": "Nikhil",
     "displayName": "Lalwani",
     "team": "Quien Es Tu Papa",
     "active": true
