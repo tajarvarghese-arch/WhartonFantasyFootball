@@ -8,7 +8,7 @@ import { money } from '../lib/format'
 import type { CashFile } from '../lib/types'
 
 /**
- * The dues board: good people down one side, delinquents down the other.
+ * The dues board: good people down one side, deadbeats down the other.
  * Rows are derived from the cash ledger the commissioner already keeps, so a
  * manager crosses from right to left the moment their entry is settled.
  */
@@ -144,10 +144,10 @@ export default function DuesBoard({ season }: { season: number }) {
           )}
         </div>
 
-        {/* Delinquents */}
+        {/* Deadbeats */}
         <div>
           <div className="flex items-baseline justify-between gap-3 border-b border-arc-line px-4 py-2.5">
-            <span className="arcade text-[15px] text-[var(--color-arc-red)]">DELINQUENTS</span>
+            <span className="arcade text-[15px] text-[var(--color-arc-red)]">DEADBEATS</span>
             <span className="tnum text-[12px] text-arc-ink-faint">{unpaid.length}</span>
           </div>
           {unpaid.length === 0 ? (
@@ -164,7 +164,7 @@ export default function DuesBoard({ season }: { season: number }) {
                     className="flex items-center gap-3 border-b border-arc-line/40 px-4 py-2.5 last:border-b-0"
                     style={{
                       boxShadow:
-                        row.tier === 'delinquent'
+                        row.tier === 'deadbeat'
                           ? 'inset 3px 0 0 var(--color-arc-red)'
                           : undefined,
                     }}

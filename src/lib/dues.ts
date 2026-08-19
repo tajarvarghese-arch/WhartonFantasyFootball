@@ -7,10 +7,10 @@ import type { CashEntry, League, ManagerId } from './types'
  * leaves the wanted board the moment their entry is marked settled.
  */
 
-export type DuesTier = 'paid' | 'pending' | 'overdue' | 'delinquent'
+export type DuesTier = 'paid' | 'pending' | 'overdue' | 'deadbeat'
 
-/** Days past the deadline before a poster earns the DELINQUENT overprint. */
-const DELINQUENT_AFTER_DAYS = 30
+/** Days past the deadline before a poster earns the DEADBEAT overprint. */
+const DEADBEAT_AFTER_DAYS = 30
 
 export interface DuesRow {
   manager: ManagerId
@@ -65,7 +65,7 @@ export function duesRows(
     } else if (daysOverdue === null || daysOverdue <= 0) {
       row.tier = 'pending'
     } else {
-      row.tier = daysOverdue > DELINQUENT_AFTER_DAYS ? 'delinquent' : 'overdue'
+      row.tier = daysOverdue > DEADBEAT_AFTER_DAYS ? 'deadbeat' : 'overdue'
     }
   }
 
