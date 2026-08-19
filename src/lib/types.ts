@@ -162,6 +162,10 @@ export interface League {
   maxContractYears: number
   faabScale: FaabTier[]
   sourceWorkbook: string
+  /** Venmo username dues are paid to, without the leading @. */
+  venmoHandle?: string
+  /** ISO date (YYYY-MM-DD) dues are due. Null leaves the board un-escalated. */
+  duesDeadline?: string | null
 }
 
 export interface LiveTeam {

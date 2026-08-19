@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
+import DuesBoard from '../components/DuesBoard'
 import { Chip, Empty, Panel, PageHeader, SegmentedControl, Stat } from '../components/ui'
 import { managerName, useLeague, useLeagueData } from '../lib/data'
 import { newId, useCash, useLedger } from '../lib/derive'
 import { money, shortDate } from '../lib/format'
 import type { CashEntry, CashFile, CashType } from '../lib/types'
 
-type Tab = 'auction' | 'cash'
+type Tab = 'auction' | 'dues' | 'cash'
 
 const CASH_TYPES: { id: CashType; label: string }[] = [
   { id: 'dues', label: 'Dues' },
@@ -33,11 +34,13 @@ export default function Finances() {
           onChange={setTab}
           options={[
             { id: 'auction', label: 'Auction $' },
+            { id: 'dues', label: 'Dues' },
             { id: 'cash', label: 'Cash' },
           ]}
         />
       </div>
       {tab === 'auction' && <AuctionBook />}
+      {tab === 'dues' && <DuesBoard season={league.currentSeason} />}
       {tab === 'cash' && <CashBook season={league.currentSeason} />}
     </>
   )

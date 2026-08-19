@@ -10,6 +10,7 @@ import { managerName, useLeagueData } from '../lib/data'
 import { useBudgets, useCash, useObligationHorizon, usePendingTrades, useTrades } from '../lib/derive'
 import { money, num, record, shortDate } from '../lib/format'
 import { antiDumpingCheck } from '../lib/rules'
+import { duesRows } from '../lib/dues'
 
 export default function Dashboard() {
   const data = useLeagueData()
@@ -23,6 +24,7 @@ export default function Dashboard() {
 
   const lastSeason = seasons[0]
   const champion = lastSeason?.champion
+  const unpaidDues = duesRows(data.cash.entries, league, season).filter((row) => !row.settled).length
   const underwater = budgets.filter((budget) => budget.overCommitted)
   const cashOutstanding = cash.reduce((total, row) => total + Math.abs(row.outstanding), 0)
   const committed = horizon.reduce((total, row) => total + row.gross, 0)
@@ -111,14 +113,22 @@ export default function Dashboard() {
               hint={lastSeason ? `${lastSeason.year} title` : undefined}
             />
           </div>
-          <Stat
-            label="Cash open"
-            countTo={cashOutstanding}
-            format={(value) => money(value)}
-            value={money(cashOutstanding)}
-            hint={cashOutstanding ? 'Dues, payouts, bets' : 'All square'}
-            tone={cashOutstanding ? 'down' : 'default'}
-          />
+          <Link to="/finances" className="block no-underline">
+            <Stat
+              label="Cash open"
+              countTo={cashOutstanding}
+              format={(value) => money(value)}
+              value={money(cashOutstanding)}
+              hint={
+                unpaidDues > 0
+                  ? `${unpaidDues} unpaid — see the wanted board`
+                  : cashOutstanding
+                    ? 'Dues, payouts, bets'
+                    : 'All square'
+              }
+              tone={cashOutstanding ? 'down' : 'default'}
+            />
+          </Link>
         </div>
       </div>
 
