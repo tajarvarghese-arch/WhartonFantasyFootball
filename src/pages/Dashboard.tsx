@@ -11,6 +11,7 @@ import { useBudgets, useCash, useObligationHorizon, usePendingTrades, useTrades 
 import { money, num, record, shortDate } from '../lib/format'
 import { antiDumpingCheck } from '../lib/rules'
 import { duesRows } from '../lib/dues'
+import DuesBoard from '../components/DuesBoard'
 
 export default function Dashboard() {
   const data = useLeagueData()
@@ -121,7 +122,7 @@ export default function Dashboard() {
               value={money(cashOutstanding)}
               hint={
                 unpaidDues > 0
-                  ? `${unpaidDues} unpaid — see the wanted board`
+                  ? `${unpaidDues} still owe dues`
                   : cashOutstanding
                     ? 'Dues, payouts, bets'
                     : 'All square'
@@ -130,6 +131,11 @@ export default function Dashboard() {
             />
           </Link>
         </div>
+      </div>
+
+      {/* Who has paid, and who is about to hear about it. */}
+      <div className="mb-6">
+        <DuesBoard season={season} />
       </div>
 
       {data.live && data.live.teams.length > 0 && (
