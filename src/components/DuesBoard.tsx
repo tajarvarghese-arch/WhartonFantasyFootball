@@ -69,13 +69,46 @@ export default function DuesBoard({ season }: { season: number }) {
     </span>
   )
 
+  /**
+   * The commissioner's whole job on this page: tap a box. Checked means paid.
+   * The visible box is 24px but the tap target is a full 44px so it works on
+   * a phone, and unchecking is how a bounced payment gets reopened.
+   */
+  const checkbox = (row: DuesRow, checked: boolean) => {
+    if (!commissioner) return null
+    const saving = busy === row.manager
+    return (
+      <button
+        type="button"
+        role="checkbox"
+        aria-checked={checked}
+        aria-label={`Mark ${managerName(managers, row.manager)} as ${checked ? 'unpaid' : 'paid'}`}
+        title={checked ? 'Paid — tap to reopen' : 'Tap to check off as paid'}
+        disabled={saving}
+        onClick={() => void settle(row, !checked)}
+        className="group -ml-1.5 grid h-11 w-11 shrink-0 place-items-center"
+      >
+        <span
+          className={`grid h-6 w-6 place-items-center rounded border-2 text-[15px] leading-none transition-colors ${
+            checked
+              ? 'border-arc-green bg-arc-green text-[#06210a]'
+              : 'border-arc-line text-transparent group-hover:border-arc-green group-hover:text-arc-green/40'
+          } ${saving ? 'opacity-40' : ''}`}
+        >
+          ✓
+        </span>
+      </button>
+    )
+  }
+
   return (
     <Panel
       title={`${season} dues`}
       subtitle={
-        unpaid.length
+        (unpaid.length
           ? `${money(total)} outstanding across ${unpaid.length} manager${unpaid.length === 1 ? '' : 's'}.`
-          : 'Everyone has settled.'
+          : 'Everyone has settled.') +
+        (commissioner ? ' Tick a box when someone pays — untick to undo.' : '')
       }
     >
       <div className="grid md:grid-cols-2">
@@ -96,6 +129,7 @@ export default function DuesBoard({ season }: { season: number }) {
                   key={row.manager}
                   className="flex items-center gap-3 border-b border-arc-line/40 px-4 py-2.5 last:border-b-0"
                 >
+                  {checkbox(row, true)}
                   {portrait(row)}
                   <span
                     className="min-w-0 flex-1 truncate text-[15px]"
@@ -104,17 +138,6 @@ export default function DuesBoard({ season }: { season: number }) {
                     {managerName(managers, row.manager)}
                   </span>
                   <span className="arcade text-[12px] text-arc-green">PAID</span>
-                  {commissioner && (
-                    <button
-                      type="button"
-                      className="text-[16px] leading-none text-arc-ink-faint hover:text-[var(--color-arc-red)]"
-                      title="Reopen — mark unpaid"
-                      disabled={busy === row.manager}
-                      onClick={() => void settle(row, false)}
-                    >
-                      ↩
-                    </button>
-                  )}
                 </li>
               ))}
             </ul>
@@ -146,6 +169,7 @@ export default function DuesBoard({ season }: { season: number }) {
                           : undefined,
                     }}
                   >
+                    {checkbox(row, false)}
                     {portrait(row)}
                     <span className="min-w-0 flex-1">
                       <span
@@ -179,17 +203,6 @@ export default function DuesBoard({ season }: { season: number }) {
                       >
                         PAY
                       </a>
-                    )}
-                    {commissioner && (
-                      <button
-                        type="button"
-                        className="shrink-0 text-[16px] leading-none text-arc-ink-faint hover:text-arc-green disabled:opacity-40"
-                        title="Mark paid"
-                        disabled={busy === row.manager}
-                        onClick={() => void settle(row, true)}
-                      >
-                        ✓
-                      </button>
                     )}
                   </li>
                 )

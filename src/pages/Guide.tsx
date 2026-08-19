@@ -89,15 +89,28 @@ export default function Guide() {
         >
           <ol className="space-y-3 px-5 py-5">
             <Step n={1}>
-              <B>Finances → Cash → Add</B>. Pick the manager, the type (dues, payout, bet…), the
-              amount, and a one-line description.
+              <B>Season dues are the easy one.</B> The dues board sits at the top of the{' '}
+              <B>Ledger</B> (and under <B>Finances → Dues</B>): everyone who has paid on the left,
+              everyone who hasn't on the right. When somebody pays you, <B>tick the box next to
+              their name</B> — they move across to the paid side and the league sees it. Ticking
+              it again undoes it, in case a payment bounces.
             </Step>
             <Step n={2}>
+              Managers pay by tapping the green <B>PAY</B> button on their own row, which opens
+              Venmo with the amount already filled in. Nothing tells the site a payment arrived,
+              so you ticking the box is what makes it official.
+            </Step>
+            <Step n={3}>
+              <B>Everything else</B> — payouts, side bets, one-off fees — goes in under{' '}
+              <B>Finances → Cash → Add</B>. Pick the manager, the type, the amount, and a
+              one-line description.
+            </Step>
+            <Step n={4}>
               Money <B>a manager owes the league</B> goes in as a negative number; money{' '}
               <B>the league owes them</B> is positive. The form reminds you.
             </Step>
-            <Step n={3}>
-              When someone actually pays, click their entry's <B>Open</B> tag to flip it to{' '}
+            <Step n={5}>
+              When one of those is squared away, click its <B>Open</B> tag to flip it to{' '}
               <B>Settled</B>. The standing-balances table always shows who still owes what.
             </Step>
           </ol>
