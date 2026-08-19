@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import HeapScene, { HEAP_BOOT_SECONDS } from './HeapScene'
-import PixelSign from './PixelSign'
+import Crest from './Crest'
 import { Sparkles } from './effects'
 import { animationsDisabled } from '../lib/motion'
 import { play } from '../lib/sfx'
@@ -50,21 +50,9 @@ export default function Boot({
             animation's fill retains transform:none and would erase the lean */}
         <div className="pop-in inline-block">
           <div className="relative">
-            <PixelSign
-              words={[
-                { text: 'WACL', palette: 'pink', size: 64 },
-                { text: 'LEAGUE HQ', palette: 'gold', size: 30, tracking: 0.12, pixel: 2 },
-              ]}
-              pixel={4}
-            />
+            <Crest size={210} />
             <Sparkles count={10} />
           </div>
-        </div>
-        <div
-          className="arcade pop-in mt-3 text-[12px] leading-relaxed text-arc-ink-soft"
-          style={{ animationDelay: '120ms' }}
-        >
-          WHARTON ALUM CHAMPIONS LEAGUE
         </div>
 
         <div className="mx-auto mt-2 flex justify-center">

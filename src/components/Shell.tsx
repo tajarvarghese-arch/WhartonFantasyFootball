@@ -4,7 +4,7 @@ import { useLeague } from '../lib/data'
 import { usePendingTrades } from '../lib/derive'
 import CommandPalette from './CommandPalette'
 import GodMode from './GodMode'
-import PixelSign from './PixelSign'
+import Crest from './Crest'
 import { Sparkles } from './effects'
 import HelmetField from './HelmetField'
 import CommissionerPanel from './CommissionerPanel'
@@ -201,13 +201,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       <div className="sticky top-0 z-40 flex items-center justify-between gap-2 border-b-[3px] border-arc-line bg-arc-panel px-3 py-2 lg:hidden">
         <div className="flex min-w-0 items-center gap-3" onClick={onLogoTap}>
           <div className="relative -my-1 shrink-0">
-            <PixelSign
-              words={[
-                { text: 'WACL', palette: 'pink', size: 21 },
-                { text: 'LEAGUE HQ', palette: 'gold', size: 8, tracking: 0.14, pixel: 2 },
-              ]}
-              pixel={2}
-            />
+            <Crest size={38} glow={false} />
           </div>
           <span className="arcade truncate text-[12px] text-arc-ink-soft">
             {current?.label ?? 'Ledger'}
@@ -262,19 +256,8 @@ export default function Shell({ children }: { children: ReactNode }) {
       <aside className="hidden border-r-[3px] border-arc-line bg-arc-bg-deep lg:sticky lg:top-0 lg:flex lg:h-dvh lg:flex-col">
         <div className="border-b-[3px] border-arc-line bg-arc-bg-deep px-4 py-5 text-center">
           <div className="relative inline-block" onClick={onLogoTap}>
-            <PixelSign
-              words={[
-                { text: 'WACL', palette: 'pink', size: 34 },
-                { text: 'LEAGUE HQ', palette: 'gold', size: 14, tracking: 0.12, pixel: 2 },
-              ]}
-              pixel={3}
-            />
+            <Crest size={140} />
             <Sparkles count={5} />
-          </div>
-          <div className="arcade mt-3 text-[11px] leading-relaxed text-arc-ink-soft">
-            WHARTON ALUM
-            <br />
-            CHAMPIONS
           </div>
           <div className="arcade mt-2 text-[10px] text-arc-yellow">EST. 2004</div>
         </div>

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import ManagerTag from '../components/ManagerTag'
 import Ticker from '../components/Ticker'
-import PixelSign from '../components/PixelSign'
+import Crest from '../components/Crest'
 import { Confetti, FieldGoalStrip, FieldStripes, Sparkles } from '../components/effects'
 import { managerColor } from '../lib/identity'
 import { animationsDisabled } from '../lib/motion'
@@ -37,13 +37,7 @@ export default function Dashboard() {
           Pure CSS, so it shows even when animations are switched off. */}
       <div className="mb-6 flex justify-center lg:hidden">
         <div className="relative inline-block text-center">
-          <PixelSign
-            words={[
-              { text: 'WACL', palette: 'pink', size: 52 },
-              { text: 'LEAGUE HQ', palette: 'gold', size: 24, tracking: 0.12, pixel: 2 },
-            ]}
-            pixel={4}
-          />
+          <Crest size={168} />
           <Sparkles count={8} />
         </div>
       </div>
