@@ -45,8 +45,10 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Backticks are shell command substitution once these args are
+          # expanded — keep this string free of them. Model is intentionally
+          # unpinned so the action's default is used; pin it later if wanted.
           claude_args: |
-            --model claude-sonnet-5
             --max-turns 30
             --allowedTools "Bash(npm ci),Bash(npm run build),Bash(npm run typecheck)"
-            --system-prompt "Read CLAUDE.md first and follow it exactly. Always run `npm run build` before opening a PR; it type-checks and builds, and a failing build must be fixed, not explained. Never edit files under public/data/ — the commissioner owns those through the live site."
+            --system-prompt "Read CLAUDE.md first and follow it exactly. Always run 'npm run build' before opening a PR; it type-checks and builds, and a failing build must be fixed, not explained. Never edit files under public/data/ - the commissioner owns those through the live site."
