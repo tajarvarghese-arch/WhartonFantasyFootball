@@ -8,7 +8,7 @@
       "type": "dues",
       "amount": -200,
       "description": "Dues",
-      "settled": true
+      "settled": false
     },
     {
       "id": "cash-msuth68w-5kg4o",
