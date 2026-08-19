@@ -15959,12 +15959,12 @@
           "contractYear": "B"
         },
         {
-          "player": "Mike Evans",
-          "salary": 12,
-          "contractYear": "D"
+          "player": "Jayden Reed",
+          "salary": 1,
+          "contractYear": "B"
         }
       ],
-      "keeperSalary": -102,
+      "keeperSalary": 91,
       "cashTraded": 27,
       "draftBudget": 125
     },
