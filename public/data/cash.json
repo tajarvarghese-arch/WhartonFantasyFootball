@@ -98,7 +98,7 @@
       "type": "dues",
       "amount": -200,
       "description": "Dues",
-      "settled": false
+      "settled": true
     },
     {
       "id": "cash-msutzawu-3ufj0",
