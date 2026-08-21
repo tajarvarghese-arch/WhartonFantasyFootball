@@ -15824,6 +15824,11 @@
           "player": "James Conner",
           "cost": 42,
           "contractYear": "A"
+        },
+        {
+          "player": "Chuba Hubbard",
+          "cost": 4,
+          "contractYear": "B"
         }
       ],
       "keepers": [
@@ -16020,11 +16025,6 @@
         {
           "player": "Jayden Daniels",
           "cost": 16,
-          "contractYear": "B"
-        },
-        {
-          "player": "Chuba Hubbard",
-          "cost": 4,
           "contractYear": "B"
         },
         {
