@@ -95,6 +95,30 @@
       "source": "app",
       "proposedAt": "2026-08-15T19:52:10.257Z",
       "decidedAt": "2026-08-15T19:52:16.958Z"
+    },
+    {
+      "id": "t-mt2cyr5p-k5dba",
+      "batch": "2026 Preseason",
+      "season": 2026,
+      "preseason": true,
+      "seller": "velamoor",
+      "buyer": "konciak",
+      "players": "Chuba Hubbard",
+      "terms": "$3 in 2026; $2 in 2027",
+      "totalDollars": 5,
+      "obligations": [
+        {
+          "year": 2026,
+          "amount": 3
+        },
+        {
+          "year": 2027,
+          "amount": 2
+        }
+      ],
+      "status": "pending",
+      "source": "app",
+      "proposedAt": "2026-08-21T02:56:47.101Z"
     }
   ]
 }
