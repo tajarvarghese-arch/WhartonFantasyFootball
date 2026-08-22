@@ -41,7 +41,8 @@
     "firstName": "Dan",
     "displayName": "Bernstein",
     "team": "Orchids of Asia",
-    "active": true
+    "active": true,
+    "venmo": "Daniel-Bernstein-51"
   },
   {
     "id": "baugh",
