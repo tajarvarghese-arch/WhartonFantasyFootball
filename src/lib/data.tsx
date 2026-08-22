@@ -39,6 +39,7 @@ const FILES = {
   gameRecords: 'game-records.json',
   careerAverages: 'career-averages.json',
   leagueVault: 'league-auth.json',
+  betResults: 'bet-results.json',
 } as const
 
 /** Files the commissioner edits in-app. Writes go to GitHub *and* to this cache. */
@@ -49,6 +50,7 @@ export type WritableFile =
   | 'auth.json'
   | 'keepers.json'
   | 'league-auth.json'
+  | 'bet-results.json'
 
 const OVERLAY_KEY = 'wacl.overlay'
 const OVERLAY_AGE_KEY = 'wacl.overlay.age'
@@ -180,6 +182,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         gameRecords,
         careerAverages,
         leagueVault,
+        betResults,
       ] = await Promise.all([
         loadJson<LeagueData['league']>(FILES.league),
         loadJson<LeagueData['managers']>(FILES.managers),
@@ -201,6 +204,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         loadOptionalJson<import('./types').GameRecords>(FILES.gameRecords),
         loadOptionalJson<import('./types').CareerAverages>(FILES.careerAverages),
         loadOptionalJson<import('./types').CommissionerVault>(FILES.leagueVault),
+        loadJson<import('./types').BetResultsFile>(FILES.betResults),
       ])
 
       const { overlay, ages } = freshOverlay()
@@ -231,6 +235,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         leagueVault: 'league-auth.json' in overlay
           ? (overlay['league-auth.json'] as import('./types').CommissionerVault | null)
           : leagueVault,
+        betResults:
+          (overlay['bet-results.json'] as import('./types').BetResultsFile) ?? betResults,
       }
 
       // Drop overlay entries the deployed site has caught up on.
@@ -243,6 +249,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         'auth.json': vault,
         'keepers.json': keepers,
         'league-auth.json': leagueVault,
+        'bet-results.json': betResults,
       }
       for (const [file, value] of Object.entries(overlay) as [WritableFile, unknown][]) {
         if (JSON.stringify(served[file]) !== JSON.stringify(value)) {
@@ -281,6 +288,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         return { ...current, keepers: next as LeagueData['keepers'] }
       if (file === 'league-auth.json')
         return { ...current, leagueVault: next as import('./types').CommissionerVault | null }
+      if (file === 'bet-results.json')
+        return { ...current, betResults: next as import('./types').BetResultsFile }
       return { ...current, tradeQueue: next as TradeQueueFile }
     })
   }, [])

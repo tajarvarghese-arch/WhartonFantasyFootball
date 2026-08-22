@@ -8,6 +8,7 @@ import { managerName, useLeague, useLeagueData } from '../lib/data'
 import { managerColor } from '../lib/identity'
 import { money, pct, shortDate } from '../lib/format'
 import {
+  applyResults,
   betRecords,
   headToHead,
   loserOf,
@@ -28,7 +29,7 @@ import {
   setLeagueToken,
   unlockLeague,
 } from '../lib/betsRepo'
-import type { ManagerId } from '../lib/types'
+import type { BetResultsFile, ManagerId } from '../lib/types'
 
 /**
  * The book. Anyone with the league password can propose a bet and accept one
@@ -37,8 +38,8 @@ import type { ManagerId } from '../lib/types'
  * Pages deploy.
  */
 export default function Bets() {
-  const { league, managers, leagueVault } = useLeagueData()
-  const { commissioner } = useLeague()
+  const { league, managers, leagueVault, betResults } = useLeagueData()
+  const { commissioner, save } = useLeague()
   const active = useMemo(() => managers.filter((m) => m.active), [managers])
 
   const [file, setFile] = useState<BetsFile | null>(null)
@@ -54,7 +55,11 @@ export default function Bets() {
     void readBets().then(setFile)
   }, [])
 
-  const bets = file?.bets ?? []
+  // Winners come only from the commissioner-only results file.
+  const bets = useMemo(
+    () => applyResults(file?.bets ?? [], betResults.results),
+    [file, betResults],
+  )
   const season = league.currentSeason
   const proposed = bets.filter((b) => b.status === 'proposed')
   const live = bets.filter((b) => b.status === 'live')
@@ -120,21 +125,31 @@ export default function Bets() {
       bet.id,
     )
 
-  const settle = (bet: Bet, winner: ManagerId) => {
-    play('roar')
-    if (!animationsDisabled()) setCelebrate((n) => n + 1)
-    return mutate(
-      (current) => ({
-        ...current,
-        bets: current.bets.map((b) =>
-          b.id === bet.id
-            ? { ...b, status: 'settled', winner, settledAt: new Date().toISOString() }
-            : b,
-        ),
-      }),
-      `Bet settled: ${managerName(managers, winner)} wins`,
-      bet.id,
-    )
+  /**
+   * Settling writes to the MAIN repo, not the bets repo — so it needs the
+   * commissioner's token. The league password cannot reach this file.
+   */
+  const settle = async (bet: Bet, winner: ManagerId) => {
+    setBusy(bet.id)
+    setError(null)
+    try {
+      await save<BetResultsFile>(
+        'bet-results.json',
+        (current) => ({
+          results: [
+            ...current.results.filter((r) => r.betId !== bet.id),
+            { betId: bet.id, winner, settledAt: new Date().toISOString() },
+          ],
+        }),
+        `Bet settled: ${managerName(managers, winner)} wins`,
+      )
+      play('roar')
+      if (!animationsDisabled()) setCelebrate((n) => n + 1)
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not record the result.')
+    } finally {
+      setBusy(null)
+    }
   }
 
   const settleUp = (debt: Debt) =>

@@ -263,6 +263,22 @@ export interface DraftPool {
   players: DraftPoolPlayer[]
 }
 
+/**
+ * Bet settlements. Deliberately kept in the main repo — which only the
+ * commissioner can write — while proposals and acceptances live in the
+ * league-writable bets repo. That split is what makes "only the commissioner
+ * decides a winner" an actual permission rather than a hidden button.
+ */
+export interface BetResult {
+  betId: string
+  winner: ManagerId
+  settledAt: string
+}
+
+export interface BetResultsFile {
+  results: BetResult[]
+}
+
 export interface CommissionerVault {
   v: 1
   kdf: 'PBKDF2-SHA256'
@@ -300,4 +316,6 @@ export interface LeagueData {
   careerAverages: CareerAverages | null
   /** Bets-repo token sealed under the shared league password; null until set. */
   leagueVault: CommissionerVault | null
+  /** Commissioner-only bet settlements. */
+  betResults: BetResultsFile
 }

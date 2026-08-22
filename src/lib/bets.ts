@@ -1,4 +1,4 @@
-import type { ManagerId } from './types'
+import type { BetResult, ManagerId } from './types'
 
 /**
  * Side bets. These live in their own repo (see betsRepo.ts) so the whole
@@ -38,6 +38,28 @@ export interface BetsFile {
 }
 
 export const EMPTY_BETS: BetsFile = { bets: [] }
+
+/**
+ * Fold the commissioner's settlements into the league-writable bets.
+ *
+ * A winner is only ever taken from the results file, which lives in the repo
+ * the league password cannot touch. A bet that claims `settled` in bets.json
+ * without a matching result is treated as still live — otherwise anyone
+ * holding the shared password could declare themselves the winner by editing
+ * the file directly.
+ */
+export function applyResults(bets: Bet[], results: BetResult[]): Bet[] {
+  const byId = new Map(results.map((r) => [r.betId, r]))
+  return bets.map((bet) => {
+    const result = byId.get(bet.id)
+    if (result) {
+      return { ...bet, status: 'settled', winner: result.winner, settledAt: result.settledAt }
+    }
+    return bet.status === 'settled'
+      ? { ...bet, status: 'live', winner: null, settledAt: undefined }
+      : bet
+  })
+}
 
 export function newBetId(): string {
   return `b-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`
