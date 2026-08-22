@@ -27,6 +27,8 @@ export interface Bet {
   proposedAt: string
   acceptedAt?: string
   settledAt?: string
+  /** When the loser actually handed the money over. Resolving != paying. */
+  paidAt?: string
   /** Who last touched it, by display name — the shared password has no identity. */
   lastTouchedBy?: string
 }
@@ -164,4 +166,77 @@ export function headToHead(bets: Bet[]): HeadToHead[] {
   return [...pairs.values()].sort(
     (x, y) => y.aWins + y.bWins - (x.aWins + x.bWins),
   )
+}
+
+/* ------------------------------------------------------------------ *
+ * The side-bet ledger — kept deliberately apart from league cash
+ * ------------------------------------------------------------------ */
+
+export interface Debt {
+  /** Owes the money. */
+  from: ManagerId
+  /** Is owed the money. */
+  to: ManagerId
+  amount: number
+  /** The settled bets this nets together. */
+  betIds: string[]
+}
+
+/**
+ * Outstanding betting debts, netted per pair. Two managers who have beaten
+ * each other several times owe one number, not a stack of them — which is how
+ * people actually settle up. Forfeit bets never appear here; you cannot net a
+ * dare against a dollar.
+ */
+export function openDebts(bets: Bet[]): Debt[] {
+  const pairs = new Map<string, { a: ManagerId; b: ManagerId; balance: number; betIds: string[] }>()
+
+  for (const bet of bets) {
+    if (bet.status !== 'settled' || !bet.winner || bet.paidAt) continue
+    if (bet.stakeKind !== 'cash' || bet.stake <= 0) continue
+    const loser = loserOf(bet)
+    if (!loser) continue
+
+    const [a, b] = [bet.proposer, bet.opponent].sort()
+    const key = `${a}|${b}`
+    const row = pairs.get(key) ?? { a, b, balance: 0, betIds: [] }
+    // Positive balance means b owes a.
+    row.balance += bet.winner === a ? bet.stake : -bet.stake
+    row.betIds.push(bet.id)
+    pairs.set(key, row)
+  }
+
+  const debts: Debt[] = []
+  for (const row of pairs.values()) {
+    if (row.balance === 0) continue
+    debts.push(
+      row.balance > 0
+        ? { from: row.b, to: row.a, amount: row.balance, betIds: row.betIds }
+        : { from: row.a, to: row.b, amount: -row.balance, betIds: row.betIds },
+    )
+  }
+  return debts.sort((x, y) => y.amount - x.amount)
+}
+
+/** Everything a manager is owed minus everything they owe, right now. */
+export function netOwed(debts: Debt[], manager: ManagerId): number {
+  return debts.reduce(
+    (total, debt) =>
+      total + (debt.to === manager ? debt.amount : debt.from === manager ? -debt.amount : 0),
+    0,
+  )
+}
+
+/** Venmo prefilled payment, when the payee has a handle on file. */
+export function venmoUrl(handle: string | undefined, amount: number, note: string): string | null {
+  const user = handle?.replace(/^@/, '').trim()
+  if (!user) return null
+  const params = new URLSearchParams({
+    txn: 'pay',
+    audience: 'private',
+    recipients: user,
+    amount: amount.toFixed(2),
+    note,
+  })
+  return `https://venmo.com/?${params.toString()}`
 }

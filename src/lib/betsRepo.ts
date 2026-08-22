@@ -90,17 +90,46 @@ export async function unlockLeague(blob: VaultBlob, password: string): Promise<v
   setLeagueToken(token)
 }
 
-/** Public read. Cache-busted so a fresh bet shows up immediately. */
+/**
+ * Read the board.
+ *
+ * raw.githubusercontent sits behind a five-minute CDN cache and — importantly
+ * — ignores query strings when computing its cache key, so it cannot be
+ * cache-busted. Anyone holding the league password therefore reads through
+ * the authenticated Contents API instead, which is always current and allows
+ * 5,000 requests an hour. Signed-out visitors fall back to raw and may see a
+ * board up to five minutes behind, which for a spectator is fine.
+ */
 export async function readBets(): Promise<BetsFile> {
+  const token = getLeagueToken()
+
+  if (token) {
+    try {
+      const response = await fetch(
+        `${API}/repos/${BETS_OWNER}/${BETS_REPO}/contents/${BETS_FILE}?ref=${BETS_BRANCH}`,
+        { headers: { ...headers(token), Accept: 'application/vnd.github.raw' }, cache: 'no-store' },
+      )
+      if (response.ok) return normalise(await response.json())
+      if (response.status === 404) return EMPTY_BETS
+      // Anything else (rate limit, revoked token) falls through to raw.
+    } catch {
+      /* fall through */
+    }
+  }
+
   try {
-    const response = await fetch(`${RAW}?t=${Date.now()}`, { cache: 'no-store' })
+    const response = await fetch(RAW, { cache: 'no-store' })
     if (!response.ok) return EMPTY_BETS
-    const parsed = (await response.json()) as Partial<BetsFile>
-    return { bets: Array.isArray(parsed.bets) ? parsed.bets : [] }
+    return normalise(await response.json())
   } catch {
-    // Repo not created yet, offline, or rate limited — show an empty board.
+    // Repo not created yet, or offline — show an empty board.
     return EMPTY_BETS
   }
+}
+
+function normalise(parsed: unknown): BetsFile {
+  const bets = (parsed as Partial<BetsFile> | null)?.bets
+  return { bets: Array.isArray(bets) ? bets : [] }
 }
 
 interface FileHandle {

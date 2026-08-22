@@ -9,9 +9,12 @@ import {
   headToHead,
   loserOf,
   newBetId,
+  openDebts,
   stakeLabel,
+  venmoUrl,
   type Bet,
   type BetsFile,
+  type Debt,
   type StakeKind,
 } from '../lib/bets'
 import {
@@ -55,6 +58,8 @@ export default function Bets() {
     .sort((a, b) => (b.settledAt ?? '').localeCompare(a.settledAt ?? ''))
   const records = useMemo(() => betRecords(bets), [bets])
   const h2h = useMemo(() => headToHead(bets), [bets])
+  const debts = useMemo(() => openDebts(bets), [bets])
+  const handleOf = (id: ManagerId) => managers.find((m) => m.id === id)?.venmo
 
   async function mutate(update: (current: BetsFile) => BetsFile, message: string, id: string) {
     setBusy(id)
@@ -76,6 +81,9 @@ export default function Bets() {
       await unlockLeague(leagueVault, password)
       setUnlocked(true)
       setPassword('')
+      // Now that we hold a token, re-read through the API — raw's CDN copy
+      // can be up to five minutes behind.
+      setFile(await readBets())
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not unlock.')
     } finally {
@@ -107,6 +115,18 @@ export default function Bets() {
       }),
       `Bet settled: ${managerName(managers, winner)} wins`,
       bet.id,
+    )
+
+  const settleUp = (debt: Debt) =>
+    mutate(
+      (current) => ({
+        ...current,
+        bets: current.bets.map((b) =>
+          debt.betIds.includes(b.id) ? { ...b, paidAt: new Date().toISOString() } : b,
+        ),
+      }),
+      `Bet debt paid: ${managerName(managers, debt.from)} → ${managerName(managers, debt.to)} ${money(debt.amount)}`,
+      `debt-${debt.from}-${debt.to}`,
     )
 
   const drop = (bet: Bet) =>
@@ -351,6 +371,73 @@ export default function Bets() {
               </table>
             </Panel>
           )}
+
+          <Panel
+            title="the tab"
+            subtitle="Betting debts only — kept apart from league dues and payouts. Wins and losses between the same two people net down to one number."
+          >
+            {debts.length === 0 ? (
+              <p className="px-5 py-6 text-[14px] text-arc-green">
+                All square. Nobody owes anybody a dollar.
+              </p>
+            ) : (
+              <ul>
+                {debts.map((debt) => {
+                  const key = `debt-${debt.from}-${debt.to}`
+                  const pay = venmoUrl(
+                    handleOf(debt.to),
+                    debt.amount,
+                    `WACL side bet — ${managerName(managers, debt.from)} to ${managerName(managers, debt.to)}`,
+                  )
+                  return (
+                    <li
+                      key={key}
+                      className="flex flex-wrap items-center gap-3 border-b border-arc-line/40 px-5 py-3 last:border-b-0"
+                    >
+                      {face(debt.from, 1.6)}
+                      <span className="min-w-0 flex-1 text-[14px]">
+                        <b style={{ color: managerColor(debt.from) }}>
+                          {managerName(managers, debt.from)}
+                        </b>
+                        <span className="text-arc-ink-faint"> owes </span>
+                        <b style={{ color: managerColor(debt.to) }}>
+                          {managerName(managers, debt.to)}
+                        </b>
+                        <span className="block text-[11px] text-arc-ink-faint">
+                          across {debt.betIds.length} settled bet
+                          {debt.betIds.length === 1 ? '' : 's'}
+                        </span>
+                      </span>
+                      <span className="tnum shrink-0 text-[17px] text-[var(--color-arc-red)]">
+                        {money(debt.amount)}
+                      </span>
+                      {pay && (
+                        <a
+                          href={pay}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="arcade shrink-0 rounded-md px-2.5 py-1 text-[12px]"
+                          style={{ background: 'var(--color-arc-green)', color: '#06210a' }}
+                        >
+                          PAY
+                        </a>
+                      )}
+                      {unlocked && (
+                        <button
+                          type="button"
+                          className="btn min-h-[34px] shrink-0 px-3 py-1"
+                          disabled={busy === key}
+                          onClick={() => void settleUp(debt)}
+                        >
+                          {busy === key ? 'Saving…' : 'Mark paid'}
+                        </button>
+                      )}
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+          </Panel>
 
           {records.length > 0 && (
             <div className="grid min-w-0 gap-6 lg:grid-cols-2">

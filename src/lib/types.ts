@@ -7,6 +7,8 @@ export interface Manager {
   displayName: string
   team: string | null
   active: boolean
+  /** Venmo username, for settling side bets person-to-person. */
+  venmo?: string
 }
 
 export interface TeamSeason {
