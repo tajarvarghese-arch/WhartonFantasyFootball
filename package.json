@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "seed": "python scripts/etl.py",
+    "icons": "node scripts/manager_icons.mjs",
     "yahoo:sync": "node scripts/yahoo-sync.mjs",
     "yahoo:setup": "node scripts/yahoo-setup.mjs"
   },
