@@ -5,7 +5,8 @@
     "firstName": "Tajar",
     "displayName": "Tajar",
     "team": "Malikety Split",
-    "active": true
+    "active": true,
+    "venmo": "tajar-varghese"
   },
   {
     "id": "waldman",
@@ -13,7 +14,8 @@
     "firstName": "Stuart",
     "displayName": "Stu",
     "team": "I Must Break You",
-    "active": true
+    "active": true,
+    "venmo": "stuart-waldman-2"
   },
   {
     "id": "tollinche",
@@ -21,7 +23,8 @@
     "firstName": "Felix",
     "displayName": "Felix",
     "team": "El Morro",
-    "active": true
+    "active": true,
+    "venmo": "felix-tollinche"
   },
   {
     "id": "buzik",
@@ -29,7 +32,8 @@
     "firstName": "Alex",
     "displayName": "Alex",
     "team": "SuperBowlJesus",
-    "active": true
+    "active": true,
+    "venmo": "Alexander-Buzik"
   },
   {
     "id": "bernstein",
@@ -45,7 +49,8 @@
     "firstName": "Chris",
     "displayName": "Baugh",
     "team": "Juggernaut",
-    "active": true
+    "active": true,
+    "venmo": "christopher-baugh-5"
   },
   {
     "id": "velamoor",
@@ -53,7 +58,8 @@
     "firstName": "Nik",
     "displayName": "Velamoor",
     "team": "Private Sector",
-    "active": true
+    "active": true,
+    "venmo": "niketh-velamoor"
   },
   {
     "id": "mukheja",
@@ -61,7 +67,8 @@
     "firstName": "Anik",
     "displayName": "Anik",
     "team": "Karma's L-Ah-Ma-tize",
-    "active": true
+    "active": true,
+    "venmo": "AMukheja"
   },
   {
     "id": "snyder",
@@ -69,7 +76,8 @@
     "firstName": "Nate",
     "displayName": "Nate",
     "team": "Whobody Wants It?",
-    "active": true
+    "active": true,
+    "venmo": "natebsnyder"
   },
   {
     "id": "incognito",
@@ -77,7 +85,8 @@
     "firstName": "Jim",
     "displayName": "Jim",
     "team": "no ragrets",
-    "active": true
+    "active": true,
+    "venmo": "james-incognito"
   },
   {
     "id": "konciak",
@@ -85,7 +94,8 @@
     "firstName": "Dave",
     "displayName": "Dave",
     "team": "Bridge N Tunnel",
-    "active": true
+    "active": true,
+    "venmo": "david-konciak"
   },
   {
     "id": "lalwani",
@@ -93,7 +103,8 @@
     "firstName": "Nikhil",
     "displayName": "Lalwani",
     "team": "Quien Es Tu Papa",
-    "active": true
+    "active": true,
+    "venmo": "nikhil-lalwani-1"
   },
   {
     "id": "evans",
