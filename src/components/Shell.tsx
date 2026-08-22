@@ -27,6 +27,7 @@ const NAV = [
   { to: '/keepers', label: 'Keepers', color: 'var(--color-arc-lime)' },
   { to: '/draft', label: 'Draft', color: 'var(--color-arc-green)' },
   { to: '/finances', label: 'Finances', color: 'var(--color-arc-orange)' },
+  { to: '/bets', label: 'The Book', color: 'var(--color-arc-pink)' },
   { to: '/standings', label: 'Standings', color: 'var(--color-arc-purple)' },
   { to: '/managers', label: 'Managers', color: 'var(--color-arc-cyan)' },
   { to: '/records', label: 'Records', color: 'var(--color-arc-pink)' },

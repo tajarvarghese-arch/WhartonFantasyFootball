@@ -17,6 +17,7 @@ export const PAGES: { title: string; subtitle: string; to: string }[] = [
   { title: 'Keepers', subtitle: 'Rosters, contracts, and the contract board', to: '/keepers' },
   { title: 'Draft Board', subtitle: 'Top-ranked players still available at auction', to: '/draft' },
   { title: 'Finances', subtitle: 'Auction dollars and cash', to: '/finances' },
+  { title: 'The Book', subtitle: 'Side bets between managers', to: '/bets' },
   { title: 'Standings', subtitle: '22 seasons of final tables', to: '/standings' },
   { title: 'Managers', subtitle: 'Career records', to: '/managers' },
   { title: 'Records', subtitle: 'Leaderboards, trade flow, champions', to: '/records' },

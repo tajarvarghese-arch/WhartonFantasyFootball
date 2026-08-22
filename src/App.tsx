@@ -12,6 +12,7 @@ import Guide from './pages/Guide'
 import Keepers from './pages/Keepers'
 import Lab from './pages/Lab'
 import Almanac from './pages/Almanac'
+import Bets from './pages/Bets'
 import ManagerDetail from './pages/ManagerDetail'
 import Managers from './pages/Managers'
 import PlayerDetail from './pages/PlayerDetail'
@@ -89,6 +90,7 @@ export default function App() {
         <Route path="/keepers" element={<Keepers />} />
         <Route path="/draft" element={<Draft />} />
         <Route path="/finances" element={<Finances />} />
+        <Route path="/bets" element={<Bets />} />
         <Route path="/standings" element={<Standings />} />
         <Route path="/managers" element={<Managers />} />
         <Route path="/managers/:id" element={<ManagerDetail />} />

@@ -32,6 +32,9 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [settingPassword, setSettingPassword] = useState(false)
+  const [leagueSetup, setLeagueSetup] = useState(false)
+  const [leagueToken, setLeagueToken] = useState('')
+  const [leaguePassword, setLeaguePassword] = useState('')
   const [status, setStatus] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -109,6 +112,40 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
       )
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not save the password.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  /**
+   * Seals the bets-repo token under a password the whole league shares. That
+   * token can only write the bets repo, so handing it around cannot expose
+   * keepers, trades, cash, or this vault.
+   */
+  async function saveLeaguePassword() {
+    if (leaguePassword.length < MIN_PASSWORD_LENGTH) {
+      setError(`League password needs at least ${MIN_PASSWORD_LENGTH} characters.`)
+      return
+    }
+    if (!leagueToken.trim()) {
+      setError('Paste the bets-repo token first.')
+      return
+    }
+    setBusy(true)
+    setError(null)
+    try {
+      const sealed = await sealToken(leagueToken.trim(), leaguePassword)
+      await save<CommissionerVault | null>(
+        'league-auth.json',
+        () => sealed,
+        'League betting password set',
+      )
+      setLeagueSetup(false)
+      setLeagueToken('')
+      setLeaguePassword('')
+      finish('League password set. Share it with the league — they can post bets now.')
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not save the league password.')
     } finally {
       setBusy(false)
     }
@@ -235,6 +272,13 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
                       Remove password
                     </button>
                   )}
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => setLeagueSetup((open) => !open)}
+                  >
+                    🎲 League betting password
+                  </button>
                   <a className="btn" href={commitUrl()} target="_blank" rel="noreferrer noopener">
                     Audit log
                   </a>
@@ -243,6 +287,48 @@ export default function CommissionerPanel({ onClose }: { onClose: () => void }) 
                   </button>
                 </div>
               )}
+              {leagueSetup && (
+                <div className="space-y-3 border-t border-arc-line pt-4">
+                  <p className="text-[12.5px] text-arc-ink-soft">
+                    Paste a fine-grained token scoped to the <b>bets</b> repo only (Contents: Read
+                    and write), then choose a password to share with the league. They will be able
+                    to post and accept bets — and nothing else.
+                  </p>
+                  <label className="label block">Bets-repo token</label>
+                  <input
+                    type="password"
+                    className="field tnum"
+                    placeholder="github_pat_…"
+                    autoComplete="off"
+                    value={leagueToken}
+                    onChange={(event) => setLeagueToken(event.target.value)}
+                  />
+                  <label className="label block">
+                    League password (min {MIN_PASSWORD_LENGTH} chars)
+                  </label>
+                  <input
+                    type="password"
+                    className="field"
+                    autoComplete="new-password"
+                    value={leaguePassword}
+                    onChange={(event) => setLeaguePassword(event.target.value)}
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      disabled={busy || !leagueToken || !leaguePassword}
+                      onClick={() => void saveLeaguePassword()}
+                    >
+                      {busy ? 'Sealing…' : 'Set league password'}
+                    </button>
+                    <button type="button" className="btn" onClick={() => setLeagueSetup(false)}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {!vault && !settingPassword && (
                 <p className="text-[12px] text-arc-ink-faint">
                   Set a password and you'll never paste a token again — any device unlocks with it.

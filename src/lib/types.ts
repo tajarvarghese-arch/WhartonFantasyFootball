@@ -296,4 +296,6 @@ export interface LeagueData {
   gameRecords: GameRecords | null
   /** Absent until scripts/career_averages.py has been run. */
   careerAverages: CareerAverages | null
+  /** Bets-repo token sealed under the shared league password; null until set. */
+  leagueVault: CommissionerVault | null
 }
