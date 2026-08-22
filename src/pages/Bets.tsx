@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import PixelMugshot from '../components/PixelMugshot'
 import { Chip, Panel, PageHeader, Stat } from '../components/ui'
 import { Confetti } from '../components/effects'
@@ -8,15 +8,25 @@ import { managerName, useLeague, useLeagueData } from '../lib/data'
 import { managerColor } from '../lib/identity'
 import { money, pct, shortDate } from '../lib/format'
 import {
+  applyEdit,
   applyResults,
   betRecords,
+  cleanEdit,
+  editableFields,
+  editChanged,
+  editIsValid,
   headToHead,
   loserOf,
   newBetId,
   openDebts,
+  removeBet,
+  removeResult,
+  reopenBet,
   stakeLabel,
+  upsertResult,
   venmoUrl,
   type Bet,
+  type BetEdit,
   type BetsFile,
   type Debt,
   type StakeKind,
@@ -29,7 +39,7 @@ import {
   setLeagueToken,
   unlockLeague,
 } from '../lib/betsRepo'
-import type { BetResultsFile, ManagerId } from '../lib/types'
+import type { BetResultsFile, Manager, ManagerId } from '../lib/types'
 
 /**
  * The book. Anyone with the league password can propose a bet and accept one
@@ -48,6 +58,10 @@ export default function Bets() {
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [composing, setComposing] = useState(false)
+  // Commissioner corrections: the settled bet open in the editor, and the one
+  // waiting on a second click before it is deleted.
+  const [editing, setEditing] = useState<string | null>(null)
+  const [confirming, setConfirming] = useState<string | null>(null)
   // Bumped on a settle so the confetti remounts and fires again.
   const [celebrate, setCelebrate] = useState(0)
 
@@ -136,10 +150,11 @@ export default function Bets() {
       await save<BetResultsFile>(
         'bet-results.json',
         (current) => ({
-          results: [
-            ...current.results.filter((r) => r.betId !== bet.id),
-            { betId: bet.id, winner, settledAt: new Date().toISOString() },
-          ],
+          results: upsertResult(current.results, {
+            betId: bet.id,
+            winner,
+            settledAt: new Date().toISOString(),
+          }),
         }),
         `Bet settled: ${managerName(managers, winner)} wins`,
       )
@@ -147,6 +162,157 @@ export default function Bets() {
       if (!animationsDisabled()) setCelebrate((n) => n + 1)
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not record the result.')
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  /* ---- corrections: the commissioner rewriting a settled bet ---------- *
+   *
+   * A settled bet is two records. The ruling lives in bet-results.json in
+   * this repo and only the commissioner can touch it; the terms live in the
+   * bets repo behind the league password. So flipping a winner needs the
+   * commissioner signed in, and editing or deleting the bet itself needs the
+   * league password unlocked on this device as well. Each button below says
+   * which it is short of.
+   */
+
+  const needsLeague =
+    'Unlock the league password on this device first — the bet itself lives in the bets repo.'
+
+  /** Reverse a ruling: new winner in the results file, tab reopened. */
+  const recall = async (bet: Bet, winner: ManagerId) => {
+    if (winner === bet.winner) {
+      setEditing(null)
+      return
+    }
+    setBusy(bet.id)
+    setError(null)
+    try {
+      await save<BetResultsFile>(
+        'bet-results.json',
+        (current) => ({
+          results: upsertResult(current.results, {
+            betId: bet.id,
+            winner,
+            // Keep the original date: the bet resolved when it resolved, the
+            // ruling was simply recorded wrong.
+            settledAt: bet.settledAt ?? new Date().toISOString(),
+          }),
+        }),
+        `Bet corrected: ${managerName(managers, winner)} wins`,
+      )
+      // The money moved the wrong way, so the debt reopens.
+      if (unlocked && bet.paidAt) {
+        setFile(
+          await saveBets(
+            (current) => ({
+              ...current,
+              bets: current.bets.map((b) => {
+                if (b.id !== bet.id) return b
+                const next = { ...b }
+                delete next.paidAt
+                return next
+              }),
+            }),
+            `Bet payment cleared after correction: ${bet.terms}`,
+          ),
+        )
+      }
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not correct the result.')
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  /** Undo a settlement entirely — the bet goes back to live action. */
+  const reopen = async (bet: Bet) => {
+    setBusy(bet.id)
+    setError(null)
+    try {
+      await save<BetResultsFile>(
+        'bet-results.json',
+        (current) => ({ results: removeResult(current.results, bet.id) }),
+        `Bet reopened: ${bet.terms}`,
+      )
+      // Without the ruling the board already reads this as live again; clear
+      // the stale stamps in the bets repo too when we can reach it.
+      if (unlocked) {
+        setFile(
+          await saveBets(
+            (current) => ({ ...current, bets: reopenBet(current.bets, bet.id) }),
+            `Bet reopened: ${bet.terms}`,
+          ),
+        )
+      }
+      setEditing(null)
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not reopen that bet.')
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  /** Fix the terms, the stake, or the resolve date after the fact. */
+  const amend = async (bet: Bet, edit: BetEdit) => {
+    if (!unlocked) {
+      setError(needsLeague)
+      return
+    }
+    const clean = cleanEdit(edit)
+    setBusy(bet.id)
+    setError(null)
+    try {
+      // A different stake means a different debt, so the tab reopens.
+      const stakeMoved = clean.stakeKind !== bet.stakeKind || clean.stake !== bet.stake
+      setFile(
+        await saveBets(
+          (current) => ({
+            ...current,
+            bets: applyEdit(current.bets, bet.id, clean, { clearPaid: stakeMoved }),
+          }),
+          `Bet edited: ${clean.terms}`,
+        ),
+      )
+      setEditing(null)
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not save that edit.')
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  /**
+   * Delete a bet outright. Both records go: the terms from the bets repo and
+   * the ruling from this one, so a re-used id can never resurrect the result.
+   */
+  const erase = async (bet: Bet) => {
+    if (!unlocked) {
+      setError(needsLeague)
+      return
+    }
+    setBusy(bet.id)
+    setError(null)
+    try {
+      const label = `${managerName(managers, bet.proposer)} vs ${managerName(managers, bet.opponent)}`
+      setFile(
+        await saveBets(
+          (current) => ({ ...current, bets: removeBet(current.bets, bet.id) }),
+          `Bet deleted: ${label}`,
+        ),
+      )
+      if (betResults.results.some((r) => r.betId === bet.id)) {
+        await save<BetResultsFile>(
+          'bet-results.json',
+          (current) => ({ results: removeResult(current.results, bet.id) }),
+          `Bet ruling removed: ${label}`,
+        )
+      }
+      setEditing(null)
+      setConfirming(null)
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not delete that bet.')
     } finally {
       setBusy(null)
     }
@@ -465,6 +631,13 @@ export default function Bets() {
                           {managerName(managers, id)}
                         </button>
                       ))}
+                      <DangerButton
+                        armed={confirming === bet.id}
+                        busy={busy === bet.id}
+                        onArm={() => setConfirming(bet.id)}
+                        onCancel={() => setConfirming(null)}
+                        onConfirm={() => void erase(bet)}
+                      />
                     </>
                   ) : (
                     <Chip tone="up">Live</Chip>
@@ -478,7 +651,14 @@ export default function Bets() {
           </Panel>
 
           {settled.length > 0 && (
-            <Panel title="settled" subtitle="The record. Winners in green.">
+            <Panel
+              title="settled"
+              subtitle={
+                commissioner
+                  ? 'The record. Winners in green. Called one wrong? Fix or delete any line.'
+                  : 'The record. Winners in green.'
+              }
+            >
               <table className="out">
                 <thead>
                   <tr>
@@ -487,21 +667,57 @@ export default function Bets() {
                     <th>Loser</th>
                     <th className="n">Stake</th>
                     <th className="n">Settled</th>
+                    {commissioner && <th className="n">Fix</th>}
                   </tr>
                 </thead>
                 <tbody>
                   {settled.map((bet) => (
-                    <tr key={bet.id}>
-                      <td className="max-w-[280px] truncate">{bet.terms}</td>
-                      <td className="text-arc-green">{managerName(managers, bet.winner!)}</td>
-                      <td className="text-arc-ink-faint">
-                        {managerName(managers, loserOf(bet)!)}
-                      </td>
-                      <td className="n">{stakeLabel(bet)}</td>
-                      <td className="n text-arc-ink-faint">
-                        {bet.settledAt ? shortDate(bet.settledAt) : '—'}
-                      </td>
-                    </tr>
+                    <Fragment key={bet.id}>
+                      <tr>
+                        <td className="max-w-[280px] truncate">{bet.terms}</td>
+                        <td className="text-arc-green">{managerName(managers, bet.winner!)}</td>
+                        <td className="text-arc-ink-faint">
+                          {managerName(managers, loserOf(bet)!)}
+                        </td>
+                        <td className="n">{stakeLabel(bet)}</td>
+                        <td className="n text-arc-ink-faint">
+                          {bet.settledAt ? shortDate(bet.settledAt) : '—'}
+                        </td>
+                        {commissioner && (
+                          <td className="n">
+                            <button
+                              type="button"
+                              className="text-[12px] text-arc-ink-faint underline underline-offset-2 hover:text-arc-green"
+                              onClick={() => {
+                                setConfirming(null)
+                                setEditing((current) => (current === bet.id ? null : bet.id))
+                              }}
+                            >
+                              {editing === bet.id ? 'Close' : 'Edit'}
+                            </button>
+                          </td>
+                        )}
+                      </tr>
+                      {commissioner && editing === bet.id && (
+                        <tr>
+                          <td colSpan={6} className="!whitespace-normal !p-0">
+                            <Corrector
+                              bet={bet}
+                              managers={managers}
+                              unlocked={unlocked}
+                              busy={busy === bet.id}
+                              confirming={confirming === bet.id}
+                              onWinner={(winner) => void recall(bet, winner)}
+                              onAmend={(edit) => void amend(bet, edit)}
+                              onReopen={() => void reopen(bet)}
+                              onArmDelete={() => setConfirming(bet.id)}
+                              onCancelDelete={() => setConfirming(null)}
+                              onDelete={() => void erase(bet)}
+                            />
+                          </td>
+                        </tr>
+                      )}
+                    </Fragment>
                   ))}
                 </tbody>
               </table>
@@ -707,6 +923,219 @@ export default function Bets() {
 }
 
 /* ------------------------------------------------------------------ */
+
+/**
+ * Delete, behind a second click. No modal — a confirm dialog on a phone is a
+ * mis-tap waiting to happen, and this is a destructive write to a public repo.
+ */
+function DangerButton({
+  armed,
+  busy,
+  label = 'Delete',
+  onArm,
+  onCancel,
+  onConfirm,
+}: {
+  armed: boolean
+  busy: boolean
+  label?: string
+  onArm: () => void
+  onCancel: () => void
+  onConfirm: () => void
+}) {
+  if (!armed) {
+    return (
+      <button
+        type="button"
+        className="btn min-h-[34px] px-3 py-1"
+        disabled={busy}
+        onClick={onArm}
+      >
+        {label}
+      </button>
+    )
+  }
+  return (
+    <>
+      <button
+        type="button"
+        className="btn min-h-[34px] px-3 py-1"
+        style={{ borderColor: 'var(--color-arc-red)', color: 'var(--color-arc-red)' }}
+        disabled={busy}
+        onClick={onConfirm}
+      >
+        {busy ? 'Deleting…' : 'Confirm'}
+      </button>
+      <button
+        type="button"
+        className="btn min-h-[34px] px-3 py-1"
+        disabled={busy}
+        onClick={onCancel}
+      >
+        Keep it
+      </button>
+    </>
+  )
+}
+
+/**
+ * The commissioner's correction desk for one settled bet.
+ *
+ * Two writes, two repos, kept visibly apart: the ruling goes to the results
+ * file the moment a winner is tapped, while the terms and the stake are a
+ * separate save into the bets repo and need the league password unlocked on
+ * this device.
+ */
+function Corrector({
+  bet,
+  managers,
+  unlocked,
+  busy,
+  confirming,
+  onWinner,
+  onAmend,
+  onReopen,
+  onArmDelete,
+  onCancelDelete,
+  onDelete,
+}: {
+  bet: Bet
+  managers: Manager[]
+  unlocked: boolean
+  busy: boolean
+  confirming: boolean
+  onWinner: (winner: ManagerId) => void
+  onAmend: (edit: BetEdit) => void
+  onReopen: () => void
+  onArmDelete: () => void
+  onCancelDelete: () => void
+  onDelete: () => void
+}) {
+  const [draft, setDraft] = useState<BetEdit>(() => editableFields(bet))
+  const dirty = editChanged(bet, draft)
+  const patch = (part: Partial<BetEdit>) => setDraft((current) => ({ ...current, ...part }))
+
+  return (
+    <div className="border-y border-arc-line bg-arc-bg-deep px-5 py-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="label">Winner</span>
+        {[bet.proposer, bet.opponent].map((id) => {
+          const current = bet.winner === id
+          return (
+            <button
+              key={id}
+              type="button"
+              className="btn min-h-[34px] px-3 py-1"
+              disabled={busy || current}
+              style={
+                current
+                  ? { borderColor: 'var(--color-arc-green)', color: 'var(--color-arc-green)' }
+                  : undefined
+              }
+              onClick={() => onWinner(id)}
+            >
+              {managerName(managers, id)}
+            </button>
+          )
+        })}
+        <span className="text-[11.5px] text-arc-ink-faint">
+          Tapping the other name reverses the ruling and reopens the tab if it was already paid.
+        </span>
+      </div>
+
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <label className="sm:col-span-2">
+          <span className="label">The bet</span>
+          <input
+            className="field mt-1.5"
+            value={draft.terms}
+            disabled={!unlocked || busy}
+            onChange={(event) => patch({ terms: event.target.value })}
+          />
+        </label>
+
+        <label>
+          <span className="label">Stake</span>
+          <select
+            className="field mt-1.5"
+            value={draft.stakeKind}
+            disabled={!unlocked || busy}
+            onChange={(event) => patch({ stakeKind: event.target.value as StakeKind })}
+          >
+            <option value="cash">Cash</option>
+            <option value="forfeit">Forfeit / dare</option>
+          </select>
+        </label>
+
+        {draft.stakeKind === 'cash' ? (
+          <label>
+            <span className="label">Amount each</span>
+            <input
+              type="number"
+              min={1}
+              className="field tnum mt-1.5"
+              value={draft.stake}
+              disabled={!unlocked || busy}
+              onChange={(event) => patch({ stake: Number(event.target.value) || 0 })}
+            />
+          </label>
+        ) : (
+          <label>
+            <span className="label">Loser must…</span>
+            <input
+              className="field mt-1.5"
+              value={draft.forfeit}
+              disabled={!unlocked || busy}
+              onChange={(event) => patch({ forfeit: event.target.value })}
+            />
+          </label>
+        )}
+
+        <label className="sm:col-span-2">
+          <span className="label">Resolves</span>
+          <input
+            className="field mt-1.5"
+            value={draft.resolves}
+            disabled={!unlocked || busy}
+            onChange={(event) => patch({ resolves: event.target.value })}
+          />
+        </label>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          className="btn btn-primary min-h-[34px] px-3 py-1"
+          disabled={!unlocked || busy || !dirty || !editIsValid(draft)}
+          onClick={() => onAmend(draft)}
+        >
+          {busy ? 'Saving…' : 'Save changes'}
+        </button>
+        <button
+          type="button"
+          className="btn min-h-[34px] px-3 py-1"
+          disabled={busy}
+          onClick={onReopen}
+        >
+          Reopen
+        </button>
+        <DangerButton
+          armed={confirming}
+          busy={busy}
+          label="Delete bet"
+          onArm={onArmDelete}
+          onCancel={onCancelDelete}
+          onConfirm={onDelete}
+        />
+        <span className="text-[11.5px] text-arc-ink-faint">
+          {unlocked
+            ? 'Reopen puts it back in live action. Delete removes the bet and its ruling for good.'
+            : 'The winner is yours to change now; editing or deleting the bet itself needs the league password unlocked on this device.'}
+        </span>
+      </div>
+    </div>
+  )
+}
 
 const TEMPLATES = [
   'I beat you head-to-head in week __',

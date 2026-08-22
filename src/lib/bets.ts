@@ -65,6 +65,116 @@ export function newBetId(): string {
   return `b-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`
 }
 
+/* ------------------------------------------------------------------ *
+ * Corrections — the commissioner rewriting history
+ * ------------------------------------------------------------------ *
+ *
+ * A settled bet is two records in two repos: the terms live in bets.json
+ * (league-writable) and the ruling lives in bet-results.json (commissioner
+ * only). Fixing a typo in the terms and fixing the wrong winner are therefore
+ * different writes, and a full delete is both. These helpers keep the split
+ * honest so the page never has to reason about which file it is touching.
+ */
+
+/** The parts of a bet the commissioner can rewrite after the fact. */
+export interface BetEdit {
+  terms: string
+  stakeKind: StakeKind
+  stake: number
+  forfeit: string
+  resolves: string
+}
+
+export function editableFields(bet: Bet): BetEdit {
+  return {
+    terms: bet.terms,
+    stakeKind: bet.stakeKind,
+    stake: bet.stake,
+    forfeit: bet.forfeit,
+    resolves: bet.resolves,
+  }
+}
+
+/** Normalised so a stake never survives a switch to a forfeit, or vice versa. */
+export function cleanEdit(edit: BetEdit): BetEdit {
+  const cash = edit.stakeKind === 'cash'
+  return {
+    terms: edit.terms.trim(),
+    stakeKind: edit.stakeKind,
+    stake: cash ? Math.max(0, Math.round(edit.stake)) : 0,
+    forfeit: cash ? '' : edit.forfeit.trim(),
+    resolves: edit.resolves.trim(),
+  }
+}
+
+export function editIsValid(edit: BetEdit): boolean {
+  const clean = cleanEdit(edit)
+  return Boolean(clean.terms) && (clean.stakeKind === 'cash' ? clean.stake > 0 : Boolean(clean.forfeit))
+}
+
+export function editChanged(bet: Bet, edit: BetEdit): boolean {
+  const before = editableFields(bet)
+  const after = cleanEdit(edit)
+  return (Object.keys(after) as (keyof BetEdit)[]).some((key) => before[key] !== after[key])
+}
+
+/**
+ * Apply a correction to one bet.
+ *
+ * `clearPaid` drops the paid stamp: if the stake changed or the ruling was
+ * reversed, whatever changed hands was the wrong amount to the wrong person,
+ * and the tab should reopen rather than quietly stay square.
+ */
+export function applyEdit(
+  bets: Bet[],
+  id: string,
+  edit: BetEdit,
+  options: { clearPaid?: boolean; by?: string } = {},
+): Bet[] {
+  const clean = cleanEdit(edit)
+  return bets.map((bet) => {
+    if (bet.id !== id) return bet
+    const next: Bet = { ...bet, ...clean }
+    if (options.clearPaid) delete next.paidAt
+    if (options.by) next.lastTouchedBy = options.by
+    return next
+  })
+}
+
+export function removeBet(bets: Bet[], id: string): Bet[] {
+  return bets.filter((bet) => bet.id !== id)
+}
+
+/** Reopen a settled bet without touching its terms. */
+export function reopenBet(bets: Bet[], id: string): Bet[] {
+  return bets.map((bet) => {
+    if (bet.id !== id) return bet
+    const next: Bet = { ...bet, status: 'live', winner: null }
+    delete next.settledAt
+    delete next.paidAt
+    return next
+  })
+}
+
+export function upsertResult(results: BetResult[], entry: BetResult): BetResult[] {
+  return [...results.filter((r) => r.betId !== entry.betId), entry]
+}
+
+export function removeResult(results: BetResult[], betId: string): BetResult[] {
+  return results.filter((r) => r.betId !== betId)
+}
+
+/**
+ * Rulings whose bet no longer exists. A ruling is keyed by bet id, so a bet
+ * deleted from the league-writable file would otherwise leave a result behind
+ * that nothing can ever display — and that would silently resurrect the bet if
+ * the id were ever reused.
+ */
+export function orphanResults(bets: Bet[], results: BetResult[]): BetResult[] {
+  const live = new Set(bets.map((bet) => bet.id))
+  return results.filter((result) => !live.has(result.betId))
+}
+
 export function sideOf(bet: Bet, manager: ManagerId): 'proposer' | 'opponent' | null {
   if (bet.proposer === manager) return 'proposer'
   if (bet.opponent === manager) return 'opponent'

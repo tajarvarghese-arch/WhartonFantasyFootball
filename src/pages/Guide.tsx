@@ -117,7 +117,42 @@ export default function Guide() {
         </Panel>
 
         <Panel
-          title="4 · updating a keeper list"
+          title="4 · calling a bet, and fixing one you called wrong"
+          subtitle="The Book. Anyone can post a bet; only you can say who won."
+        >
+          <ol className="space-y-3 px-5 py-5">
+            <Step n={1}>
+              On <B>The Book</B>, a bet that has been taken sits under <B>Live action</B> with both
+              names on it. When it resolves, <B>tap the winner's name</B>. That's the ruling: the
+              bet drops into <B>Settled</B> and the loser's debt appears in <B>The tab</B>.
+            </Step>
+            <Step n={2}>
+              Called the wrong name? Find the line in <B>Settled</B> and press <B>Edit</B> on the
+              right. Tapping the other manager <B>reverses the ruling</B> — and if that debt had
+              already been marked paid, the tab reopens, because the money went the wrong way.
+            </Step>
+            <Step n={3}>
+              The same panel fixes <B>the wording, the stake, and the resolve date</B>, then{' '}
+              <B>Save changes</B>. Changing the amount also reopens the tab, since the old figure
+              was settled at the wrong price. <B>Reopen</B> puts the whole bet back into live
+              action if it was never really over.
+            </Step>
+            <Step n={4}>
+              <B>Delete bet</B> removes it altogether — from the record and from the sharps table
+              — and asks for a second tap first. Use it for a bet posted by mistake or a joke that
+              nobody actually took. Live bets have the same delete button.
+            </Step>
+            <Step n={5}>
+              One catch: the bets themselves live in the league's own bets list, so <B>editing or
+              deleting</B> also needs the <B>league password</B> unlocked on that device (the box
+              at the top of The Book). Changing <B>who won</B> only needs your commissioner login.
+              The buttons tell you when something is missing.
+            </Step>
+          </ol>
+        </Panel>
+
+        <Panel
+          title="5 · updating a keeper list"
           subtitle="After draft night, or to fix a mistake in any season."
         >
           <ol className="space-y-3 px-5 py-5">
@@ -142,7 +177,7 @@ export default function Guide() {
         </Panel>
 
         <Panel
-          title="5 · things that need no work at all"
+          title="6 · things that need no work at all"
           subtitle="Most of the site runs itself. Weekly waivers live entirely in Yahoo."
         >
           <div className="space-y-2.5 px-5 py-5 text-[14px] leading-relaxed text-arc-ink-soft">
@@ -164,7 +199,7 @@ export default function Guide() {
           </div>
         </Panel>
 
-        <Panel title="6 · if something looks wrong" subtitle="The two-step fix, then the human.">
+        <Panel title="7 · if something looks wrong" subtitle="The two-step fix, then the human.">
           <ol className="space-y-3 px-5 py-5">
             <Step n={1}>
               Refresh the page. Changes take a minute or two to show up on other devices — yours
