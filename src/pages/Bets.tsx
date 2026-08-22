@@ -11,6 +11,7 @@ import {
   applyResults,
   betRecords,
   headToHead,
+  isNewBet,
   loserOf,
   newBetId,
   openDebts,
@@ -185,6 +186,8 @@ export default function Bets() {
     const won = (id: ManagerId) => bet.status === 'settled' && bet.winner === id
     const lost = (id: ManagerId) => bet.status === 'settled' && bet.winner !== null && !won(id)
     const halves = [bet.proposer, bet.opponent] as const
+    // Live for less than two days: the slip is still smoking.
+    const fresh = isNewBet(bet)
 
     return (
       <div className="overflow-hidden rounded-xl border border-arc-line bg-arc-panel transition-colors hover:border-arc-ink-faint">
@@ -237,6 +240,11 @@ export default function Bets() {
             </span>
           </div>
           <div className="flex flex-1 flex-wrap items-center gap-2 px-3 py-2">
+            {fresh && (
+              <span className="flame-ring flame-ring-tag" title="Went live in the last 48 hours">
+                <Chip tone="flag">New</Chip>
+              </span>
+            )}
             {bet.resolves && (
               <span className="text-[11px] text-arc-ink-faint">{bet.resolves}</span>
             )}
@@ -286,7 +294,13 @@ export default function Bets() {
                   </>
                 ) : (
                   <>
-                    <span className="text-[var(--color-arc-orange)]">●</span>
+                    {isNewBet(b) ? (
+                      <span className="flame-ring" title="Just went live">
+                        <span className="text-[var(--color-arc-orange)]">●</span>
+                      </span>
+                    ) : (
+                      <span className="text-[var(--color-arc-orange)]">●</span>
+                    )}
                     <span className="text-arc-ink-soft">
                       {managerName(managers, b.proposer)} v {managerName(managers, b.opponent)}
                     </span>

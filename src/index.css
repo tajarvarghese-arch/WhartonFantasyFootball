@@ -42,6 +42,16 @@
   --shadow-hard-sm: 0 4px 12px rgba(0, 0, 0, 0.45);
 }
 
+/* The sweep angle of the flame ring (.flame-ring). A custom property has to
+   be registered as an <angle> before it can be animated; a browser without
+   @property simply holds it at 0deg and shows a still ember ring, which is
+   the same thing the reduced-motion path gets. */
+@property --flame-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 @layer base {
   :root {
     color-scheme: dark;
@@ -948,6 +958,67 @@
     animation: redzone 1.4s steps(1) infinite;
   }
 
+  /* A bet that just went live burns for its first 48 hours: an ember ring
+     that turns around the marker, under a flicker. The ring is drawn as a
+     masked conic gradient, so it hugs a round dot and a pill chip alike. */
+  .flame-ring {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    border-radius: 999px;
+    line-height: 1;
+    animation: flame-flicker 1.3s ease-in-out infinite;
+  }
+  .flame-ring::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from var(--flame-angle),
+      var(--color-arc-red),
+      var(--color-arc-orange),
+      var(--color-arc-yellow),
+      #fff0c0,
+      var(--color-arc-yellow),
+      var(--color-arc-orange),
+      var(--color-arc-red)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    animation: flame-sweep 1.8s linear infinite;
+  }
+  /* Same ring around a chip, which is a rounded rectangle rather than a dot. */
+  .flame-ring-tag {
+    border-radius: 8px;
+  }
+  @keyframes flame-sweep {
+    to {
+      --flame-angle: 360deg;
+    }
+  }
+  @keyframes flame-flicker {
+    0%,
+    100% {
+      filter: drop-shadow(0 0 2px rgba(255, 159, 26, 0.75));
+    }
+    30% {
+      filter: drop-shadow(0 0 5px rgba(255, 82, 82, 0.7));
+    }
+    62% {
+      filter: drop-shadow(0 0 4px rgba(255, 182, 54, 0.85));
+    }
+  }
+
   /* Reduced motion is honoured unless the user flips the in-app FX switch,
      which stamps data-motion="on" on the root. */
   @media (prefers-reduced-motion: reduce) {
@@ -965,6 +1036,8 @@
     :root:not([data-motion='on']) .punt-y,
     :root:not([data-motion='on']) .punt-rot,
     :root:not([data-motion='on']) .redzone,
+    :root:not([data-motion='on']) .flame-ring,
+    :root:not([data-motion='on']) .flame-ring::before,
     :root:not([data-motion='on']) .cursor::after {
       animation: none !important;
     }

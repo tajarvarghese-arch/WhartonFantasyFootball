@@ -61,6 +61,21 @@ export function applyResults(bets: Bet[], results: BetResult[]): Bet[] {
   })
 }
 
+/** How long a bet counts as new after it goes live: two days. */
+export const NEW_BET_WINDOW_MS = 48 * 60 * 60 * 1000
+
+/**
+ * A bet that went live in the last two days. Accepting is the moment the
+ * money is actually at risk, so `acceptedAt` is the clock that matters; older
+ * rows written before that stamp existed fall back to when they were posted.
+ */
+export function isNewBet(bet: Bet, now: number = Date.now()): boolean {
+  if (bet.status !== 'live') return false
+  const stamp = Date.parse(bet.acceptedAt ?? bet.proposedAt)
+  if (Number.isNaN(stamp)) return false
+  return now - stamp < NEW_BET_WINDOW_MS
+}
+
 export function newBetId(): string {
   return `b-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`
 }
