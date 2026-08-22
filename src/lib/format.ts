@@ -45,6 +45,36 @@ export function shortDate(iso: string | undefined): string {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
+/** yyyy-mm-dd for an <input type="date">, read in the viewer's own timezone. */
+export function dateInputValue(iso: string | undefined): string {
+  if (!iso) return ''
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return ''
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+}
+
+/**
+ * Back from a date input to a full stamp. An untouched day returns the
+ * original string verbatim, so opening an editor and saving nothing never
+ * rewrites the time of day — which is what orders the settled record.
+ */
+export function isoFromDateInput(day: string, previous?: string): string {
+  if (!day) return previous ?? ''
+  if (previous && dateInputValue(previous) === day) return previous
+  const [year, month, date] = day.split('-').map(Number)
+  if (!year || !month || !date) return previous ?? ''
+  const before = previous ? new Date(previous) : null
+  const keepTime = before && !Number.isNaN(before.getTime())
+  return new Date(
+    year,
+    month - 1,
+    date,
+    keepTime ? before.getHours() : 12,
+    keepTime ? before.getMinutes() : 0,
+  ).toISOString()
+}
+
 /** "in 6h 12m" / "expired" — used for the 24-hour anti-dumping market check. */
 export function countdown(iso: string | undefined, now = Date.now()): string {
   if (!iso) return '—'

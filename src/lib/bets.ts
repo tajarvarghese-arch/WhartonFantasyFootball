@@ -65,6 +65,87 @@ export function newBetId(): string {
   return `b-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`
 }
 
+/* ------------------------------------------------------------------ *
+ * Commissioner corrections
+ * ------------------------------------------------------------------ */
+
+/**
+ * Everything the commissioner can correct on a bet that has already been
+ * settled. The fields straddle two files on purpose: `winner` and `settledAt`
+ * are the ruling and live in the commissioner-only results file, while the
+ * rest describe the slip and live in the league-writable bets repo. The page
+ * splits an edit back into those two writes and only makes the ones needed.
+ */
+export interface BetEdit {
+  winner: ManagerId
+  settledAt: string
+  terms: string
+  stakeKind: StakeKind
+  stake: number
+  forfeit: string
+  resolves: string
+  /** Whether the loser has handed the money over. */
+  paid: boolean
+}
+
+export function editFrom(bet: Bet): BetEdit {
+  return {
+    winner: bet.winner ?? bet.proposer,
+    settledAt: bet.settledAt ?? '',
+    terms: bet.terms,
+    stakeKind: bet.stakeKind,
+    stake: bet.stake,
+    forfeit: bet.forfeit,
+    resolves: bet.resolves,
+    paid: Boolean(bet.paidAt),
+  }
+}
+
+/**
+ * Fold the slip half of an edit onto the *stored* bet. Deliberately leaves
+ * status, winner, and settledAt alone: those are derived from the results
+ * file by `applyResults`, and writing them into bets.json would let anyone
+ * with the league password edit a ruling.
+ */
+export function applyEdit(bet: Bet, edit: BetEdit, now: string): Bet {
+  const cash = edit.stakeKind === 'cash'
+  return {
+    ...bet,
+    terms: edit.terms.trim(),
+    stakeKind: edit.stakeKind,
+    stake: cash ? edit.stake : 0,
+    forfeit: cash ? '' : edit.forfeit.trim(),
+    resolves: edit.resolves.trim(),
+    paidAt: edit.paid ? (bet.paidAt ?? now) : undefined,
+  }
+}
+
+/** True when the edit touches the bets repo — i.e. needs the league token. */
+export function slipChanged(bet: Bet, edit: BetEdit): boolean {
+  // The stamp is irrelevant here — `paid` is compared as a flag, since a
+  // freshly ticked box has no timestamp until the write happens.
+  const next = applyEdit(bet, edit, bet.paidAt ?? '')
+  return (
+    next.terms !== bet.terms ||
+    next.stakeKind !== bet.stakeKind ||
+    next.stake !== bet.stake ||
+    next.forfeit !== bet.forfeit ||
+    next.resolves !== bet.resolves ||
+    edit.paid !== Boolean(bet.paidAt)
+  )
+}
+
+/** True when the edit touches bet-results.json — i.e. needs the commissioner. */
+export function rulingChanged(bet: Bet, edit: BetEdit): boolean {
+  return edit.winner !== bet.winner || edit.settledAt !== (bet.settledAt ?? '')
+}
+
+/** An edit is only saveable if it still describes a real bet. */
+export function editComplete(edit: BetEdit): boolean {
+  if (!edit.terms.trim() || !edit.settledAt) return false
+  return edit.stakeKind === 'cash' ? edit.stake > 0 : Boolean(edit.forfeit.trim())
+}
+
 export function sideOf(bet: Bet, manager: ManagerId): 'proposer' | 'opponent' | null {
   if (bet.proposer === manager) return 'proposer'
   if (bet.opponent === manager) return 'opponent'

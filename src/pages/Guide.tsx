@@ -142,7 +142,39 @@ export default function Guide() {
         </Panel>
 
         <Panel
-          title="5 · things that need no work at all"
+          title="5 · fixing the betting board"
+          subtitle="You call the winners on The Book — and you can un-call them."
+        >
+          <ol className="space-y-3 px-5 py-5">
+            <Step n={1}>
+              Go to <B>The Book</B>. Live bets show a <B>Winner:</B> row with both names — tap the
+              one who won and it moves down into <B>Settled</B>.
+            </Step>
+            <Step n={2}>
+              Got it wrong? In the <B>Settled</B> table every row now has an <B>Edit</B> button on
+              the right. Press it and the bet opens up underneath.
+            </Step>
+            <Step n={3}>
+              Change the <B>winner</B>, move the <B>settled on</B> date, retype the terms or the
+              stake, or untick <B>Loser has paid up</B> if a payment fell through. Press{' '}
+              <B>Save correction</B>. Records, the tab, and the head-to-head tables all follow
+              along.
+            </Step>
+            <Step n={4}>
+              <B>Put back in play</B> undoes the ruling and sends the bet back to live action, as
+              if it had never been called. <B>Delete bet</B> removes it from the board entirely —
+              it asks you a second time before it does.
+            </Step>
+            <Step n={5}>
+              Two of those need the <B>league password</B> as well as your commissioner sign-in:
+              changing the terms of a bet, and deleting one. Enter it at the top of The Book. The
+              winner and the date are yours alone and need nothing extra.
+            </Step>
+          </ol>
+        </Panel>
+
+        <Panel
+          title="6 · things that need no work at all"
           subtitle="Most of the site runs itself. Weekly waivers live entirely in Yahoo."
         >
           <div className="space-y-2.5 px-5 py-5 text-[14px] leading-relaxed text-arc-ink-soft">
@@ -164,7 +196,7 @@ export default function Guide() {
           </div>
         </Panel>
 
-        <Panel title="6 · if something looks wrong" subtitle="The two-step fix, then the human.">
+        <Panel title="7 · if something looks wrong" subtitle="The two-step fix, then the human.">
           <ol className="space-y-3 px-5 py-5">
             <Step n={1}>
               Refresh the page. Changes take a minute or two to show up on other devices — yours
