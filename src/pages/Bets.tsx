@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import PixelMugshot from '../components/PixelMugshot'
-import { Chip, Panel, PageHeader } from '../components/ui'
+import { Chip, Panel, PageHeader, Stat } from '../components/ui'
+import { Confetti } from '../components/effects'
+import { play } from '../lib/sfx'
+import { animationsDisabled } from '../lib/motion'
 import { managerName, useLeague, useLeagueData } from '../lib/data'
 import { managerColor } from '../lib/identity'
 import { money, pct, shortDate } from '../lib/format'
@@ -44,6 +47,8 @@ export default function Bets() {
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [composing, setComposing] = useState(false)
+  // Bumped on a settle so the confetti remounts and fires again.
+  const [celebrate, setCelebrate] = useState(0)
 
   useEffect(() => {
     void readBets().then(setFile)
@@ -60,6 +65,18 @@ export default function Bets() {
   const h2h = useMemo(() => headToHead(bets), [bets])
   const debts = useMemo(() => openDebts(bets), [bets])
   const handleOf = (id: ManagerId) => managers.find((m) => m.id === id)?.venmo
+
+  const riding = live.reduce((sum, b) => sum + (b.stakeKind === 'cash' ? b.stake : 0), 0)
+  const biggest = [...bets]
+    .filter((b) => b.stakeKind === 'cash')
+    .sort((a, b) => b.stake - a.stake)[0]
+  const hottest = [...records].sort((a, b) => b.streak - a.streak)[0]
+
+  // Recent action, newest first, for the tape.
+  const tape = [...bets]
+    .filter((b) => b.status === 'settled' || b.status === 'live')
+    .sort((a, b) => (b.settledAt ?? b.acceptedAt ?? '').localeCompare(a.settledAt ?? a.acceptedAt ?? ''))
+    .slice(0, 18)
 
   async function mutate(update: (current: BetsFile) => BetsFile, message: string, id: string) {
     setBusy(id)
@@ -103,8 +120,10 @@ export default function Bets() {
       bet.id,
     )
 
-  const settle = (bet: Bet, winner: ManagerId) =>
-    mutate(
+  const settle = (bet: Bet, winner: ManagerId) => {
+    play('roar')
+    if (!animationsDisabled()) setCelebrate((n) => n + 1)
+    return mutate(
       (current) => ({
         ...current,
         bets: current.bets.map((b) =>
@@ -116,6 +135,7 @@ export default function Bets() {
       `Bet settled: ${managerName(managers, winner)} wins`,
       bet.id,
     )
+  }
 
   const settleUp = (debt: Debt) =>
     mutate(
@@ -142,46 +162,75 @@ export default function Bets() {
     </span>
   )
 
-  /** A bet slip: two faces, the terms, and what's riding on it. */
-  const Slip = ({ bet, children }: { bet: Bet; children?: React.ReactNode }) => (
-    <div className="rounded-lg border border-arc-line bg-arc-panel p-4">
-      <div className="flex items-center gap-3">
-        {face(bet.proposer)}
-        <span className="min-w-0 flex-1 truncate text-[15px]" style={{ color: managerColor(bet.proposer) }}>
-          {managerName(managers, bet.proposer)}
-        </span>
-        <span className="arcade shrink-0 text-[13px] text-arc-ink-faint">VS</span>
-        <span
-          className="min-w-0 flex-1 truncate text-right text-[15px]"
-          style={{ color: managerColor(bet.opponent) }}
-        >
-          {managerName(managers, bet.opponent)}
-        </span>
-        {face(bet.opponent)}
-      </div>
+  /**
+   * A matchup card in the sportsbook idiom: the two managers as opposing
+   * sides under their own colours, the stake as a big tile, action beneath.
+   */
+  const Slip = ({ bet, children }: { bet: Bet; children?: React.ReactNode }) => {
+    const won = (id: ManagerId) => bet.status === 'settled' && bet.winner === id
+    const lost = (id: ManagerId) => bet.status === 'settled' && bet.winner !== null && !won(id)
+    const halves = [bet.proposer, bet.opponent] as const
 
-      <p className="mt-3 text-[14px] leading-snug text-arc-ink">{bet.terms}</p>
+    return (
+      <div className="overflow-hidden rounded-xl border border-arc-line bg-arc-panel transition-colors hover:border-arc-ink-faint">
+        {/* team colours across the top, like a game card */}
+        <div className="flex h-1">
+          {halves.map((id) => (
+            <span key={id} className="flex-1" style={{ background: managerColor(id) }} />
+          ))}
+        </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-arc-ink-faint">
-        <span>
-          Stake{' '}
-          <b
-            className={bet.stakeKind === 'cash' ? 'text-arc-green' : 'text-[var(--color-arc-orange)]'}
-          >
-            {stakeLabel(bet)}
-          </b>
-        </span>
-        {bet.resolves && <span>Resolves {bet.resolves}</span>}
-        {bet.status === 'settled' && bet.winner && (
-          <span className="text-arc-green">
-            {managerName(managers, bet.winner)} won · {managerName(managers, loserOf(bet)!)} paid
+        <div className="relative flex items-stretch">
+          {halves.map((id, i) => (
+            <div
+              key={id}
+              className={`flex flex-1 items-center gap-2.5 p-3 ${i ? 'flex-row-reverse text-right' : ''}`}
+              style={{ opacity: lost(id) ? 0.45 : 1 }}
+            >
+              {face(id, 2)}
+              <span className="min-w-0">
+                <span
+                  className="block truncate text-[15px] leading-tight"
+                  style={{ color: managerColor(id) }}
+                >
+                  {managerName(managers, id)}
+                </span>
+                {won(id) && (
+                  <span className="arcade text-[11px] text-arc-green">WON</span>
+                )}
+              </span>
+            </div>
+          ))}
+          <span className="arcade absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-arc-line bg-arc-bg px-2 py-0.5 text-[11px] text-arc-ink-faint">
+            VS
           </span>
-        )}
-      </div>
+        </div>
 
-      {children && <div className="mt-3 flex flex-wrap gap-2">{children}</div>}
-    </div>
-  )
+        <p className="px-3 pb-3 text-[14px] leading-snug text-arc-ink">{bet.terms}</p>
+
+        <div className="flex items-stretch border-t border-arc-line">
+          <div className="flex min-w-[104px] flex-col justify-center border-r border-arc-line px-3 py-2">
+            <span className="text-[10px] tracking-[0.14em] text-arc-ink-faint uppercase">
+              {bet.stakeKind === 'cash' ? 'Each' : 'Forfeit'}
+            </span>
+            <span
+              className={`tnum text-[20px] leading-tight ${
+                bet.stakeKind === 'cash' ? 'text-arc-green' : 'text-[var(--color-arc-orange)]'
+              }`}
+            >
+              {stakeLabel(bet)}
+            </span>
+          </div>
+          <div className="flex flex-1 flex-wrap items-center gap-2 px-3 py-2">
+            {bet.resolves && (
+              <span className="text-[11px] text-arc-ink-faint">{bet.resolves}</span>
+            )}
+            {children}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -198,6 +247,78 @@ export default function Bets() {
           ) : undefined
         }
       />
+
+      {tape.length > 0 && (
+        <div className="marquee-host relative -mx-4 mb-6 overflow-hidden border-y border-arc-line bg-arc-panel sm:-mx-6 lg:-mx-9">
+          <div
+            className="marquee flex w-max items-center gap-7 py-2"
+            style={{ ['--marquee-duration' as string]: `${Math.max(40, tape.length * 4.5)}s` }}
+          >
+            {[...tape, ...tape].map((b, i) => (
+              <span
+                key={`${b.id}-${i}`}
+                className="flex shrink-0 items-center gap-2 text-[11px] whitespace-nowrap"
+                aria-hidden={i >= tape.length}
+              >
+                {b.status === 'settled' && b.winner ? (
+                  <>
+                    <span className="text-arc-green">✓</span>
+                    <span className="text-arc-ink-soft">{managerName(managers, b.winner)}</span>
+                    <span className="text-arc-ink-faint">beat</span>
+                    <span className="text-arc-ink-soft">
+                      {managerName(managers, loserOf(b)!)}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-[var(--color-arc-orange)]">●</span>
+                    <span className="text-arc-ink-soft">
+                      {managerName(managers, b.proposer)} v {managerName(managers, b.opponent)}
+                    </span>
+                  </>
+                )}
+                <span className="tnum text-arc-ink">{stakeLabel(b)}</span>
+                <span className="text-arc-ink-faint">·</span>
+              </span>
+            ))}
+          </div>
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-arc-panel to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-arc-panel to-transparent" />
+        </div>
+      )}
+
+      {bets.length > 0 && (
+        <div className="line-in mb-6 grid grid-cols-2 gap-6 lg:grid-cols-4">
+          <Stat
+            label="Riding right now"
+            countTo={riding}
+            format={(v) => money(v)}
+            value={money(riding)}
+            hint={`${live.length} live bet${live.length === 1 ? '' : 's'}`}
+            tone={riding ? 'up' : 'default'}
+          />
+          <Stat label="On the table" value={proposed.length} hint="Awaiting a taker" />
+          <Stat
+            label="Biggest pot"
+            value={biggest ? money(biggest.stake) : '—'}
+            hint={
+              biggest
+                ? `${managerName(managers, biggest.proposer)} v ${managerName(managers, biggest.opponent)}`
+                : undefined
+            }
+          />
+          <Stat
+            label="Hot hand"
+            value={hottest && hottest.streak > 0 ? managerName(managers, hottest.manager) : '—'}
+            hint={
+              hottest && hottest.streak > 0
+                ? `${hottest.streak} straight`
+                : 'Nobody on a run'
+            }
+            tone={hottest && hottest.streak > 0 ? 'gold' : 'default'}
+          />
+        </div>
+      )}
 
       {/* Unlock */}
       {!unlocked && (
@@ -457,6 +578,16 @@ export default function Bets() {
                       <tr key={row.manager}>
                         <td style={{ color: managerColor(row.manager) }}>
                           {managerName(managers, row.manager)}
+                          {row.streak >= 3 && (
+                            <span title={`${row.streak} straight`} className="ml-1.5">
+                              🔥
+                            </span>
+                          )}
+                          {row.streak <= -3 && (
+                            <span title={`${-row.streak} straight losses`} className="ml-1.5 opacity-60">
+                              🧊
+                            </span>
+                          )}
                         </td>
                         <td className="n">
                           {row.won}–{row.lost}
@@ -518,6 +649,12 @@ export default function Bets() {
               )}
             </div>
           )}
+        </div>
+      )}
+
+      {celebrate > 0 && (
+        <div key={celebrate} className="pointer-events-none fixed inset-0 z-40">
+          <Confetti count={22} />
         </div>
       )}
 
@@ -651,6 +788,23 @@ function Composer({
               value={stake}
               onChange={(e) => setStake(Number(e.target.value) || 0)}
             />
+            <span className="mt-2 flex flex-wrap gap-1.5">
+              {[10, 20, 50, 100].map((amount) => (
+                <button
+                  key={amount}
+                  type="button"
+                  className="tnum rounded-md border px-2.5 py-1 text-[12px] transition-colors"
+                  style={
+                    stake === amount
+                      ? { borderColor: 'var(--color-arc-green)', color: '#06210a', background: 'var(--color-arc-green)' }
+                      : { borderColor: 'var(--color-arc-line)', color: 'var(--color-arc-ink-soft)' }
+                  }
+                  onClick={() => setStake(amount)}
+                >
+                  ${amount}
+                </button>
+              ))}
+            </span>
           </label>
         ) : (
           <label>
